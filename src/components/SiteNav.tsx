@@ -34,20 +34,12 @@ export default function SiteNav() {
       }`}
     >
       <div className="shell flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="group flex items-center gap-3 text-white">
-          <span
-            aria-hidden
-            className="grid h-8 w-8 place-items-center rounded-sm bg-white/10 font-display text-lg font-semibold leading-none ring-1 ring-white/25 transition-colors group-hover:bg-white/20"
-          >
-            Y
+        <Link href="/" className="group flex flex-col leading-none text-white">
+          <span className="font-display text-[0.95rem] font-semibold tracking-tight transition-colors group-hover:text-sandstone">
+            Youth Public Health Accelerator
           </span>
-          <span className="flex flex-col leading-none">
-            <span className="font-display text-[0.95rem] font-semibold tracking-tight">
-              Youth Public Health Accelerator
-            </span>
-            <span className="eyebrow mt-1 text-[0.6rem] text-sandstone/90">
-              Stanford
-            </span>
+          <span className="eyebrow mt-1 text-[0.6rem] text-sandstone/90">
+            Stanford
           </span>
         </Link>
 

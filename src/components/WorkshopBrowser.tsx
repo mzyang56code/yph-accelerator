@@ -1,14 +1,23 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { Workshop } from "@/lib/data";
-import { workshopCategories } from "@/lib/data";
+import type { Workshop, WorkshopCategory } from "@/lib/data";
 import WorkshopCard from "@/components/WorkshopCard";
 
-export default function WorkshopBrowser({ workshops }: { workshops: Workshop[] }) {
+export default function WorkshopBrowser({
+  workshops,
+  categories,
+}: {
+  workshops: Workshop[];
+  categories: WorkshopCategory[];
+}) {
   const [active, setActive] = useState<string>("All");
 
-  const filters = ["All", ...workshopCategories];
+  const colorByLabel = useMemo(
+    () => Object.fromEntries(categories.map((c) => [c.label, c.color])),
+    [categories],
+  );
+  const filters = ["All", ...categories.map((c) => c.label)];
   const shown = useMemo(
     () => (active === "All" ? workshops : workshops.filter((w) => w.category === active)),
     [active, workshops],
@@ -42,7 +51,7 @@ export default function WorkshopBrowser({ workshops }: { workshops: Workshop[] }
       <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map((w) => (
           <li key={w.id}>
-            <WorkshopCard workshop={w} />
+            <WorkshopCard workshop={w} color={colorByLabel[w.category]} />
           </li>
         ))}
       </ul>

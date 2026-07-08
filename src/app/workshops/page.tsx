@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import WorkshopBrowser from "@/components/WorkshopBrowser";
-import { getWorkshops } from "@/lib/data";
+import { getWorkshops, getWorkshopCategories } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Workshop library",
@@ -9,8 +9,10 @@ export const metadata: Metadata = {
     "Slides, recordings, and workbooks from the Stanford Youth Public Health Accelerator — new workshops every month, free for every student.",
 };
 
+export const revalidate = 300;
+
 export default async function WorkshopsPage() {
-  const workshops = await getWorkshops();
+  const [workshops, categories] = await Promise.all([getWorkshops(), getWorkshopCategories()]);
 
   return (
     <>
@@ -20,7 +22,7 @@ export default async function WorkshopsPage() {
         intro="The team adds new material most months. Filter by topic, then open anything in the shared Google Drive — slides, recordings, and workbooks."
       />
       <section className="shell py-16">
-        <WorkshopBrowser workshops={workshops} />
+        <WorkshopBrowser workshops={workshops} categories={categories} />
       </section>
     </>
   );

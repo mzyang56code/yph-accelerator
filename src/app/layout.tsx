@@ -4,6 +4,7 @@ import "./globals.css";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import ChromeGate from "@/components/ChromeGate";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 // Display: Inter — clean, modern, highly legible; set tight and heavy for titles.
 const display = Inter({
@@ -27,13 +28,28 @@ const mono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const description =
+  "A Stanford program training high-school students in the tools of public health — epidemiology, data, and equity — through workshops, mentorship, and community projects.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Stanford Youth Public Health Accelerator",
+    default: SITE_NAME,
     template: "%s · Stanford YPHA",
   },
-  description:
-    "A Stanford program training high-school students in the tools of public health — epidemiology, data, and equity — through workshops, mentorship, and community projects.",
+  description,
+  openGraph: {
+    title: SITE_NAME,
+    description,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description,
+  },
 };
 
 export default function RootLayout({

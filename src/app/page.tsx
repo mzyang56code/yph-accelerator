@@ -6,20 +6,28 @@ import SectionHeading from "@/components/SectionHeading";
 import EventCard from "@/components/EventCard";
 import WorkshopCard from "@/components/WorkshopCard";
 import TeamCard from "@/components/TeamCard";
+import MailtoLink from "@/components/MailtoLink";
 import {
   getSiteContent,
   getFeaturedEvents,
   getWorkshops,
+  getWorkshopCategories,
   getTeam,
 } from "@/lib/data";
 
+// Content changes go live immediately via revalidatePath in the admin actions;
+// this is just a time-based safety net.
+export const revalidate = 300;
+
 export default async function HomePage() {
-  const [content, events, workshops, team] = await Promise.all([
+  const [content, events, workshops, categories, team] = await Promise.all([
     getSiteContent(),
     getFeaturedEvents(),
     getWorkshops(),
+    getWorkshopCategories(),
     getTeam(),
   ]);
+  const colorByLabel = Object.fromEntries(categories.map((c) => [c.label, c.color]));
 
   return (
     <div className="relative">
@@ -140,7 +148,7 @@ export default async function HomePage() {
           <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {workshops.slice(0, 4).map((w, i) => (
               <Reveal as="li" key={w.id} delay={i * 90}>
-                <WorkshopCard workshop={w} />
+                <WorkshopCard workshop={w} color={colorByLabel[w.category]} />
               </Reveal>
             ))}
           </ul>
@@ -185,12 +193,9 @@ export default async function HomePage() {
               just curiosity. Send us a note and we&apos;ll tell you how it works.
             </p>
           </div>
-          <a
-            href="mailto:ypha@stanford.edu"
-            className="shrink-0 rounded-sm bg-white px-7 py-3.5 font-semibold text-cardinal transition-colors hover:bg-sandstone"
-          >
+          <MailtoLink className="shrink-0 rounded-sm bg-white px-7 py-3.5 font-semibold text-cardinal transition-colors hover:bg-sandstone">
             Get in touch
-          </a>
+          </MailtoLink>
         </div>
       </section>
     </div>

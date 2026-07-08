@@ -1,23 +1,16 @@
 import type { Workshop } from "@/lib/data";
 import { formatDate } from "@/lib/format";
 
-// A single colored plotting mark per category — disciplined, echoes the dot-map.
-const CATEGORY_COLOR: Record<Workshop["category"], string> = {
-  Epidemiology: "#8c1515",
-  Biostatistics: "#175e54",
-  "Health equity": "#b1040e",
-  "Global health": "#2e8b7a",
-  "Research skills": "#cdb98d",
-  Policy: "#5a5750",
-};
+// Neutral fallback for a category whose color couldn't be resolved (e.g. deleted).
+const FALLBACK_COLOR = "#5a5750";
 
-export default function WorkshopCard({ workshop }: { workshop: Workshop }) {
-  const color = CATEGORY_COLOR[workshop.category];
+export default function WorkshopCard({ workshop, color }: { workshop: Workshop; color?: string }) {
+  const dotColor = color ?? FALLBACK_COLOR;
 
   return (
     <article className="group relative flex h-full flex-col rounded-lg border border-ink/10 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_-24px_rgba(140,21,21,0.5)]">
-      <span className="eyebrow flex items-center gap-2" style={{ color }}>
-        <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
+      <span className="eyebrow flex items-center gap-2" style={{ color: dotColor }}>
+        <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: dotColor }} />
         {workshop.category}
       </span>
 

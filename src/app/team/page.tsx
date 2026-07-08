@@ -11,6 +11,8 @@ export const metadata: Metadata = {
     "The Stanford faculty, program staff, mentors, and high-school student fellows behind the Youth Public Health Accelerator.",
 };
 
+export const revalidate = 300;
+
 const GROUPS: { kind: TeamMember["kind"]; label: string; blurb: string }[] = [
   { kind: "Staff", label: "Faculty & staff", blurb: "Who runs the program." },
   { kind: "Mentor", label: "Mentors", blurb: "Graduate researchers who teach and advise." },

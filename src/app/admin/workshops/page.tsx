@@ -2,9 +2,10 @@ import Link from "next/link";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import SetupNotice from "@/components/admin/SetupNotice";
 import DeleteButton from "@/components/admin/DeleteButton";
+import ReorderButtons from "@/components/admin/ReorderButtons";
 import { getWorkshops } from "@/lib/data";
 import { formatDate } from "@/lib/format";
-import { deleteWorkshop } from "../actions";
+import { deleteWorkshop, moveWorkshop } from "../actions";
 
 export default async function WorkshopsAdmin({
   searchParams,
@@ -21,6 +22,12 @@ export default async function WorkshopsAdmin({
         <div>
           <p className="eyebrow text-cardinal">Library</p>
           <h1 className="display mt-1 text-3xl text-ink">Workshops</h1>
+          <p className="mt-2 text-sm text-stone">
+            Use the arrows to set the order shown on the public library and homepage.{" "}
+            <Link href="/admin/categories" className="font-medium text-cardinal hover:underline">
+              Manage categories →
+            </Link>
+          </p>
         </div>
         <Link href="/admin/workshops/new" className="rounded-md bg-cardinal px-4 py-2.5 text-sm font-semibold text-white hover:bg-cardinal-bright">
           + New workshop
@@ -33,16 +40,24 @@ export default async function WorkshopsAdmin({
 
       <div className="mt-6 divide-y divide-ink/8 overflow-hidden rounded-xl border border-ink/10 bg-white">
         {workshops.length === 0 && <p className="p-6 text-sm text-stone">No workshops yet.</p>}
-        {workshops.map((w) => {
+        {workshops.map((w, i) => {
           const linked = w.driveUrl && w.driveUrl !== "#";
           return (
             <div key={w.id} className="flex items-center justify-between gap-4 p-4">
-              <div className="min-w-0">
-                <h2 className="truncate font-display font-semibold text-ink">{w.title}</h2>
-                <p className="mt-0.5 text-sm text-stone">
-                  {w.category} · {w.fileKind} · {formatDate(w.released)}
-                  {!linked && <span className="ml-2 text-cardinal">· no Drive link</span>}
-                </p>
+              <div className="flex min-w-0 items-center gap-3">
+                <ReorderButtons
+                  action={moveWorkshop}
+                  id={w.id}
+                  disableUp={i === 0}
+                  disableDown={i === workshops.length - 1}
+                />
+                <div className="min-w-0">
+                  <h2 className="truncate font-display font-semibold text-ink">{w.title}</h2>
+                  <p className="mt-0.5 text-sm text-stone">
+                    {w.category} · {w.fileKind} · {formatDate(w.released)}
+                    {!linked && <span className="ml-2 text-cardinal">· no Drive link</span>}
+                  </p>
+                </div>
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <Link href={`/admin/workshops/${w.id}`} className="rounded-md border border-ink/15 px-3 py-1.5 text-sm font-medium text-ink hover:border-cardinal hover:text-cardinal">

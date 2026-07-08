@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { TeamMember } from "@/lib/data";
 
 function initials(name: string) {
@@ -19,9 +20,19 @@ export default function TeamCard({ member }: { member: TeamMember }) {
   return (
     <article className="flex h-full flex-col rounded-lg border border-ink/10 bg-white p-6 transition-colors hover:border-cardinal/25">
       <div className="flex items-center gap-4">
-        <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-paper font-display text-lg font-semibold text-cardinal ring-1 ring-ink/10">
-          {initials(member.name)}
-        </div>
+        {member.photoUrl ? (
+          <Image
+            src={member.photoUrl}
+            alt=""
+            width={56}
+            height={56}
+            className="h-14 w-14 shrink-0 rounded-full object-cover ring-1 ring-ink/10"
+          />
+        ) : (
+          <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-paper font-display text-lg font-semibold text-cardinal ring-1 ring-ink/10">
+            {initials(member.name)}
+          </div>
+        )}
         <div className="min-w-0">
           <h3 className="font-display text-lg font-semibold leading-tight text-ink">{member.name}</h3>
           <p className="mt-0.5 text-sm text-stone">{member.role}</p>

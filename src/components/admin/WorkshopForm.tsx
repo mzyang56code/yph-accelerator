@@ -1,9 +1,15 @@
 import Link from "next/link";
 import { saveWorkshop } from "@/app/admin/actions";
 import { Field, Text, Area, Select, SubmitButton } from "./ui";
-import { workshopCategories, workshopFileKinds, type Workshop } from "@/lib/data";
+import { workshopFileKinds, type Workshop, type WorkshopCategory } from "@/lib/data";
 
-export default function WorkshopForm({ workshop }: { workshop?: Workshop }) {
+export default function WorkshopForm({
+  workshop,
+  categories,
+}: {
+  workshop?: Workshop;
+  categories: WorkshopCategory[];
+}) {
   return (
     <form action={saveWorkshop} className="max-w-2xl space-y-5">
       {workshop && <input type="hidden" name="id" value={workshop.id} />}
@@ -21,12 +27,25 @@ export default function WorkshopForm({ workshop }: { workshop?: Workshop }) {
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Topic">
-          <Select name="category" options={workshopCategories} defaultValue={workshop?.category} />
+          {categories.length > 0 ? (
+            <Select name="category" options={categories.map((c) => c.label)} defaultValue={workshop?.category} />
+          ) : (
+            <p className="mt-1.5 text-sm text-stone">
+              No categories yet —{" "}
+              <Link href="/admin/categories/new" className="font-medium text-cardinal hover:underline">
+                create one first
+              </Link>
+              .
+            </p>
+          )}
         </Field>
         <Field label="Format">
           <Select name="file_kind" options={workshopFileKinds} defaultValue={workshop?.fileKind} />
         </Field>
       </div>
+      <Link href="/admin/categories" className="-mt-2 inline-block text-xs font-medium text-cardinal hover:underline">
+        Manage categories →
+      </Link>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Released">

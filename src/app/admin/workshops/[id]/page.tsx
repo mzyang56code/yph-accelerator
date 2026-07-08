@@ -4,13 +4,13 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import SetupNotice from "@/components/admin/SetupNotice";
 import WorkshopForm from "@/components/admin/WorkshopForm";
 import DeleteButton from "@/components/admin/DeleteButton";
-import { getWorkshopById } from "@/lib/data";
+import { getWorkshopById, getWorkshopCategories } from "@/lib/data";
 import { deleteWorkshop } from "../../actions";
 
 export default async function EditWorkshop({ params }: { params: Promise<{ id: string }> }) {
   if (!isSupabaseConfigured()) return <SetupNotice />;
   const { id } = await params;
-  const workshop = await getWorkshopById(id);
+  const [workshop, categories] = await Promise.all([getWorkshopById(id), getWorkshopCategories()]);
   if (!workshop) notFound();
 
   return (
@@ -18,7 +18,7 @@ export default async function EditWorkshop({ params }: { params: Promise<{ id: s
       <Link href="/admin/workshops" className="text-sm text-stone hover:text-cardinal">← Workshops</Link>
       <h1 className="display mt-2 text-3xl text-ink">Edit workshop</h1>
       <div className="mt-6">
-        <WorkshopForm workshop={workshop} />
+        <WorkshopForm workshop={workshop} categories={categories} />
       </div>
       <div className="mt-10 max-w-2xl border-t border-ink/10 pt-6">
         <p className="mb-2 text-sm font-semibold text-ink">Danger zone</p>

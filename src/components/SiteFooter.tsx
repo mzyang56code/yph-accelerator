@@ -1,4 +1,5 @@
 import Link from "next/link";
+import MailtoLink from "@/components/MailtoLink";
 import { getSiteContent } from "@/lib/data";
 
 export default async function SiteFooter() {
@@ -31,7 +32,7 @@ export default async function SiteFooter() {
         <div>
           <p className="eyebrow mb-4 text-white/50">Get in touch</p>
           <ul className="space-y-2.5 text-sm">
-            <li><a href="mailto:ypha@stanford.edu" className="hover:text-white">ypha@stanford.edu</a></li>
+            <li><MailtoLink className="hover:text-white">Email us</MailtoLink></li>
             <li><Link href="/admin" className="hover:text-white">Team login</Link></li>
           </ul>
         </div>

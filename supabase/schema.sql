@@ -14,12 +14,36 @@ create table if not exists public.events (
   end_date     date,
   location     text not null default '',
   summary      text not null default '',
+  details      text,
   host         text not null default '',
   tag          text not null default 'Workshop',
   featured     boolean not null default false,
   register_url text,
+  sort_order   integer not null default 0,
+  photo_url    text,
   created_at   timestamptz not null default now()
 );
+
+-- Older databases created before these columns existed won't have them.
+alter table public.events add column if not exists details text;
+alter table public.events add column if not exists sort_order integer not null default 0;
+alter table public.events add column if not exists photo_url text;
+
+-- Backfill sort_order once, in the calendar's existing (soonest-first) order —
+-- but only if nothing has customized it yet, so re-running this file never
+-- clobbers an admin's manual ordering.
+do $$
+begin
+  if not exists (select 1 from public.events where sort_order <> 0) then
+    update public.events e
+    set sort_order = ranked.rn
+    from (
+      select id, row_number() over (order by date asc) as rn
+      from public.events
+    ) ranked
+    where e.id = ranked.id;
+  end if;
+end $$;
 
 create table if not exists public.workshops (
   id           text primary key default gen_random_uuid()::text,
@@ -30,7 +54,35 @@ create table if not exists public.workshops (
   duration_min integer not null default 45,
   drive_url    text not null default '#',
   file_kind    text not null default 'Slides',
+  sort_order   integer not null default 0,
   created_at   timestamptz not null default now()
+);
+
+-- Older databases created before manual ordering was supported won't have the column.
+alter table public.workshops add column if not exists sort_order integer not null default 0;
+
+-- Backfill sort_order once, in the library's existing (newest-first) order —
+-- but only if nothing has customized it yet, so re-running this file never
+-- clobbers an admin's manual ordering.
+do $$
+begin
+  if not exists (select 1 from public.workshops where sort_order <> 0) then
+    update public.workshops w
+    set sort_order = ranked.rn
+    from (
+      select id, row_number() over (order by released desc) as rn
+      from public.workshops
+    ) ranked
+    where w.id = ranked.id;
+  end if;
+end $$;
+
+create table if not exists public.workshop_categories (
+  id         text primary key default gen_random_uuid()::text,
+  label      text not null unique,
+  color      text not null default '#8c1515',
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
 );
 
 create table if not exists public.team_members (
@@ -41,8 +93,12 @@ create table if not exists public.team_members (
   bio         text not null default '',
   kind        text not null default 'Student',
   sort_order  integer not null default 0,
+  photo_url   text,
   created_at  timestamptz not null default now()
 );
+
+-- Older databases created before photos were supported won't have the column.
+alter table public.team_members add column if not exists photo_url text;
 
 create table if not exists public.site_content (
   id            text primary key default 'main',
@@ -63,15 +119,16 @@ create table if not exists public.site_content (
 --     (Keep the team small: invite users in Supabase Auth and disable public
 --      sign-ups. Every authenticated user is treated as a team editor.)
 -- ---------------------------------------------------------------------------
-alter table public.events        enable row level security;
-alter table public.workshops     enable row level security;
-alter table public.team_members  enable row level security;
-alter table public.site_content  enable row level security;
+alter table public.events              enable row level security;
+alter table public.workshops           enable row level security;
+alter table public.workshop_categories enable row level security;
+alter table public.team_members        enable row level security;
+alter table public.site_content        enable row level security;
 
 do $$
 declare t text;
 begin
-  foreach t in array array['events','workshops','team_members','site_content'] loop
+  foreach t in array array['events','workshops','workshop_categories','team_members','site_content'] loop
     execute format('drop policy if exists "public read %1$s" on public.%1$I;', t);
     execute format('drop policy if exists "authenticated write %1$s" on public.%1$I;', t);
 
@@ -83,6 +140,46 @@ begin
          for all to authenticated using (true) with check (true);', t);
   end loop;
 end $$;
+
+-- ---------------------------------------------------------------------------
+-- Storage — a public bucket for team member photos.
+--   • Anyone may READ (the public site shows the photos).
+--   • Only signed-in team members may upload/replace/delete.
+-- ---------------------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('team-photos', 'team-photos', true)
+on conflict (id) do nothing;
+
+drop policy if exists "public read team-photos" on storage.objects;
+drop policy if exists "authenticated write team-photos" on storage.objects;
+
+create policy "public read team-photos" on storage.objects
+  for select using (bucket_id = 'team-photos');
+
+create policy "authenticated write team-photos" on storage.objects
+  for all to authenticated
+  using (bucket_id = 'team-photos')
+  with check (bucket_id = 'team-photos');
+
+-- ---------------------------------------------------------------------------
+-- Storage — a public bucket for event photos/flyers.
+--   • Anyone may READ (the public site shows the photo in the event popup).
+--   • Only signed-in team members may upload/replace/delete.
+-- ---------------------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('event-photos', 'event-photos', true)
+on conflict (id) do nothing;
+
+drop policy if exists "public read event-photos" on storage.objects;
+drop policy if exists "authenticated write event-photos" on storage.objects;
+
+create policy "public read event-photos" on storage.objects
+  for select using (bucket_id = 'event-photos');
+
+create policy "authenticated write event-photos" on storage.objects
+  for all to authenticated
+  using (bucket_id = 'event-photos')
+  with check (bucket_id = 'event-photos');
 
 -- ---------------------------------------------------------------------------
 -- Seed content (matches the site''s built-in demo content; edit or delete
@@ -108,6 +205,15 @@ insert into public.events (id, title, date, end_date, location, summary, host, t
   ('fall-info-session','Fall Cohort — Information Session for Families','2026-08-14',null,'Online','What the program asks of students, what it offers, and how to apply. Bring questions; we''ll stay as long as there are any.','Program staff','Info session',false,'#'),
   ('community-clinic-day','Community Health Screening Day','2026-08-23',null,'Fair Oaks Community Center, Redwood City','Students support a free blood-pressure and health-literacy clinic alongside partner physicians. Spanish-speaking volunteers especially needed.','Health Equity track students','Community',false,'#')
 on conflict (id) do nothing;
+
+insert into public.workshop_categories (label, color, sort_order) values
+  ('Epidemiology','#8c1515',1),
+  ('Biostatistics','#175e54',2),
+  ('Health equity','#b1040e',3),
+  ('Global health','#2e8b7a',4),
+  ('Research skills','#cdb98d',5),
+  ('Policy','#5a5750',6)
+on conflict (label) do nothing;
 
 insert into public.workshops (id, title, category, summary, released, duration_min, drive_url, file_kind) values
   ('intro-epi-curves','Reading an Epidemic Curve','Epidemiology','What the shape of an outbreak tells you — index cases, incubation, and why the curve bends when it does.','2026-06-30',45,'#','Slides'),

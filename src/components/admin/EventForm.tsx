@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { saveEvent } from "@/app/admin/actions";
 import { Field, Text, Area, Select, Toggle, SubmitButton } from "./ui";
@@ -7,6 +8,34 @@ export default function EventForm({ event }: { event?: Event }) {
   return (
     <form action={saveEvent} className="max-w-2xl space-y-5">
       {event && <input type="hidden" name="id" value={event.id} />}
+      <input type="hidden" name="existing_photo_url" value={event?.photoUrl ?? ""} />
+
+      <Field label="Photo / flyer" hint="JPG or PNG, under 5MB. Shown when someone opens the event popup.">
+        <div className="mt-2 flex items-center gap-4">
+          {event?.photoUrl ? (
+            <Image
+              src={event.photoUrl}
+              alt=""
+              width={128}
+              height={96}
+              className="h-24 w-32 shrink-0 rounded-md object-cover ring-1 ring-ink/10"
+            />
+          ) : (
+            <div className="grid h-24 w-32 shrink-0 place-items-center rounded-md bg-paper text-xs text-stone ring-1 ring-ink/10">
+              No photo
+            </div>
+          )}
+          <div className="flex-1 space-y-2">
+            <input
+              type="file"
+              name="photo"
+              accept="image/*"
+              className="block w-full text-sm text-stone file:mr-3 file:rounded-md file:border-0 file:bg-paper file:px-3 file:py-2 file:text-sm file:font-semibold file:text-ink hover:file:bg-sandstone"
+            />
+            {event?.photoUrl && <Toggle name="remove_photo" label="Remove current photo" />}
+          </div>
+        </div>
+      </Field>
 
       <Field label="Title">
         <Text name="title" defaultValue={event?.title} required />
@@ -38,8 +67,12 @@ export default function EventForm({ event }: { event?: Event }) {
         </Field>
       </div>
 
-      <Field label="Summary">
+      <Field label="Summary" hint="Short teaser shown on the event card">
         <Area name="summary" defaultValue={event?.summary} rows={3} />
+      </Field>
+
+      <Field label="Full description" hint="Shown when someone clicks the card to expand it — optional">
+        <Area name="details" defaultValue={event?.details} rows={6} />
       </Field>
 
       <Toggle name="featured" label="Feature on the homepage" defaultChecked={event?.featured} />

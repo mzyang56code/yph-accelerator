@@ -85,6 +85,26 @@ export function Select({
   );
 }
 
+export function ColorInput({
+  name,
+  defaultValue = "#8c1515",
+}: {
+  name: string;
+  defaultValue?: string;
+}) {
+  return (
+    <div className="mt-1.5 flex items-center gap-3">
+      <input
+        type="color"
+        name={name}
+        defaultValue={defaultValue}
+        className="h-10 w-14 shrink-0 cursor-pointer rounded-md border border-ink/15 bg-white p-1"
+      />
+      <span className="font-mono text-xs text-stone">Pick a swatch for this category&apos;s dot + label</span>
+    </div>
+  );
+}
+
 export function Toggle({
   name,
   defaultChecked,
