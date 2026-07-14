@@ -67,15 +67,15 @@ export default function EventCard({ event, past = false }: { event: Event; past?
 
           <dl className="mt-4 space-y-1.5 text-xs text-stone">
             <div className="flex gap-2">
-              <dt className="w-16 shrink-0 font-mono uppercase tracking-wide text-ink/50">When</dt>
+              <dt className="w-16 shrink-0 font-mono uppercase tracking-wide text-ink/70">When</dt>
               <dd className="font-medium text-ink">{formatDateRange(event.date, event.endDate)}</dd>
             </div>
             <div className="flex gap-2">
-              <dt className="w-16 shrink-0 font-mono uppercase tracking-wide text-ink/50">Where</dt>
+              <dt className="w-16 shrink-0 font-mono uppercase tracking-wide text-ink/70">Where</dt>
               <dd className="font-medium text-ink">{event.location}</dd>
             </div>
             <div className="flex gap-2">
-              <dt className="w-16 shrink-0 font-mono uppercase tracking-wide text-ink/50">Led by</dt>
+              <dt className="w-16 shrink-0 font-mono uppercase tracking-wide text-ink/70">Led by</dt>
               <dd className="font-medium text-ink">{event.host}</dd>
             </div>
           </dl>
@@ -133,15 +133,15 @@ export default function EventCard({ event, past = false }: { event: Event; past?
               <div className="p-6">
                 <dl className="grid grid-cols-1 gap-4 border-b border-ink/8 pb-5 text-sm sm:grid-cols-3">
                   <div>
-                    <dt className="font-mono text-xs uppercase tracking-wide text-ink/50">When</dt>
+                    <dt className="font-mono text-xs uppercase tracking-wide text-ink/70">When</dt>
                     <dd className="mt-1 font-medium text-ink">{formatDateRange(event.date, event.endDate)}</dd>
                   </div>
                   <div>
-                    <dt className="font-mono text-xs uppercase tracking-wide text-ink/50">Where</dt>
+                    <dt className="font-mono text-xs uppercase tracking-wide text-ink/70">Where</dt>
                     <dd className="mt-1 font-medium text-ink">{event.location}</dd>
                   </div>
                   <div>
-                    <dt className="font-mono text-xs uppercase tracking-wide text-ink/50">Led by</dt>
+                    <dt className="font-mono text-xs uppercase tracking-wide text-ink/70">Led by</dt>
                     <dd className="mt-1 font-medium text-ink">{event.host}</dd>
                   </div>
                 </dl>

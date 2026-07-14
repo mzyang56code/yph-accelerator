@@ -19,7 +19,7 @@ export type EventTag =
 
 export type WorkshopFileKind = "Slides" | "Recording" | "Workbook" | "Reading";
 
-export type TeamKind = "Student" | "Mentor" | "Staff";
+export type TeamKind = "Student" | "Mentor" | "Director";
 
 export type Event = {
   id: string;
@@ -77,6 +77,16 @@ export type SiteContent = {
   stats: { value: string; label: string }[];
 };
 
+// The editable content of the /program page (the fixed annual timeline stays in
+// code). Also owns the cohort-application toggle + Google Form URL, which drive
+// the Apply buttons on both /program and the homepage.
+export type ProgramContent = {
+  heroTitle: string;
+  heroIntro: string;
+  applicationOpen: boolean;
+  applicationUrl: string;
+};
+
 // select-option lists, shared with the admin forms
 export const eventTags: EventTag[] = [
   "Workshop", "Symposium", "Field visit", "Community", "Info session",
@@ -84,7 +94,7 @@ export const eventTags: EventTag[] = [
 export const workshopFileKinds: WorkshopFileKind[] = [
   "Slides", "Recording", "Workbook", "Reading",
 ];
-export const teamKinds: TeamKind[] = ["Staff", "Mentor", "Student"];
+export const teamKinds: TeamKind[] = ["Director", "Mentor", "Student"];
 
 // ---------------------------------------------------------------------------
 // Seed content (fallback when Supabase isn't configured)
@@ -95,7 +105,7 @@ const seedSiteContent: SiteContent = {
   heroHeadline: "Elevating young people to lead public health in the Bay.",
   heroLede:
     "We're a Stanford program that pairs students with mentors, teaches them how public health actually works, and helps them take on a real problem in their own community.",
-  missionTitle: "Learn the basics, then put them to work.",
+  missionTitle: "Every student gets a mentor and a real project.",
   missionBody:
     "The best public health usually comes from people who know a community from the inside. We pair students across the Bay Area with Stanford mentors, teach them the essentials — reading data, running a study, explaining it clearly — then help them use it somewhere real: their school, their neighborhood, a clinic down the street.",
   stats: [
@@ -104,6 +114,14 @@ const seedSiteContent: SiteContent = {
     { value: "12", label: "Youth-led community projects" },
     { value: "9", label: "Partner clinics & schools" },
   ],
+};
+
+const seedProgramContent: ProgramContent = {
+  heroTitle: "From a first spark to a finished project.",
+  heroIntro:
+    "A year-long, cohort-based mentorship program. Each high schooler is paired with a Stanford mentor and moves through a set schedule of monthly meetings and check-ins — carrying one public-health project from first proposal to finished work.",
+  applicationOpen: false,
+  applicationUrl: "#",
 };
 
 const seedEvents: Event[] = [
@@ -135,8 +153,8 @@ const seedWorkshopCategories: WorkshopCategory[] = [
 ];
 
 const seedTeam: TeamMember[] = [
-  { id: "director", name: "Dr. Elena Marquez", role: "Faculty Director", affiliation: "Stanford School of Medicine", bio: "Epidemiologist studying vaccine access in immigrant communities. Founded the Accelerator to bring that work within reach of students.", kind: "Staff", sortOrder: 1 },
-  { id: "program-lead", name: "Jordan Whitfield", role: "Program Manager", affiliation: "Stanford Center for Health Education", bio: "Runs the day-to-day: cohorts, mentors, logistics, and the shared calendar that somehow holds it all together.", kind: "Staff", sortOrder: 2 },
+  { id: "director", name: "Dr. Elena Marquez", role: "Faculty Director", affiliation: "Stanford School of Medicine", bio: "Epidemiologist studying vaccine access in immigrant communities. Founded the Accelerator to bring that work within reach of students.", kind: "Director", sortOrder: 1 },
+  { id: "program-lead", name: "Jordan Whitfield", role: "Program Manager", affiliation: "Stanford Center for Health Education", bio: "Runs the day-to-day: cohorts, mentors, logistics, and the shared calendar that somehow holds it all together.", kind: "Director", sortOrder: 2 },
   { id: "mentor-epi", name: "Priya Nair", role: "Epidemiology Mentor", affiliation: "PhD candidate, Epidemiology & Population Health", bio: "Studies respiratory disease surveillance. Teaches students to tell a real signal from noise.", kind: "Mentor", sortOrder: 3 },
   { id: "mentor-biostat", name: "Marcus Bell", role: "Biostatistics Mentor", affiliation: "MS, Biostatistics", bio: "Believes anyone can learn statistics if you throw out the jargon and keep the ideas.", kind: "Mentor", sortOrder: 4 },
   { id: "student-aanya", name: "Aanya Reddy", role: "Student Fellow · Environmental Health", affiliation: "Class of 2027", bio: "Leading the air-quality field study in East Palo Alto. Wants to be the first epidemiologist in her family.", kind: "Student", sortOrder: 5 },
@@ -171,7 +189,7 @@ function mapWorkshopCategory(r: any): WorkshopCategory {
 function mapTeam(r: any): TeamMember {
   return {
     id: r.id, name: r.name, role: r.role ?? "", affiliation: r.affiliation ?? "",
-    bio: r.bio ?? "", kind: r.kind, sortOrder: r.sort_order ?? 0,
+    bio: r.bio ?? "", kind: r.kind === "Staff" ? "Director" : r.kind, sortOrder: r.sort_order ?? 0,
     photoUrl: r.photo_url ?? undefined,
   };
 }
@@ -181,6 +199,14 @@ function mapSiteContent(r: any): SiteContent {
     heroHeadline: r.hero_headline ?? "", heroLede: r.hero_lede ?? "",
     missionTitle: r.mission_title ?? "", missionBody: r.mission_body ?? "",
     stats: Array.isArray(r.stats) ? r.stats : [],
+  };
+}
+function mapProgramContent(r: any): ProgramContent {
+  return {
+    heroTitle: r.hero_title ?? "",
+    heroIntro: r.hero_intro ?? "",
+    applicationOpen: Boolean(r.application_open),
+    applicationUrl: r.application_url ?? "#",
   };
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -278,4 +304,12 @@ export async function getSiteContent(): Promise<SiteContent> {
     .from("site_content").select("*").eq("id", "main").maybeSingle();
   if (error || !data) return seedSiteContent;
   return mapSiteContent(data);
+}
+
+export async function getProgramContent(): Promise<ProgramContent> {
+  if (!isSupabaseConfigured()) return seedProgramContent;
+  const { data, error } = await createPublicClient()
+    .from("program_content").select("*").eq("id", "main").maybeSingle();
+  if (error || !data) return seedProgramContent;
+  return mapProgramContent(data);
 }

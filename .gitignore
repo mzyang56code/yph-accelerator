@@ -36,6 +36,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local dev tooling (impeccable + agent harness config; machine-local)
+.claude/
+.codex/
+.agents/
+.impeccable/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

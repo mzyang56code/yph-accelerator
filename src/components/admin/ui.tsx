@@ -85,6 +85,18 @@ export function Select({
   );
 }
 
+// On-brand, contrast-safe category swatches. Constrained so an organizer can't
+// introduce an off-palette color (e.g. an electric cyan) on the public site.
+const CATEGORY_PALETTE = [
+  { hex: "#8c1515", name: "Cardinal" },
+  { hex: "#b1040e", name: "Cardinal bright" },
+  { hex: "#175e54", name: "Palo Alto" },
+  { hex: "#2e8b7a", name: "Palo Alto bright" },
+  { hex: "#8a5a12", name: "Gold" },
+  { hex: "#5a5750", name: "Stone" },
+  { hex: "#2e2d29", name: "Ink" },
+];
+
 export function ColorInput({
   name,
   defaultValue = "#8c1515",
@@ -92,15 +104,30 @@ export function ColorInput({
   name: string;
   defaultValue?: string;
 }) {
+  const current = defaultValue?.toLowerCase();
+  const hasMatch = CATEGORY_PALETTE.some((c) => c.hex === current);
   return (
-    <div className="mt-1.5 flex items-center gap-3">
-      <input
-        type="color"
-        name={name}
-        defaultValue={defaultValue}
-        className="h-10 w-14 shrink-0 cursor-pointer rounded-md border border-ink/15 bg-white p-1"
-      />
-      <span className="font-mono text-xs text-stone">Pick a swatch for this category&apos;s dot + label</span>
+    <div className="mt-1.5">
+      <div className="flex flex-wrap gap-2.5">
+        {CATEGORY_PALETTE.map((c, i) => (
+          <label key={c.hex} className="cursor-pointer" title={c.name}>
+            <input
+              type="radio"
+              name={name}
+              value={c.hex}
+              defaultChecked={hasMatch ? c.hex === current : i === 0}
+              className="peer sr-only"
+            />
+            <span
+              className="block h-9 w-9 rounded-full ring-2 ring-transparent ring-offset-2 ring-offset-white transition peer-checked:ring-ink/70 peer-focus-visible:ring-cardinal"
+              style={{ backgroundColor: c.hex }}
+            />
+          </label>
+        ))}
+      </div>
+      <span className="mt-2 block font-mono text-xs text-stone">
+        On-brand swatches only — the dot + label color for this category.
+      </span>
     </div>
   );
 }

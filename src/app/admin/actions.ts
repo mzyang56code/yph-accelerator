@@ -308,6 +308,25 @@ export async function saveSiteContent(formData: FormData) {
   redirect("/admin/home");
 }
 
+// --- program page -----------------------------------------------------------
+export async function saveProgramContent(formData: FormData) {
+  const sb = await createClient();
+  const row = {
+    id: "main",
+    hero_title: str(formData, "hero_title"),
+    hero_intro: str(formData, "hero_intro"),
+    application_open: formData.get("application_open") === "on",
+    application_url: str(formData, "application_url") || "#",
+    updated_at: new Date().toISOString(),
+  };
+  const { error } = await sb.from("program_content").upsert(row);
+  if (error) fail("program", error.message);
+  revalidatePath("/");
+  revalidatePath("/program");
+  revalidatePath("/admin", "layout");
+  redirect("/admin/program");
+}
+
 // --- auth -------------------------------------------------------------------
 export async function signOut() {
   const sb = await createClient();

@@ -21,7 +21,7 @@ export default function WorkshopCard({ workshop, color }: { workshop: Workshop; 
         {workshop.summary}
       </p>
 
-      <div className="mt-5 flex items-center gap-3 text-xs text-ink/50">
+      <div className="mt-5 flex items-center gap-3 text-xs text-ink/70">
         <span className="font-mono uppercase tracking-wide">{workshop.fileKind}</span>
         <span aria-hidden>·</span>
         <span>{workshop.durationMin} min</span>

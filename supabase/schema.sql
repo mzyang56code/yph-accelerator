@@ -112,6 +112,23 @@ create table if not exists public.site_content (
   updated_at    timestamptz not null default now()
 );
 
+-- Editable content of the /program page + the cohort-application toggle. The
+-- app falls back to built-in defaults when this row is absent, so an empty
+-- table still renders the full program page.
+create table if not exists public.program_content (
+  id               text primary key default 'main',
+  hero_title       text not null default '',
+  hero_intro       text not null default '',
+  mission_lead     text not null default '',
+  mission_body     text not null default '',
+  founders         jsonb not null default '[]'::jsonb,
+  subject_areas    jsonb not null default '[]'::jsonb,
+  pillars          jsonb not null default '[]'::jsonb,
+  application_open  boolean not null default false,
+  application_url   text not null default '#',
+  updated_at       timestamptz not null default now()
+);
+
 -- ---------------------------------------------------------------------------
 -- Row Level Security
 --   • Anyone may READ (the public site).
@@ -124,11 +141,12 @@ alter table public.workshops           enable row level security;
 alter table public.workshop_categories enable row level security;
 alter table public.team_members        enable row level security;
 alter table public.site_content        enable row level security;
+alter table public.program_content     enable row level security;
 
 do $$
 declare t text;
 begin
-  foreach t in array array['events','workshops','workshop_categories','team_members','site_content'] loop
+  foreach t in array array['events','workshops','workshop_categories','team_members','site_content','program_content'] loop
     execute format('drop policy if exists "public read %1$s" on public.%1$I;', t);
     execute format('drop policy if exists "authenticated write %1$s" on public.%1$I;', t);
 

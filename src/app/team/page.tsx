@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export const revalidate = 300;
 
 const GROUPS: { kind: TeamMember["kind"]; label: string; blurb: string }[] = [
-  { kind: "Staff", label: "Faculty & staff", blurb: "Who runs the program." },
+  { kind: "Director", label: "Directors", blurb: "The Stanford undergraduates who run the program." },
   { kind: "Mentor", label: "Mentors", blurb: "Graduate researchers who teach and advise." },
   { kind: "Student", label: "Student fellows", blurb: "The high-schoolers doing the work." },
 ];

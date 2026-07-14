@@ -11,6 +11,7 @@
 
   /* Warm Stanford sandstone / paper for content surfaces */
   --color-paper: #f7f3ea;
+  --color-sand-light: #f2ecdd; /* soft warm wash for section bands, lighter than sandstone */
   --color-sandstone: #e6d8ba;
   --color-sandstone-deep: #cdb98d;
 
@@ -21,6 +22,15 @@
   /* Palo Alto green — a "health / vitality" accent, used sparingly */
   --color-palo-alto: #175e54;
   --color-palo-alto-bright: #2e8b7a;
+
+  /* Season hues — the /program timeline's full-palette system. Each season owns
+     a hue drawn from (or extending) the brand: fall = cardinal, winter/spring =
+     palo-alto range, summer = a deep Stanford gold. All clear ≥3:1 on paper for
+     large labels + markers. */
+  --color-season-fall: #8c1515;
+  --color-season-winter: #175e54;
+  --color-season-spring: #196b5c;
+  --color-season-summer: #8a5a12;
 
   --font-display: var(--ff-display), system-ui, sans-serif;
   --font-sans: var(--ff-body), system-ui, sans-serif;
@@ -80,7 +90,8 @@ body {
   font-weight: 500;
 }
 
-/* Display scale — Inter, heavy and tight so titles read as a deliberate choice */
+/* Display scale — Libre Franklin, heavy and tight so titles read as a
+   deliberate choice. */
 .display {
   font-family: var(--font-display);
   font-weight: 700;
@@ -163,6 +174,10 @@ body {
   .dot { opacity: var(--o, 1); animation: none; }
   .trajectory { stroke-dashoffset: 0; animation: none; }
 }
+
+/* Hide the native scrollbar on the workshops carousel (arrows drive it). */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

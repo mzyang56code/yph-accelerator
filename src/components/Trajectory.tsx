@@ -48,7 +48,7 @@ export default function Trajectory({ className = "" }: { className?: string }) {
   return (
     <svg
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-      className={className}
+      className={`overflow-visible ${className}`}
       role="img"
       aria-label="A curve accelerating upward from lower-left to a launch point at upper-right."
       preserveAspectRatio="xMidYMid meet"

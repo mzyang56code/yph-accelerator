@@ -4,11 +4,12 @@ import Trajectory from "@/components/Trajectory";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import EventCard from "@/components/EventCard";
-import WorkshopCard from "@/components/WorkshopCard";
+import WorkshopCarousel from "@/components/WorkshopCarousel";
 import TeamCard from "@/components/TeamCard";
 import MailtoLink from "@/components/MailtoLink";
 import {
   getSiteContent,
+  getProgramContent,
   getFeaturedEvents,
   getWorkshops,
   getWorkshopCategories,
@@ -20,14 +21,18 @@ import {
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const [content, events, workshops, categories, team] = await Promise.all([
+  const [content, program, events, workshops, categories, team] = await Promise.all([
     getSiteContent(),
+    getProgramContent(),
     getFeaturedEvents(),
     getWorkshops(),
     getWorkshopCategories(),
     getTeam(),
   ]);
   const colorByLabel = Object.fromEntries(categories.map((c) => [c.label, c.color]));
+  const applyOpen = program.applicationOpen;
+  const applyUrl =
+    program.applicationUrl && program.applicationUrl !== "#" ? program.applicationUrl : null;
 
   return (
     <div className="relative">
@@ -59,18 +64,27 @@ export default async function HomePage() {
             <p className="pretty mt-6 max-w-lg text-lg leading-relaxed text-white/85">
               {content.heroLede}
             </p>
+            {/* Apply button is admin-toggled (site_content.application_open). */}
             <div className="mt-9 flex flex-wrap gap-3">
+              {applyOpen ? (
+                <Link
+                  href={applyUrl ?? "/program"}
+                  target={applyUrl ? "_blank" : undefined}
+                  rel={applyUrl ? "noopener noreferrer" : undefined}
+                  className="rounded-sm bg-white px-6 py-3 font-semibold text-cardinal shadow-sm transition-colors hover:bg-sandstone"
+                >
+                  Apply to the 2026 cohort
+                </Link>
+              ) : (
+                <span className="rounded-sm bg-white/15 px-6 py-3 font-semibold text-white/80 ring-1 ring-inset ring-white/30">
+                  2026 Cohort — Coming Soon
+                </span>
+              )}
               <Link
-                href="/workshops"
-                className="rounded-sm bg-white px-6 py-3 font-semibold text-cardinal shadow-sm transition-colors hover:bg-sandstone"
-              >
-                Browse the workshop library
-              </Link>
-              <Link
-                href="/events"
+                href="/program"
                 className="rounded-sm px-6 py-3 font-semibold text-white ring-1 ring-inset ring-white/40 transition-colors hover:bg-white/10"
               >
-                See upcoming events
+                Learn more
               </Link>
             </div>
           </div>
@@ -87,11 +101,7 @@ export default async function HomePage() {
       <section className="shell py-20">
         <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <Reveal>
-            <p className="eyebrow flex items-center gap-2 text-cardinal">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-cardinal" />
-              What we do
-            </p>
-            <h2 className="display mt-3 text-3xl text-ink sm:text-4xl">
+            <h2 className="display text-3xl text-ink sm:text-4xl">
               {content.missionTitle}
             </h2>
             <p className="pretty mt-5 text-lg leading-relaxed text-stone">
@@ -119,7 +129,6 @@ export default async function HomePage() {
       <section className="border-y border-ink/8 py-20">
         <div className="shell">
           <SectionHeading
-            eyebrow="Featured events"
             title="What our students are running next"
             intro="Symposia, field studies, and workshops led by the current cohort and their mentors. Everyone's welcome — bring a friend."
             link={{ href: "/events", label: "All events" }}
@@ -135,23 +144,16 @@ export default async function HomePage() {
       </section>
 
       {/* ---------------------------------------------------------------- */}
-      {/* Workshops teaser                                                 */}
+      {/* Workshops teaser — editorial rail (varies the rhythm vs. grids)  */}
       {/* ---------------------------------------------------------------- */}
       <section className="border-b border-ink/8 py-20">
         <div className="shell">
           <SectionHeading
-            eyebrow="Workshop library"
             title="Workshops you can actually use"
             intro="The team adds a few every month — slides, recordings, and workbooks. Free for everyone in the program, one click away in the shared library."
             link={{ href: "/workshops", label: "Open the library" }}
           />
-          <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {workshops.slice(0, 4).map((w, i) => (
-              <Reveal as="li" key={w.id} delay={i * 90}>
-                <WorkshopCard workshop={w} color={colorByLabel[w.category]} />
-              </Reveal>
-            ))}
-          </ul>
+          <WorkshopCarousel workshops={workshops} colorByLabel={colorByLabel} />
         </div>
       </section>
 
@@ -160,14 +162,13 @@ export default async function HomePage() {
       {/* ---------------------------------------------------------------- */}
       <section className="shell py-20">
         <SectionHeading
-          eyebrow="The people"
           title="Mentors and students, working side by side"
           intro="Stanford researchers, program staff, and the high-school fellows doing the work."
           link={{ href: "/team", label: "Meet the team" }}
         />
         <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {team.slice(0, 3).map((m, i) => (
-            <Reveal as="li" key={m.id} delay={i * 90}>
+          {team.slice(0, 5).map((m, i) => (
+            <Reveal as="li" key={m.id} delay={(i % 3) * 90}>
               <TeamCard member={m} />
             </Reveal>
           ))}
@@ -175,22 +176,17 @@ export default async function HomePage() {
       </section>
 
       {/* ---------------------------------------------------------------- */}
-      {/* CTA band                                                         */}
+      {/* Contact band — permanent + compact                               */}
       {/* ---------------------------------------------------------------- */}
       <section className="relative overflow-hidden bg-cardinal">
-        {/* echo the hero: sprinkled dots + the trend line, faint */}
         <ScatterField tint="light" count={44} seed={13} className="absolute inset-0" />
-        <div aria-hidden className="pointer-events-none absolute -right-24 top-1/2 hidden w-[42rem] -translate-y-1/2 opacity-25 md:block">
-          <Trajectory className="h-auto w-full" />
-        </div>
         <div className="shell relative flex flex-col items-start justify-between gap-6 py-16 md:flex-row md:items-center">
-          <div>
-            <h2 className="display text-3xl text-white sm:text-4xl">
+          <div className="max-w-2xl">
+            <h2 className="display balance text-3xl text-white sm:text-4xl">
               Know a high schooler who&apos;d be into this?
             </h2>
-            <p className="mt-3 max-w-xl text-white/80">
-              We mentor students from across the Bay Area — no experience needed,
-              just curiosity. Send us a note and we&apos;ll tell you how it works.
+            <p className="pretty mt-3 text-white/80">
+              We mentor students across the Bay Area — no experience needed, just curiosity.
             </p>
           </div>
           <MailtoLink className="shrink-0 rounded-sm bg-white px-7 py-3.5 font-semibold text-cardinal transition-colors hover:bg-sandstone">

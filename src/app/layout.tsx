@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Manrope, IBM_Plex_Mono } from "next/font/google";
+import { Manrope, Libre_Franklin, Spline_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import ChromeGate from "@/components/ChromeGate";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
-// Display: Inter — clean, modern, highly legible; set tight and heavy for titles.
-const display = Inter({
+// Display: Libre Franklin — a warm Franklin-Gothic humanist sans; credible and
+// legible, set heavy and tight for titles. Replaces Inter site-wide.
+const display = Libre_Franklin({
   subsets: ["latin"],
   variable: "--ff-display",
   display: "swap",
@@ -21,7 +22,8 @@ const body = Manrope({
 });
 
 // Utility: mono for eyebrow labels and data — echoes the epidemiology motif.
-const mono = IBM_Plex_Mono({
+// Spline Sans Mono replaces IBM Plex Mono (also a reflex default) site-wide.
+const mono = Spline_Sans_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--ff-mono",

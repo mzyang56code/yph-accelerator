@@ -1,8 +1,15 @@
 # Stanford Youth Public Health Accelerator
 
-Website + editable backend for the Stanford Youth Public Health Accelerator — a
-mentorship program that elevates Bay Area high-schoolers to bring public health
-to their communities.
+Website + editable backend for the Stanford Youth Public Health Accelerator
+(YPHA) — a cohort-based mentorship program, built to work like YC and other
+accelerators, that walks Bay Area high-schoolers from a first spark of interest
+to a finished public-health project. Founded and directed by Stanford
+undergraduates through the Stanford Undergraduate Global Health Club and the
+Stanford Journal of Public Health, with support from the Stanford Center for
+Innovation in Global Health.
+
+**Program story, pillars, and the Cohort 2026–2027 timeline live in
+[CONTENT.md](./CONTENT.md)** — the source of truth for site copy.
 
 ## Stack
 - **Next.js 16** (App Router) · **React 19** · **TypeScript** · **Tailwind v4**
