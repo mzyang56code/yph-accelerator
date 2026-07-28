@@ -6,7 +6,7 @@ import { getWorkshops, getWorkshopCategories } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Workshop library",
   description:
-    "Slides, recordings, and workbooks from the Stanford Youth Public Health Accelerator — new workshops every month, free for every student.",
+    "Slides, recordings, and workbooks from the Stanford Youth Public Health Accelerator. New workshops every month, free for every student.",
 };
 
 export const revalidate = 300;
@@ -19,7 +19,7 @@ export default async function WorkshopsPage() {
       <PageHeader
         eyebrow="Workshop library"
         title="The workshop library"
-        intro="The team adds new material most months. Filter by topic, then open anything in the shared Google Drive — slides, recordings, and workbooks."
+        intro="The team adds new material most months. Filter by topic, then open anything in the shared Google Drive: slides, recordings, and workbooks."
       />
       <section className="shell py-16">
         <WorkshopBrowser workshops={workshops} categories={categories} />

@@ -1,121 +1,122 @@
 # YPHA — Content Source of Truth
 
-Canonical copy for the Youth Public Health Accelerator site. Edit this doc when
-the program's story or schedule changes, then reflect it in the site (seed
-content in `src/lib/data.ts` and/or Supabase `site_content`).
+Canonical copy + program facts for the Youth Public Health Accelerator site.
+Public copy is admin-editable in Supabase (`site_content` for the homepage,
+`program_content` for the program page); built-in defaults live in
+`src/lib/data.ts`. Edit here when the story or schedule changes, then reflect it
+in `/admin` (or the seed defaults for the fixed timeline).
+
+**Status (2026-07-14):** Deployed to Vercel from `main`; custom domain
+**ypha.site** being connected. The cohort application is gated behind an admin
+toggle (below) — off until applications open. The `program_content` table
+migration must be run in Supabase for the Program admin box to work; until then
+the site shows the built-in defaults.
 
 ---
 
-## Mission statement
+## Homepage
 
-The Youth Public Health Accelerator (YPHA) helps high school students turn
-curiosity about public and global health into real projects that serve their
-communities. Founded and directed by Stanford undergraduates through the
-**Stanford Undergraduate Global Health Club** and the **Stanford Journal of
-Public Health**, with support from the **Stanford Center for Innovation in
-Global Health**, YPHA meets students wherever they're starting from — a first
-spark of interest, a half-formed idea, or an initiative in its early stages —
-and walks alongside them from that first step to a finished project they can
-carry into the world.
+- **Hero headline** (CMS): "Guiding the next generation of public health leaders"
+- **Hero CTAs:** primary = *Apply to the 2026 cohort* (or **"2026 Cohort — Coming Soon"** until the application toggle is on) → the Google Form; secondary = *Learn more* → `/program`.
+- **"What we do" mission line** (CMS): "Every student gets a mentor and a real project."
+- Sections: featured events · workshop carousel (arrow-paged, Google-Slides first-slide previews) · 5 directors (click a card for the bio popup) · a permanent, compact **Get in touch** contact band.
 
-Our work began in **April 2026** with our **Leadership Summit**, a half-day,
-student-led event at Stanford that introduces high schoolers to public and
-global health through keynote talks, interactive workshops, and small-group
-discussions. Students leave with actionable frameworks for bringing public
-health awareness to their own schools and launching initiatives in their
-communities. The summit is where many of our students take their first steps
-and begin a longer relationship with us.
+## Program page (`/program`) — what's shown
 
-We're building YPHA to work like **Y Combinator and other accelerators** —
-an annual, cohort-based program that guides each student through a defined
-project over the year and closes with presentations at a symposium.
+Focused on the **cohort mentorship structure**. It intentionally does **not**
+show YC framing, the "founded & directed by" founders, the "four ways" pillars,
+or the subject-area tags (those are kept as background at the bottom).
 
-Looking ahead, we hope to reach beyond the Bay Area — partnering with students
-and schools across the country and internationally to help them launch
-accelerator programs rooted in the needs of their own communities.
+- **Hero** (CMS): "From a first spark to a finished project." + intro: *"A year-long, cohort-based mentorship program. Each high schooler is paired with a Stanford mentor and moves through a set schedule of monthly meetings and check-ins, carrying one public-health project from first proposal to finished work."* Apply CTA is inline in the hero (admin-toggled).
+- **How to Join** (in code, `JOIN_STEPS` in `src/app/program/page.tsx`): the three pre-cohort steps below, shown between the hero and the timeline. No eyebrow label, just the heading.
+- **Timeline** (in code): the cohort year below, now starting **October 2026** (cohort start) through **May 2027** (the Symposium).
+- **Symposium highlight** (in code): May's End-of-Year Symposium stays in the monthly rail but is set apart with a bordered/tinted box and a slightly larger marker dot (Cardinal Bright accent) — the site's one deliberately highlighted moment (per `DESIGN.md`'s "single highlighted moment" rule).
+
+## Cohort application (admin-toggled)
+
+`/admin → Program`: an **Applications are open** toggle + a **Google Form URL**.
+Off → the Apply buttons read "2026 Cohort — Coming Soon"; on → "Apply to the 2026
+cohort" opens the form. Drives the CTAs on both the homepage hero and `/program`.
+Stored in `program_content` (`application_open`, `application_url`).
 
 ---
 
-## Program pillars
+## How to Join (before the cohort year starts)
 
-1. **Leadership Summit** — Half-day, student-led event at Stanford. Keynotes,
-   interactive workshops, small-group discussions. The on-ramp into the
-   program. First held April 2026.
+Shown as its own step-list ahead of the timeline (`JOIN_STEPS` in
+`src/app/program/page.tsx`), since these happen before the cohort itself begins.
+No eyebrow; heading is just "How to Join":
 
-2. **1-on-1 Mentorship Program** *(the heart of what we do)* — Each high
-   schooler is paired with a Stanford undergraduate mentor who checks in on a
-   regular schedule. As we learn a student's interests, we connect them with
-   **subject mentors** with deeper expertise in: research, policy, education,
-   communication, community health, and climate health. Meant to be a friendly
-   learning experience as much as a professional one — school, college, and
-   life advice included.
+- **Early September** — General Info meeting. Applications for the 2026 cohort open.
+- **Early October** — Application deadline.
+- **Late October** — Cohort begins with the Welcome meeting (hybrid).
 
-3. **Group Mentorship Labs** — Monthly workshops where students learn specific
-   public health skills, discover ready-to-adapt **Public Health Workshops**
-   they can bring back to their own schools, and share project progress with
-   peers. Students working on similar efforts (research papers, nonprofits,
-   community programs) are grouped to collaborate across schools. Consistent
-   participants present at the end of each cycle and are featured on the
-   platform.
-
-4. **End-of-Year Symposium** — Each cohort presents the work they've built:
-   a published research paper or poster, a community event, a school-club
-   initiative, or a founded nonprofit. A chance to learn to pitch and present,
-   and to see the range of what peers created.
-
-### In progress
-- **Annual cohort-based model** — guiding each student through defined projects
-  over the year, closing with presentations at the summit.
-- **Community needs bank** — built with local organizations, so students can
-  find real problems worth solving and turn volunteering into lasting
-  changemaking projects.
-
----
+**Welcome meeting naming: TBD.** "Welcome meeting" is a placeholder pending a
+rebrand decision. Once a name is picked, update it in both the "How to Join"
+late-October step and the October Week 1 timeline entry below.
 
 ## Program timeline — Cohort 2026–2027
 
-Cadence: **Week 1 = synchronous meeting**, **Week 3 = asynchronous
-check-in/deadline**.
+Cadence: **Week 1 = live meeting**, **Week 3 = async check-in/deadline**. The site
+renders **Fall 2026 → Spring 2027 (May)**; Summer is kept here for reference but
+hidden on the page. (This timeline is fixed in code, `src/app/program/page.tsx`.)
 
 ### Fall 2026
-- **September**
-  - *Week 1 (synchronous):* Welcome meeting (in person if possible, otherwise
-    Zoom). Workshop on checkpoints to hit for December and expectations for the
-    final proposal. Personalized feedback on the proposal from their
-    application.
-  - *Week 3 (asynchronous):* **Deadline — finalized proposal & schedule.**
-    Checkpoints set for December, February, April. Literature review completed
-    (research on what others have done).
-- **October**
-  - *Week 1 (synchronous):* Stanford student leads a mini-health workshop.
-  - *Week 3 (asynchronous):* —
-- **November**
-  - *Week 1 (synchronous):* Stanford student leads a mini-health workshop.
-  - *Week 3 (asynchronous):* —
+- **October** — W1 (live): Welcome meeting (hybrid); workshop on the December checkpoints + final-proposal expectations; feedback on the application proposal. W3 (async): **Deadline: finalized proposal & schedule;** checkpoints set for December, February, April.
+- **November** — W1 (live): **A Stanford professor presents on their research.** W3 (async): **Literature review completed:** research on what others have already done.
+- **December** — W1 (live): **A Stanford professor presents on their research.** W3 (async): December checkpoint: asynchronous check-in on progress.
 
 ### Winter 2027
-- **December**
-  - *Week 1 (asynchronous check-in):* December checkpoint.
-- **January**
-  - *Week 1 (synchronous):* High school students pitch their progress from the
-    December checkpoint.
-  - *Week 3 (asynchronous):* —
-- **February**
-  - *Week 1 (synchronous):* 2–3 high school students lead a mini-health workshop.
-  - *Week 3 (asynchronous):* —
+- **January** — W1 (live): high schoolers pitch their December-checkpoint progress. W3 (async): progress update: submit revisions based on pitch feedback.
+- **February** — W1 (live): 2–3 high schoolers lead a mini-health workshop. W3 (async): **February checkpoint:** check-in on community-partner outreach and data collection.
+- **March** — W1 (live): 2–3 high schoolers lead a mini-health workshop. W3 (async): draft outline of the final deliverable: methods and findings so far.
 
 ### Spring 2027
-- **March**
-  - *Week 1 (synchronous):* 2–3 high school students lead a mini-health workshop.
-  - *Week 3 (asynchronous):* —
-- **April**
-  - *Week 1 (synchronous):* 2–3 high school students lead a mini-health workshop.
-  - *Week 3 (asynchronous):* —
-- **May**
-  - *Week 1 (synchronous):* **End-of-Year Symposium**, inviting the incoming cohort.
-  - *Week 3 (asynchronous):* —
+- **April** — W1 (live): 2–3 high schoolers lead a mini-health workshop. W3 (async): **April checkpoint:** final project deliverable due ahead of the Symposium.
+- **May** — W1 (live, highlighted): **End-of-Year Symposium:** students present their projects as posters, with Stanford faculty, staff, and the wider community there to see the work. Set apart in the rail with a bordered box and a larger marker (see "Symposium highlight" above), not a separate section.
 
-### Summer 2027
-- **June** — *Week 1:* Stanford student leads a mini-health workshop.
-- **July** — *Week 1:* Stanford student leads a mini-health workshop.
-- **August** — *Week 1:* Stanford student leads a mini-health workshop.
+### Summer 2027 — *(hidden on the site)*
+- **June / July / August** — W1 (live): Stanford student leads a mini-health workshop.
+
+---
+
+## About Us page (`/about`)
+
+Renamed from `/team` (2026-07-27); `/team` now 308-redirects to `/about`
+(`next.config.ts`). Combines the mission statement with the existing team
+roster (Directors, Mentors, Student fellows), which is unchanged and still
+admin-editable at `/admin/team`.
+
+**Mission statement** is fixed in code (`MISSION` array in
+`src/app/about/page.tsx`), the same "stable narrative copy, dev-edited" pattern
+as the `/program` timeline. Canonical text:
+
+> The Youth Public Health Accelerator (YPHA) exists to turn a high schooler's
+> curiosity about public and global health into something real: a project that
+> serves their own community, built with the guidance of a Stanford mentor over
+> a full year.
+>
+> We're founded and directed by Stanford undergraduates through the Stanford
+> Undergraduate Global Health Club and the Stanford Journal of Public Health,
+> with support from the Stanford Center for Innovation in Global Health.
+>
+> YPHA is an annual, cohort-based accelerator built around four goals: turn a
+> student's interest into a sustained project that serves their community;
+> build the accountability and momentum a year-long commitment takes;
+> strengthen the public health work a community is already doing; and connect
+> a student's idea to the Stanford mentors and experts who can help it go
+> further.
+>
+> Every student in the cohort is paired with a Stanford mentor and works
+> toward checkpoints they set for the year, with monthly meetings, regular
+> check-ins, and mini-grants to help fund the work itself. The year closes at
+> our End-of-Year Symposium, where students present what they built to the
+> Stanford community and beyond.
+>
+> Reaching students from under-resourced backgrounds is central to that
+> mission: who gets mentorship, and who gets a seat at the table, is itself a
+> public health question.
+
+This supersedes the old "Program background" draft (Leadership Summit / 1-on-1
+Mentorship / Group Mentorship Labs pillars framing) — that described the
+pre-accelerator program structure and is no longer the canonical mission copy.

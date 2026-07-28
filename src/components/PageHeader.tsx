@@ -4,7 +4,7 @@ export default function PageHeader({
   title,
   intro,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   intro?: string;
 }) {
@@ -19,8 +19,8 @@ export default function PageHeader({
         }}
       />
       <div className="shell relative pb-14 pt-28 md:pb-20 md:pt-32">
-        <p className="eyebrow text-sandstone">{eyebrow}</p>
-        <h1 className="display mt-4 max-w-3xl text-4xl sm:text-5xl">{title}</h1>
+        {eyebrow && <p className="eyebrow text-sandstone">{eyebrow}</p>}
+        <h1 className={`display max-w-3xl text-4xl sm:text-5xl ${eyebrow ? "mt-4" : ""}`}>{title}</h1>
         {intro && (
           <p className="pretty mt-5 max-w-2xl text-lg leading-relaxed text-white/85">
             {intro}

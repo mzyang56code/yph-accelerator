@@ -57,7 +57,7 @@ export default function WorkshopBrowser({
       </ul>
 
       {shown.length === 0 && (
-        <p className="mt-10 text-center text-stone">No workshops in this category yet — check back soon.</p>
+        <p className="mt-10 text-center text-stone">No workshops in this category yet. Check back soon.</p>
       )}
     </div>
   );

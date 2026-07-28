@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "**.supabase.co", pathname: "/storage/v1/object/public/**" },
     ],
   },
+  async redirects() {
+    return [
+      // /team was renamed to /about (now covers mission + team roster).
+      { source: "/team", destination: "/about", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

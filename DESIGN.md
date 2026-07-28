@@ -14,7 +14,7 @@ colors:
   palo-alto: "#175e54"
   palo-alto-bright: "#2e8b7a"
   season-fall: "#8c1515"
-  season-winter: "#175e54"
+  season-winter: "#2f5f86"
   season-spring: "#196b5c"
   season-summer: "#8a5a12"
 typography:
@@ -120,9 +120,10 @@ sandstone/paper as the reading surface, and a restrained health-green accent.
   on Cardinal, hover on light CTAs.
 
 ### Tertiary
-- **Season hues** (#8c1515 fall / #175e54 winter / #196b5c spring / #8a5a12 summer):
+- **Season hues** (#8c1515 fall / #2f5f86 winter / #196b5c spring / #8a5a12 summer):
   A deliberate full-palette system used only on the program timeline, one hue per
-  season. All clear ≥3:1 on the sand-light band.
+  season — winter's cool slate blue is deliberately distinct from spring's green
+  so the two are never mistaken at a glance. All clear ≥3:1 on the sand-light band.
 
 ### Named Rules
 **The Committed-Cardinal Rule.** Cardinal is not a 10% accent; it owns whole

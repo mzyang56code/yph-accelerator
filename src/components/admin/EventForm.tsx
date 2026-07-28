@@ -45,7 +45,7 @@ export default function EventForm({ event }: { event?: Event }) {
         <Field label="Date">
           <Text name="date" type="date" defaultValue={event?.date} required />
         </Field>
-        <Field label="End date" hint="Optional — for multi-day events">
+        <Field label="End date" hint="Optional, for multi-day events">
           <Text name="end_date" type="date" defaultValue={event?.endDate ?? ""} />
         </Field>
       </div>
@@ -71,7 +71,7 @@ export default function EventForm({ event }: { event?: Event }) {
         <Area name="summary" defaultValue={event?.summary} rows={3} />
       </Field>
 
-      <Field label="Full description" hint="Shown when someone clicks the card to expand it — optional">
+      <Field label="Full description" hint="Shown when someone clicks the card to expand it (optional)">
         <Area name="details" defaultValue={event?.details} rows={6} />
       </Field>
 

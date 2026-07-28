@@ -18,7 +18,7 @@ export default async function ProgramAdmin({
       <h1 className="display mt-1 text-3xl text-ink">Program page</h1>
       <p className="mt-2 text-stone">
         The hero and the cohort-application toggle on <code>/program</code>. The monthly cohort timeline is fixed in
-        code — ask a dev to change it.
+        code. Ask a dev to change it.
       </p>
 
       {error && (

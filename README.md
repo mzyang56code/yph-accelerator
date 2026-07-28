@@ -1,15 +1,17 @@
 # Stanford Youth Public Health Accelerator
 
 Website + editable backend for the Stanford Youth Public Health Accelerator
-(YPHA) — a cohort-based mentorship program, built to work like YC and other
-accelerators, that walks Bay Area high-schoolers from a first spark of interest
-to a finished public-health project. Founded and directed by Stanford
+(YPHA) — a year-long, cohort-based mentorship program that walks Bay Area
+high-schoolers from a first spark of interest to a finished public-health
+project, pairing each with a Stanford mentor. Founded and directed by Stanford
 undergraduates through the Stanford Undergraduate Global Health Club and the
 Stanford Journal of Public Health, with support from the Stanford Center for
 Innovation in Global Health.
 
-**Program story, pillars, and the Cohort 2026–2027 timeline live in
-[CONTENT.md](./CONTENT.md)** — the source of truth for site copy.
+**Site copy, the cohort timeline, and program background live in
+[CONTENT.md](./CONTENT.md)** — the source of truth.
+
+Production deploys on **Vercel** from `main` (custom domain **ypha.site**).
 
 ## Stack
 - **Next.js 16** (App Router) · **React 19** · **TypeScript** · **Tailwind v4**
@@ -27,11 +29,14 @@ show built-in demo content and `/admin` shows a setup notice. Everything still
 builds and deploys.
 
 ## Public site
-- `/` home · `/events` · `/workshops` (filterable, links to Drive) · `/team`
+- `/` home · `/program` (cohort hero + year-long timeline + Apply) · `/events` · `/workshops` (filterable, links to Drive) · `/about` (mission + team, formerly `/team`)
 
 ## Admin (`/admin`) — team-only, login-protected
-Sign in at `/admin/login`, then edit **Events**, **Workshops**, **Team**, and
-the **Homepage** content. Changes publish immediately (on-demand revalidation).
+Sign in at `/admin/login`, then edit **Events**, **Workshops**, **Team**, the
+**Homepage**, and the **Program** page. Changes publish immediately (on-demand
+revalidation). The **Program** box holds the hero copy plus the **cohort
+application toggle** ("Applications are open" + a Google Form URL) that flips the
+Apply buttons between live and "Coming Soon" across the site.
 
 ## Connecting the backend
 See **[SUPABASE_SETUP.md](./SUPABASE_SETUP.md)** — create a Supabase project, run

@@ -24,11 +24,11 @@
   --color-palo-alto-bright: #2e8b7a;
 
   /* Season hues — the /program timeline's full-palette system. Each season owns
-     a hue drawn from (or extending) the brand: fall = cardinal, winter/spring =
-     palo-alto range, summer = a deep Stanford gold. All clear ≥3:1 on paper for
+     a distinct hue: fall = cardinal, winter = a cool slate blue, spring = the
+     palo-alto green, summer = a deep Stanford gold. All clear ≥3:1 on paper for
      large labels + markers. */
   --color-season-fall: #8c1515;
-  --color-season-winter: #175e54;
+  --color-season-winter: #2f5f86;
   --color-season-spring: #196b5c;
   --color-season-summer: #8a5a12;
 

@@ -84,7 +84,7 @@ export default function Network({ className = "" }: { className?: string }) {
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       className={className}
       role="img"
-      aria-label="A network of people connected by lines — a community, linked together."
+      aria-label="A network of people connected by lines: a community, linked together."
       preserveAspectRatio="xMidYMid meet"
     >
       {/* links draw in first, behind the nodes */}

@@ -26,7 +26,7 @@ export default async function EditCategory({ params }: { params: Promise<{ id: s
         <p className="mb-2 text-sm font-semibold text-ink">Danger zone</p>
         {count > 0 ? (
           <p className="text-sm text-stone">
-            {count} workshop{count === 1 ? "" : "s"} still use this category — reassign them before deleting it.
+            {count} workshop{count === 1 ? "" : "s"} still use this category. Reassign them before deleting it.
           </p>
         ) : (
           <DeleteButton

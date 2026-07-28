@@ -22,7 +22,7 @@ function revalidateAll() {
   revalidatePath("/");
   revalidatePath("/events");
   revalidatePath("/workshops");
-  revalidatePath("/team");
+  revalidatePath("/about");
   revalidatePath("/admin", "layout");
 }
 
@@ -227,7 +227,7 @@ export async function deleteWorkshopCategory(formData: FormData) {
     .eq("category", label);
   if (countError) fail("categories", countError.message);
   if (count) {
-    fail("categories", `${count} workshop${count === 1 ? "" : "s"} still use "${label}" — reassign them first.`);
+    fail("categories", `${count} workshop${count === 1 ? "" : "s"} still use "${label}". Reassign them first.`);
   }
 
   const { error } = await sb.from("workshop_categories").delete().eq("id", id);

@@ -31,7 +31,7 @@ export default function WorkshopForm({
             <Select name="category" options={categories.map((c) => c.label)} defaultValue={workshop?.category} />
           ) : (
             <p className="mt-1.5 text-sm text-stone">
-              No categories yet —{" "}
+              No categories yet,{" "}
               <Link href="/admin/categories/new" className="font-medium text-cardinal hover:underline">
                 create one first
               </Link>

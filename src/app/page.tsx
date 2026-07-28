@@ -130,7 +130,7 @@ export default async function HomePage() {
         <div className="shell">
           <SectionHeading
             title="What our students are running next"
-            intro="Symposia, field studies, and workshops led by the current cohort and their mentors. Everyone's welcome — bring a friend."
+            intro="Symposia, field studies, and workshops led by the current cohort and their mentors. Everyone's welcome, bring a friend."
             link={{ href: "/events", label: "All events" }}
           />
           <ul className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -150,7 +150,7 @@ export default async function HomePage() {
         <div className="shell">
           <SectionHeading
             title="Workshops you can actually use"
-            intro="The team adds a few every month — slides, recordings, and workbooks. Free for everyone in the program, one click away in the shared library."
+            intro="The team adds a few every month: slides, recordings, and workbooks. Free for everyone in the program, one click away in the shared library."
             link={{ href: "/workshops", label: "Open the library" }}
           />
           <WorkshopCarousel workshops={workshops} colorByLabel={colorByLabel} />
@@ -164,7 +164,7 @@ export default async function HomePage() {
         <SectionHeading
           title="Mentors and students, working side by side"
           intro="Stanford researchers, program staff, and the high-school fellows doing the work."
-          link={{ href: "/team", label: "Meet the team" }}
+          link={{ href: "/about", label: "Meet the team" }}
         />
         <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {team.slice(0, 5).map((m, i) => (
@@ -186,7 +186,7 @@ export default async function HomePage() {
               Know a high schooler who&apos;d be into this?
             </h2>
             <p className="pretty mt-3 text-white/80">
-              We mentor students across the Bay Area — no experience needed, just curiosity.
+              We mentor students across the Bay Area. No experience needed, just curiosity.
             </p>
           </div>
           <MailtoLink className="shrink-0 rounded-sm bg-white px-7 py-3.5 font-semibold text-cardinal transition-colors hover:bg-sandstone">

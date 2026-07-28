@@ -26,7 +26,7 @@ export default async function EventsPage() {
       <PageHeader
         eyebrow="What's happening"
         title="Events"
-        intro="Everything the cohort is running this season. Most events are open to the public and free — registration links are on each card."
+        intro="Everything the cohort is running this season. Most events are open to the public and free. Registration links are on each card."
       />
       <div className="shell space-y-16 py-16">
         <section>
@@ -41,7 +41,7 @@ export default async function EventsPage() {
               ))}
             </ul>
           ) : (
-            <p className="text-stone">Nothing on the calendar right now — check back soon.</p>
+            <p className="text-stone">Nothing on the calendar right now. Check back soon.</p>
           )}
         </section>
 

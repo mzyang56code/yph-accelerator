@@ -19,7 +19,7 @@ export default async function AdminDashboard() {
     { href: "/admin/categories", label: "Categories", count: categories.length, blurb: "The filter tabs on the workshop library." },
     { href: "/admin/team", label: "Team", count: team.length, blurb: "Faculty, staff, mentors, and student fellows." },
     { href: "/admin/home", label: "Homepage", count: null, blurb: "Headline, mission, and the stats row." },
-    { href: "/admin/program", label: "Program", count: null, blurb: "The /program page — hero, pillars, founders, and the cohort-application toggle." },
+    { href: "/admin/program", label: "Program", count: null, blurb: "The /program page: hero, pillars, founders, and the cohort-application toggle." },
   ];
 
   return (

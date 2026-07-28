@@ -126,7 +126,7 @@ export function ColorInput({
         ))}
       </div>
       <span className="mt-2 block font-mono text-xs text-stone">
-        On-brand swatches only — the dot + label color for this category.
+        On-brand swatches only: the dot + label color for this category.
       </span>
     </div>
   );

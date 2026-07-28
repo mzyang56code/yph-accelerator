@@ -8,7 +8,7 @@ const LINKS = [
   { href: "/program", label: "Join our 2026 Cohort" },
   { href: "/events", label: "Events" },
   { href: "/workshops", label: "Workshops" },
-  { href: "/team", label: "Team" },
+  { href: "/about", label: "About Us" },
 ];
 
 export default function SiteNav() {

@@ -19,7 +19,7 @@ export default function GlobalError({
       <p className="eyebrow text-cardinal">Something went wrong</p>
       <h1 className="display mt-3 text-4xl text-ink sm:text-5xl">This page hit a snag</h1>
       <p className="pretty mt-4 max-w-md text-lg leading-relaxed text-stone">
-        Nothing was lost — try again, or head back to the homepage.
+        Nothing was lost. Try again, or head back to the homepage.
       </p>
       <div className="mt-8 flex flex-wrap gap-3">
         <button

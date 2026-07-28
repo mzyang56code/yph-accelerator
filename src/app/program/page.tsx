@@ -8,7 +8,7 @@ import { getProgramContent } from "@/lib/data";
 export const metadata: Metadata = {
   title: "The Program",
   description:
-    "How the Youth Public Health Accelerator works — the Leadership Summit, 1-on-1 mentorship, Group Mentorship Labs, and the year-long cohort timeline that ends at our symposium.",
+    "How the Youth Public Health Accelerator works: the Leadership Summit, 1-on-1 mentorship, Group Mentorship Labs, and the year-long cohort timeline that ends at our symposium.",
 };
 
 // ---------------------------------------------------------------------------
@@ -18,6 +18,12 @@ export const metadata: Metadata = {
 type Entry = { week: string; live: boolean; text: string; highlight?: boolean };
 type Season = { season: string; term: string; accent: string; months: { month: string; entries: Entry[] }[] };
 
+const JOIN_STEPS: { when: string; text: string }[] = [
+  { when: "Early September", text: "General Info meeting. Applications for the 2026 cohort open." },
+  { when: "Early October", text: "Application deadline." },
+  { when: "Late October", text: "Cohort begins with the Welcome meeting (hybrid)." },
+];
+
 const TIMELINE: Season[] = [
   {
     season: "Fall",
@@ -25,20 +31,26 @@ const TIMELINE: Season[] = [
     accent: "var(--color-season-fall)",
     months: [
       {
-        month: "September",
+        month: "October",
         entries: [
-          { week: "Week 1", live: true, text: "Welcome meeting (in person if possible, otherwise Zoom). A workshop on the checkpoints to hit by December and what we expect for the final proposal, plus personalized feedback on your application proposal." },
-          { week: "Week 3", live: false, text: "Deadline — finalized proposal & schedule. Checkpoints set for December, February, and April." },
+          { week: "Week 1", live: true, text: "Welcome meeting (hybrid). A workshop on the checkpoints to hit by December and what we expect for the final proposal, plus personalized feedback on your application proposal." },
+          { week: "Week 3", live: false, text: "Deadline: finalized proposal & schedule. Checkpoints set for December, February, and April." },
         ],
       },
       {
-        month: "October",
+        month: "November",
         entries: [
-          { week: "Week 1", live: true, text: "A Stanford student leads a mini-health workshop." },
-          { week: "Week 3", live: false, text: "Literature review completed — research on what others have already done." },
+          { week: "Week 1", live: true, text: "A Stanford professor presents on their research." },
+          { week: "Week 3", live: false, text: "Literature review completed: research on what others have already done." },
         ],
       },
-      { month: "November", entries: [{ week: "Week 1", live: true, text: "A Stanford student leads a mini-health workshop." }] },
+      {
+        month: "December",
+        entries: [
+          { week: "Week 1", live: true, text: "A Stanford professor presents on their research." },
+          { week: "Week 3", live: false, text: "December checkpoint: asynchronous check-in on progress." },
+        ],
+      },
     ],
   },
   {
@@ -46,9 +58,27 @@ const TIMELINE: Season[] = [
     term: "2027",
     accent: "var(--color-season-winter)",
     months: [
-      { month: "December", entries: [{ week: "Week 1", live: false, text: "December checkpoint — asynchronous check-in on progress." }] },
-      { month: "January", entries: [{ week: "Week 1", live: true, text: "High schoolers pitch their progress from the December checkpoint." }] },
-      { month: "February", entries: [{ week: "Week 1", live: true, text: "2–3 high schoolers lead a mini-health workshop." }] },
+      {
+        month: "January",
+        entries: [
+          { week: "Week 1", live: true, text: "High schoolers pitch their progress from the December checkpoint." },
+          { week: "Week 3", live: false, text: "Progress update: submit revisions based on pitch feedback." },
+        ],
+      },
+      {
+        month: "February",
+        entries: [
+          { week: "Week 1", live: true, text: "2–3 high schoolers lead a mini-health workshop." },
+          { week: "Week 3", live: false, text: "February checkpoint: check-in on community-partner outreach and data collection." },
+        ],
+      },
+      {
+        month: "March",
+        entries: [
+          { week: "Week 1", live: true, text: "2–3 high schoolers lead a mini-health workshop." },
+          { week: "Week 3", live: false, text: "Draft outline of the final deliverable: methods and findings so far." },
+        ],
+      },
     ],
   },
   {
@@ -56,9 +86,24 @@ const TIMELINE: Season[] = [
     term: "2027",
     accent: "var(--color-season-spring)",
     months: [
-      { month: "March", entries: [{ week: "Week 1", live: true, text: "2–3 high schoolers lead a mini-health workshop." }] },
-      { month: "April", entries: [{ week: "Week 1", live: true, text: "2–3 high schoolers lead a mini-health workshop." }] },
-      { month: "May", entries: [{ week: "Week 1", live: true, text: "End-of-Year Symposium — the incoming cohort is invited.", highlight: true }] },
+      {
+        month: "April",
+        entries: [
+          { week: "Week 1", live: true, text: "2–3 high schoolers lead a mini-health workshop." },
+          { week: "Week 3", live: false, text: "April checkpoint: final project deliverable due ahead of the Symposium." },
+        ],
+      },
+      {
+        month: "May",
+        entries: [
+          {
+            week: "Week 1",
+            live: true,
+            text: "End-of-Year Symposium: students present their projects as posters, with Stanford faculty, staff, and the wider community there to see the work.",
+            highlight: true,
+          },
+        ],
+      },
     ],
   },
 ];
@@ -109,6 +154,33 @@ export default async function ProgramPage() {
           <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
             <Trajectory className="h-auto w-full" />
           </div>
+        </div>
+      </section>
+
+      {/* --------------------------------------------------------------- */}
+      {/* Joining — the pre-cohort steps, before the year-long timeline    */}
+      {/* --------------------------------------------------------------- */}
+      <section className="bg-paper py-16 md:py-20">
+        <div className="shell">
+          <Reveal>
+            <h2 className="display max-w-[18ch] text-2xl text-ink sm:text-3xl">
+              How to Join
+            </h2>
+          </Reveal>
+          <ol className="mt-10 grid gap-8 border-t border-ink/10 pt-8 sm:grid-cols-3 sm:gap-6">
+            {JOIN_STEPS.map((step, i) => (
+              <Reveal key={step.when} delay={i * 60}>
+                <li>
+                  <p className="font-mono text-[0.66rem] uppercase tracking-[0.18em] text-cardinal">
+                    {step.when}
+                  </p>
+                  <p className="pretty mt-2 max-w-[32ch] text-base leading-relaxed text-ink/85">
+                    {step.text}
+                  </p>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -172,7 +244,14 @@ export default async function ProgramPage() {
                         <h4 className="font-display text-lg font-semibold text-ink">{m.month}</h4>
                         <div className="mt-3 space-y-4">
                           {m.entries.map((e) => (
-                            <div key={e.week}>
+                            <div
+                              key={e.week}
+                              className={
+                                e.highlight
+                                  ? "rounded-md border border-cardinal-bright/30 bg-cardinal-bright/5 px-4 py-3"
+                                  : undefined
+                              }
+                            >
                               <p className="flex items-center font-mono text-[0.66rem] uppercase tracking-[0.18em] text-ink/75">
                                 <span
                                   aria-hidden

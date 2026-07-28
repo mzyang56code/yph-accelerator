@@ -31,7 +31,7 @@ const mono = Spline_Sans_Mono({
 });
 
 const description =
-  "A Stanford program training high-school students in the tools of public health — epidemiology, data, and equity — through workshops, mentorship, and community projects.";
+  "A Stanford program training high-school students in the tools of public health (epidemiology, data, and equity) through workshops, mentorship, and community projects.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
