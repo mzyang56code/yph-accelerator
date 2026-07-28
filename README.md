@@ -11,7 +11,12 @@ Innovation in Global Health.
 **Site copy, the cohort timeline, and program background live in
 [CONTENT.md](./CONTENT.md)** — the source of truth.
 
-Production deploys on **Vercel** from `main` (custom domain **ypha.site**).
+Production runs on **Vercel** (custom domain **ypha.site**), project-linked via
+`.vercel/project.json`. **GitHub auto-deploy-on-push is not currently firing**
+(found 2026-07-28: the last auto-deploy predated a 14-day run of unpushed
+merges) — after `git push` to `main`, ship with `npx vercel --prod` from a
+matching local checkout. Check the Vercel dashboard's Project → Settings → Git
+connection to diagnose/fix the integration.
 
 ## Stack
 - **Next.js 16** (App Router) · **React 19** · **TypeScript** · **Tailwind v4**

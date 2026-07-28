@@ -6,19 +6,27 @@ Public copy is admin-editable in Supabase (`site_content` for the homepage,
 `src/lib/data.ts`. Edit here when the story or schedule changes, then reflect it
 in `/admin` (or the seed defaults for the fixed timeline).
 
-**Status (2026-07-14):** Deployed to Vercel from `main`; custom domain
-**ypha.site** being connected. The cohort application is gated behind an admin
-toggle (below) — off until applications open. The `program_content` table
-migration must be run in Supabase for the Program admin box to work; until then
-the site shows the built-in defaults.
+**Status (2026-07-28):** Live on **ypha.site**. The cohort application is gated
+behind an admin toggle (below) — currently **off**, so Apply buttons read
+"2026 Cohort — Coming Soon". The `program_content` table migration has been run
+in Supabase; the Program admin box works.
+
+**Deploys are currently manual.** Vercel's GitHub auto-deploy-on-push was found
+not to be firing (last auto-deploy was 14 days stale) — `git push` alone does
+**not** update ypha.site. Ship with `npx vercel --prod` from a repo checkout
+with matching `.vercel/project.json` after pushing to `main`. Worth checking
+the Vercel dashboard's Project → Settings → Git connection to fix the
+underlying integration.
 
 ---
 
 ## Homepage
 
-- **Hero headline** (CMS): "Guiding the next generation of public health leaders"
+- **Hero headline** (CMS): "Accelerating the next generation of public health leaders."
+- **Hero lede** (CMS): "We're a Stanford program that pairs high school students with undergraduate mentors to accelerate public health ideas and initiatives within their own communities."
 - **Hero CTAs:** primary = *Apply to the 2026 cohort* (or **"2026 Cohort — Coming Soon"** until the application toggle is on) → the Google Form; secondary = *Learn more* → `/program`.
-- **"What we do" mission line** (CMS): "Every student gets a mentor and a real project."
+- **Mission title** (CMS): "Every student gets mentorship for a real project."
+- **Mission body** (CMS): has drifted from this doc and needs an admin edit — currently still has the pre-cleanup em dashes plus a stray `Timeline: Summer 2026: Recruitment...` fragment appended that looks like a leftover planning note, not intentional copy. Flagged, not fixed here (this doc doesn't have write access to Supabase).
 - Sections: featured events · workshop carousel (arrow-paged, Google-Slides first-slide previews) · 5 directors (click a card for the bio popup) · a permanent, compact **Get in touch** contact band.
 
 ## Program page (`/program`) — what's shown
@@ -89,12 +97,12 @@ admin-editable at `/admin/team`.
 
 **Mission statement** is fixed in code (`MISSION` array in
 `src/app/about/page.tsx`), the same "stable narrative copy, dev-edited" pattern
-as the `/program` timeline. Canonical text:
+as the `/program` timeline. It renders as plain paragraphs, full `shell` width
+(no reading-column cap), with no eyebrow on the page header. Canonical text:
 
-> The Youth Public Health Accelerator (YPHA) exists to turn a high schooler's
-> curiosity about public and global health into something real: a project that
-> serves their own community, built with the guidance of a Stanford mentor over
-> a full year.
+> YPHA turns a high schooler's curiosity about public and global health into
+> something real: a project that serves their own community, built with the
+> guidance of a Stanford mentor over a full year.
 >
 > We're founded and directed by Stanford undergraduates through the Stanford
 > Undergraduate Global Health Club and the Stanford Journal of Public Health,
