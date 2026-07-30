@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import ScatterField from "@/components/ScatterField";
 import Trajectory from "@/components/Trajectory";
@@ -19,6 +20,14 @@ import {
 // Content changes go live immediately via revalidatePath in the admin actions;
 // this is just a time-based safety net.
 export const revalidate = 300;
+
+// Partner logos live in /public/partners so they ship with the repo — not a
+// dev's local Downloads folder — and stay put regardless of where a source
+// file moves on any one machine.
+const PARTNERS: { name: string; logo: string }[] = [
+  { name: "Stanford Center for Innovation in Global Health", logo: "/partners/cigh.png" },
+  { name: "ALAS — Ayudando Latinos a Soñar", logo: "/partners/alas.png" },
+];
 
 export default async function HomePage() {
   const [content, program, events, workshops, categories, team] = await Promise.all([
@@ -53,12 +62,9 @@ export default async function HomePage() {
         />
         {/* light dots across the full red field */}
         <ScatterField tint="light" count={74} seed={7} className="absolute inset-0" />
-        <div className="shell relative grid items-center gap-8 pb-16 pt-28 md:pb-24 md:pt-36 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6">
+        <div className="shell relative grid items-center gap-8 pb-12 pt-28 md:pb-16 md:pt-36 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6">
           <div className="max-w-xl">
-            <p className="eyebrow text-sandstone">
-              {content.cohortLabel} · {content.location}
-            </p>
-            <h1 className="display mt-5 text-[2.6rem] leading-[0.98] sm:text-6xl">
+            <h1 className="display text-4xl leading-[0.98] sm:text-6xl">
               {content.heroHeadline}
             </h1>
             <p className="pretty mt-6 max-w-lg text-lg leading-relaxed text-white/85">
@@ -98,13 +104,10 @@ export default async function HomePage() {
       {/* ---------------------------------------------------------------- */}
       {/* Mission + stats                                                  */}
       {/* ---------------------------------------------------------------- */}
-      <section className="shell py-20">
+      <section className="shell pb-20 pt-12 md:pt-16">
         <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <Reveal>
-            <h2 className="display text-3xl text-ink sm:text-4xl">
-              {content.missionTitle}
-            </h2>
-            <p className="pretty mt-5 text-lg leading-relaxed text-stone">
+            <p className="pretty text-lg leading-relaxed text-stone">
               {content.missionBody}
             </p>
           </Reveal>
@@ -129,8 +132,7 @@ export default async function HomePage() {
       <section className="border-y border-ink/8 py-20">
         <div className="shell">
           <SectionHeading
-            title="What our students are running next"
-            intro="Symposia, field studies, and workshops led by the current cohort and their mentors. Everyone's welcome, bring a friend."
+            title="Events"
             link={{ href: "/events", label: "All events" }}
           />
           <ul className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -149,8 +151,8 @@ export default async function HomePage() {
       <section className="border-b border-ink/8 py-20">
         <div className="shell">
           <SectionHeading
-            title="Workshops you can actually use"
-            intro="The team adds a few every month: slides, recordings, and workbooks. Free for everyone in the program, one click away in the shared library."
+            title="Workshops"
+            intro="Shareable presentations on today's public health challenges, plus the skills to act on them."
             link={{ href: "/workshops", label: "Open the library" }}
           />
           <WorkshopCarousel workshops={workshops} colorByLabel={colorByLabel} />
@@ -162,8 +164,7 @@ export default async function HomePage() {
       {/* ---------------------------------------------------------------- */}
       <section className="shell py-20">
         <SectionHeading
-          title="Mentors and students, working side by side"
-          intro="Stanford researchers, program staff, and the high-school fellows doing the work."
+          title="Our Team"
           link={{ href: "/about", label: "Meet the team" }}
         />
         <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -173,6 +174,31 @@ export default async function HomePage() {
             </Reveal>
           ))}
         </ul>
+      </section>
+
+      {/* ---------------------------------------------------------------- */}
+      {/* In partnership with — partner logo strip                         */}
+      {/* ---------------------------------------------------------------- */}
+      <section className="bg-paper py-14">
+        <div className="shell">
+          <div className="mx-auto flex max-w-3xl flex-col items-center gap-8 rounded-lg bg-white p-8 text-center shadow-[0_20px_48px_-28px_rgba(46,45,41,0.35)] sm:p-10">
+            <p className="font-mono text-base uppercase tracking-[0.2em] text-stone sm:text-lg">
+              In partnership with
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
+              {PARTNERS.map((p) => (
+                <Image
+                  key={p.name}
+                  src={p.logo}
+                  alt={p.name}
+                  width={140}
+                  height={120}
+                  className="h-24 w-auto object-contain sm:h-28"
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ---------------------------------------------------------------- */}

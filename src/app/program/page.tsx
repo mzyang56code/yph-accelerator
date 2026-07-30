@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import ScatterField from "@/components/ScatterField";
-import Trajectory from "@/components/Trajectory";
+import ProgramCountdown from "@/components/ProgramCountdown";
 import Reveal from "@/components/Reveal";
+import MailtoLink from "@/components/MailtoLink";
 import { getProgramContent } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -19,9 +19,16 @@ type Entry = { week: string; live: boolean; text: string; highlight?: boolean };
 type Season = { season: string; term: string; accent: string; months: { month: string; entries: Entry[] }[] };
 
 const JOIN_STEPS: { when: string; text: string }[] = [
-  { when: "Early September", text: "General Info meeting. Applications for the 2026 cohort open." },
+  { when: "September 7", text: "Applications for the 2026 cohort open." },
+  { when: "Mid-September", text: "General Info meeting (hybrid) — an open Q&A on the application and the year ahead." },
   { when: "Early October", text: "Application deadline." },
   { when: "Late October", text: "Cohort begins with the Welcome meeting (hybrid)." },
+];
+
+const APPLICATION_ASKS: string[] = [
+  "A general proposal centered on a real community problem you want to work on.",
+  "The community partners — a school, clinic, or organization — you'd work with.",
+  "What you're hoping to get out of a year of mentorship.",
 ];
 
 const TIMELINE: Season[] = [
@@ -128,31 +135,14 @@ export default async function ProgramPage() {
           }}
         />
         <ScatterField tint="light" count={70} seed={11} className="absolute inset-0" />
-        <div className="shell relative grid items-center gap-8 pb-20 pt-28 md:pb-28 md:pt-36 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6">
+        <div className="shell relative grid items-center gap-10 pb-20 pt-28 md:pb-28 md:pt-36 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6">
           <div className="max-w-xl">
-            <p className="eyebrow text-sandstone">The program</p>
-            <h1 className="display mt-5 text-[2.6rem] leading-[0.98] sm:text-6xl">{content.heroTitle}</h1>
+            <h1 className="display text-[2.6rem] leading-[0.98] sm:text-6xl">{content.heroTitle}</h1>
             <p className="pretty mt-6 max-w-lg text-lg leading-relaxed text-white/85">{content.heroIntro}</p>
-            <div className="mt-9 flex flex-wrap items-center gap-4">
-              {applyOpen ? (
-                <Link
-                  href={applyUrl ?? "#"}
-                  target={applyUrl ? "_blank" : undefined}
-                  rel={applyUrl ? "noopener noreferrer" : undefined}
-                  className="rounded-sm bg-white px-7 py-3.5 font-semibold text-cardinal shadow-sm transition-colors hover:bg-sandstone"
-                >
-                  Apply to the 2026 cohort
-                </Link>
-              ) : (
-                <span className="rounded-sm px-7 py-3.5 font-semibold text-white ring-1 ring-inset ring-white/40">
-                  2026 Cohort — Coming Soon
-                </span>
-              )}
-            </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
-            <Trajectory className="h-auto w-full" />
+          <div className="mx-auto w-full max-w-sm">
+            <ProgramCountdown applyOpen={applyOpen} applyUrl={applyUrl} />
           </div>
         </div>
       </section>
@@ -167,7 +157,7 @@ export default async function ProgramPage() {
               How to Join
             </h2>
           </Reveal>
-          <ol className="mt-10 grid gap-8 border-t border-ink/10 pt-8 sm:grid-cols-3 sm:gap-6">
+          <ol className="mt-10 grid gap-8 border-t border-ink/10 pt-8 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
             {JOIN_STEPS.map((step, i) => (
               <Reveal key={step.when} delay={i * 60}>
                 <li>
@@ -181,6 +171,37 @@ export default async function ProgramPage() {
               </Reveal>
             ))}
           </ol>
+
+          <div className="mt-14 grid gap-10 border-t border-ink/10 pt-10 lg:grid-cols-2 lg:gap-16">
+            <Reveal>
+              <h3 className="display text-xl text-ink sm:text-2xl">What we&apos;ll ask for</h3>
+              <p className="pretty mt-3 max-w-[52ch] text-base leading-relaxed text-ink/80">
+                The application is short, but it asks you to have thought a little
+                about direction. You&apos;ll tell us about:
+              </p>
+              <ul className="mt-5 space-y-3">
+                {APPLICATION_ASKS.map((ask) => (
+                  <li key={ask} className="flex gap-3">
+                    <span aria-hidden className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cardinal" />
+                    <span className="pretty text-base leading-relaxed text-ink/85">{ask}</span>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+
+            <Reveal delay={80}>
+              <h3 className="display text-xl text-ink sm:text-2xl">Have questions?</h3>
+              <p className="pretty mt-3 max-w-[48ch] text-base leading-relaxed text-ink/80">
+                Join our General Info meeting in{" "}
+                <span className="font-semibold text-ink">mid-September</span>{" "}
+                for an open Q&amp;A on the application and what the year looks
+                like — or reach out any time.
+              </p>
+              <MailtoLink className="mt-6 inline-block rounded-sm bg-cardinal px-7 py-3.5 font-semibold text-white transition-colors hover:bg-cardinal-bright">
+                Get in touch
+              </MailtoLink>
+            </Reveal>
+          </div>
         </div>
       </section>
 

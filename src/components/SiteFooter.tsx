@@ -26,6 +26,7 @@ export default async function SiteFooter() {
             <li><Link href="/events" className="hover:text-white">Events</Link></li>
             <li><Link href="/workshops" className="hover:text-white">Workshop library</Link></li>
             <li><Link href="/about" className="hover:text-white">About Us</Link></li>
+            <li><Link href="/educators" className="hover:text-white">For Educators</Link></li>
           </ul>
         </div>
 
@@ -40,8 +41,8 @@ export default async function SiteFooter() {
 
       <div className="border-t border-white/10">
         <div className="shell flex flex-col items-start justify-between gap-2 py-5 text-xs text-white/50 sm:flex-row sm:items-center">
-          <p>© {"2026"} Stanford Youth Public Health Accelerator. A student program.</p>
-          <p>Not an official Stanford University webpage. Program prototype.</p>
+          <p>© {"2026"} Stanford Youth Public Health Accelerator.</p>
+          <p>Not an official Stanford University webpage.</p>
         </div>
       </div>
     </footer>

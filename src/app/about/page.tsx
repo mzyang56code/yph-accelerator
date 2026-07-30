@@ -36,7 +36,7 @@ export default async function AboutPage() {
 
   return (
     <>
-      <PageHeader title="About Us" intro="Why we exist, and the Stanford students and mentors making it happen." />
+      <PageHeader title="About Us" />
 
       <section className="shell py-16 md:py-20">
         <Reveal>

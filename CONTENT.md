@@ -6,7 +6,7 @@ Public copy is admin-editable in Supabase (`site_content` for the homepage,
 `src/lib/data.ts`. Edit here when the story or schedule changes, then reflect it
 in `/admin` (or the seed defaults for the fixed timeline).
 
-**Status (2026-07-28):** Live on **ypha.site**. The cohort application is gated
+**Status (2026-07-30):** Live on **ypha.site**. The cohort application is gated
 behind an admin toggle (below) — currently **off**, so Apply buttons read
 "2026 Cohort — Coming Soon". The `program_content` table migration has been run
 in Supabase; the Program admin box works.
@@ -18,16 +18,55 @@ with matching `.vercel/project.json` after pushing to `main`. Worth checking
 the Vercel dashboard's Project → Settings → Git connection to fix the
 underlying integration.
 
+**Note on this doc's relationship to the CMS:** homepage/program hero fields
+are genuinely admin-editable (Supabase), so a teammate can change the live
+values in `/admin` at any time without touching code — treat the copy below as
+"last known good," not a lock. Verify in `/admin/home` or `/admin/program`
+before assuming it's still accurate.
+
 ---
 
 ## Homepage
 
-- **Hero headline** (CMS): "Accelerating the next generation of public health leaders."
+- **Hero eyebrow removed:** the "Cohort 2026 · San Francisco Bay Area" eyebrow
+  above the headline is gone; the headline is now the first element in the
+  hero and is set larger (`text-4xl`/`sm:text-6xl`, was `text-[2.6rem]`/`sm:text-6xl`).
+- **Hero headline** (CMS): "Accelerating the next generation of public health leaders" (no trailing period).
 - **Hero lede** (CMS): "We're a Stanford program that pairs high school students with undergraduate mentors to accelerate public health ideas and initiatives within their own communities."
 - **Hero CTAs:** primary = *Apply to the 2026 cohort* (or **"2026 Cohort — Coming Soon"** until the application toggle is on) → the Google Form; secondary = *Learn more* → `/program`.
-- **Mission title** (CMS): "Every student gets mentorship for a real project."
-- **Mission body** (CMS): has drifted from this doc and needs an admin edit — currently still has the pre-cleanup em dashes plus a stray `Timeline: Summer 2026: Recruitment...` fragment appended that looks like a leftover planning note, not intentional copy. Flagged, not fixed here (this doc doesn't have write access to Supabase).
-- Sections: featured events · workshop carousel (arrow-paged, Google-Slides first-slide previews) · 5 directors (click a card for the bio popup) · a permanent, compact **Get in touch** contact band.
+- **Mission title dropped from the page** (2026-07-30): the "Mission title" CMS
+  field (currently "We mentor youth to champion community-based health") still
+  exists in `/admin/home` and the `site_content` schema, but `src/app/page.tsx`
+  no longer renders it — the mission section is now just the body paragraph
+  (`text-lg`, `text-stone`) next to the stats. Decided the hero headline
+  already does the "big claim" job, so a second bolded title read as
+  redundant. If a future edit re-adds a title element here, don't reintroduce
+  the header/paragraph pairing without re-checking this still makes sense.
+- **Mission body** (CMS): the stray leftover-fragment issue previously flagged
+  here has been checked and is **no longer present** — current live text
+  matches the canonical paragraph in `/about`'s `MISSION` array (first
+  paragraph). Re-verify in `/admin/home` if this drifts again.
+- **Section headings simplified** (2026-07-30) — three homepage sections lost
+  their descriptive `intro` line and now show title-only, to read less like
+  duplicate landing-page copy: "What our students are running next" → **"Events"**;
+  "Mentors and students, working side by side" → **"Our Team"**. The Workshops
+  section kept its title change ("Workshops you can actually use" → **"Workshops"**)
+  but got its intro back: *"Shareable presentations on today's public health
+  challenges, plus the skills to act on them."* — phrased not to repeat the
+  word "Workshops" from the heading right above it.
+- **New "In partnership with" band** (2026-07-30): a white, shadow-lifted card
+  sitting between the Team section and the "Know a high schooler…" contact
+  band (`src/app/page.tsx`, `PARTNERS` array). First (only) partner: **ALAS —
+  Ayudando Latinos a Soñar**, logo at `public/partners/alas.png` (committed to
+  the repo, not referenced from anyone's local Downloads folder). Add future
+  partners by appending to `PARTNERS`; no CMS field for this yet.
+- Sections top-to-bottom: hero → mission + stats → Events → Workshops (carousel)
+  → Our Team (5 directors, click a card for the bio popup) → In partnership
+  with (partner logos) → permanent, compact **Get in touch** contact band.
+- **Footer** (`SiteFooter.tsx`) trimmed of two disclaimer phrases (2026-07-30):
+  copyright line is now "© 2026 Stanford Youth Public Health Accelerator."
+  (dropped "A student program."), and the legal line is now "Not an official
+  Stanford University webpage." (dropped "Program prototype.").
 
 ## Program page (`/program`) — what's shown
 
@@ -35,10 +74,61 @@ Focused on the **cohort mentorship structure**. It intentionally does **not**
 show YC framing, the "founded & directed by" founders, the "four ways" pillars,
 or the subject-area tags (those are kept as background at the bottom).
 
-- **Hero** (CMS): "From a first spark to a finished project." + intro: *"A year-long, cohort-based mentorship program. Each high schooler is paired with a Stanford mentor and moves through a set schedule of monthly meetings and check-ins, carrying one public-health project from first proposal to finished work."* Apply CTA is inline in the hero (admin-toggled).
-- **How to Join** (in code, `JOIN_STEPS` in `src/app/program/page.tsx`): the three pre-cohort steps below, shown between the hero and the timeline. No eyebrow label, just the heading.
-- **Timeline** (in code): the cohort year below, now starting **October 2026** (cohort start) through **May 2027** (the Symposium).
-- **Symposium highlight** (in code): May's End-of-Year Symposium stays in the monthly rail but is set apart with a bordered/tinted box and a slightly larger marker dot (Cardinal Bright accent) — the site's one deliberately highlighted moment (per `DESIGN.md`'s "single highlighted moment" rule).
+- **Hero** (CMS): "From a first spark to a finished project." + intro: *"A year-long, cohort-based mentorship program. Each high schooler is paired with a Stanford mentor and moves through a set schedule of monthly meetings and check-ins, carrying one public-health project from first proposal to finished work."*
+- **Hero eyebrow removed** (2026-07-30): "The program" label above the title is gone.
+- **Countdown card replaces the Trajectory graphic** (2026-07-30): the hero used
+  to mirror the homepage hero exactly (same dot-map + rising-line illustration
+  + inline Apply pill) — one of the reasons the page felt like a duplicate
+  landing page. The right column is now `ProgramCountdown`
+  (`src/components/ProgramCountdown.tsx`), a translucent (`bg-black/20`) card
+  on the cardinal field showing "2026 Cohort Applications Open in" + a large
+  day-count down to a hardcoded `APPLICATION_OPEN_DATE` (**September 7, 2026**,
+  a dev-updated constant like the timeline dates below) + a ghost button
+  reading "Available Sep. 7th, 2026". Once the admin **Applications are open**
+  toggle flips on, the same card swaps to "Applications Are Open." plus a real
+  filled Apply button to the Google Form — no separate on/off markup to
+  maintain.
+- **How to Join** (in code, `JOIN_STEPS` in `src/app/program/page.tsx`): now
+  **four** pre-cohort steps (was three) — **September 7**: applications open;
+  **Mid-September**: General Info meeting (hybrid), open Q&A on the
+  application and the year ahead; **Early October**: application deadline;
+  **Late October**: cohort begins with the Welcome meeting (hybrid).
+- **"What we'll ask for" + "Have questions?" added below the timeline steps**
+  (2026-07-30, `APPLICATION_ASKS` in the same file): a two-column band listing
+  what the application asks for — a general proposal centered on a real
+  community problem, the community partners you'd work with, and what you're
+  hoping to get out of a year of mentorship — paired with a "Have questions?"
+  block pointing to the mid-September info meeting and a **Get in touch**
+  mailto button (same `MailtoLink` component/style as the homepage contact band).
+- **Timeline** (in code): the cohort year below, starting **October 2026**
+  (cohort start) through **May 2027** (the Symposium).
+- **Symposium highlight** (in code): May's End-of-Year Symposium stays in the
+  monthly rail but is set apart with a bordered/tinted box and a slightly
+  larger marker dot (Cardinal Bright accent) — the site's one deliberately
+  highlighted moment (per `DESIGN.md`'s "single highlighted moment" rule).
+
+## Events, Workshops, and About Us pages — captions removed (2026-07-30)
+
+All three interior pages dropped their `PageHeader` `eyebrow`/`intro` text so
+the header is title-only, for the same "stop echoing the landing page" reason
+as the homepage section-heading trims above:
+- `/events`: dropped eyebrow "What's happening" and the intro sentence. Title-only "Events".
+- `/about`: dropped the intro "Why we exist, and the Stanford students and mentors making it happen." Title-only "About Us".
+- `/workshops`: page **title changed** "The workshop library" → **"Workshop Library"**,
+  eyebrow "Workshop library" dropped, then the intro line was **re-added**
+  (initially removed, then asked back) reading: *"A growing library of talks
+  and skill-building sessions, free for every student in the program."* —
+  deliberately worded differently from the homepage Workshops intro above so
+  the two don't read as copy-pasted.
+
+## Admin ordering behavior (2026-07-30)
+
+New **workshops** and new **events** created in `/admin` now sort to the
+**top** of their public list instead of the bottom — `saveWorkshop` and
+`saveEvent` in `src/app/admin/actions.ts` assign a new row's `sort_order`
+*below* the current minimum (was: above the current max). This was a
+deliberate reversal from the original "new items join the end" behavior.
+Manual reordering via the ↑/↓ arrows in `/admin` still works the same way.
 
 ## Cohort application (admin-toggled)
 
@@ -53,9 +143,11 @@ Stored in `program_content` (`application_open`, `application_url`).
 
 Shown as its own step-list ahead of the timeline (`JOIN_STEPS` in
 `src/app/program/page.tsx`), since these happen before the cohort itself begins.
-No eyebrow; heading is just "How to Join":
+No eyebrow; heading is just "How to Join". Current four steps (see "Program
+page" section above for the 2026-07-30 change from three steps to four):
 
-- **Early September** — General Info meeting. Applications for the 2026 cohort open.
+- **September 7** — Applications for the 2026 cohort open.
+- **Mid-September** — General Info meeting (hybrid): an open Q&A on the application and the year ahead.
 - **Early October** — Application deadline.
 - **Late October** — Cohort begins with the Welcome meeting (hybrid).
 

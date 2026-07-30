@@ -104,10 +104,10 @@ export async function saveEvent(formData: FormData) {
     register_url: strOrNull(formData, "register_url"),
   };
   if (!id) {
-    // New events join the end of the manually-ordered list, not the top.
-    const { data: last } = await sb
-      .from("events").select("sort_order").order("sort_order", { ascending: false }).limit(1).maybeSingle();
-    row.sort_order = (last?.sort_order ?? -1) + 1;
+    // New events jump to the top of the manually-ordered list.
+    const { data: first } = await sb
+      .from("events").select("sort_order").order("sort_order", { ascending: true }).limit(1).maybeSingle();
+    row.sort_order = (first?.sort_order ?? 1) - 1;
   }
   const { error } = id
     ? await sb.from("events").update(row).eq("id", id)
@@ -152,10 +152,10 @@ export async function saveWorkshop(formData: FormData) {
     file_kind: str(formData, "file_kind"),
   };
   if (!id) {
-    // New workshops join the end of the manually-ordered list, not the top.
-    const { data: last } = await sb
-      .from("workshops").select("sort_order").order("sort_order", { ascending: false }).limit(1).maybeSingle();
-    row.sort_order = (last?.sort_order ?? -1) + 1;
+    // New workshops jump to the top of the manually-ordered list.
+    const { data: first } = await sb
+      .from("workshops").select("sort_order").order("sort_order", { ascending: true }).limit(1).maybeSingle();
+    row.sort_order = (first?.sort_order ?? 1) - 1;
   }
   const { error } = id
     ? await sb.from("workshops").update(row).eq("id", id)

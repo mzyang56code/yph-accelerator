@@ -202,6 +202,33 @@ on light sections) and `Trajectory` draws a rising trend line. This is the brand
 irreducible motif — the "imagery" of an otherwise photo-light site. Motion:
 points scatter in, then the trajectory draws; both respect `prefers-reduced-motion`.
 
+### Status/Countdown Card (custom, added 2026-07-30)
+`ProgramCountdown` (`/program` hero, right column, replacing a second copy of
+`Trajectory`): a translucent panel — `bg-black/20`, `ring-1 ring-inset
+ring-white/10`, no border, no backdrop-blur — that recedes into the Cardinal
+field rather than sitting on top of it like a white card would. Holds a
+single large sandstone/white numeral (days-until, not hrs/min — deliberately
+simplified from an earlier three-unit d/h/m version that read as "too much"),
+and one button that changes meaning rather than markup: a ghost outline
+("ring-1 ring-inset ring-white/40") state before the admin toggle flips, a
+solid white-fill state after. Centered content, `max-w-md` card width so the
+title fits one line.
+
+### Partner Logo Strip — "In partnership with" (custom, added 2026-07-30)
+Homepage-only, sitting between the Team section and the contact band. This is
+a deliberate, scoped **exception to the Flat-Border Rule** below: a white card
+lifted off the warm paper background with a real ambient shadow
+(`shadow-[0_20px_48px_-28px_rgba(46,45,41,0.35)]`), at the user's explicit
+request, because the "Supported by"/"In partnership with" convention reads
+oddly flush with the page. Don't generalize this shadow to other cards —
+it's specific to this one floating band, not a system-wide change to the
+Elevation rules. Label is centered, larger than the `.eyebrow` mono default
+(`font-mono text-base sm:text-lg uppercase tracking-[0.2em]`, not the 0.72rem
+eyebrow size) since a single small caption over a large logo read as
+disproportionate. Rename the label per partner-relationship type — "Supported
+by" implies funding, "In partnership with" (current) implies collaboration;
+pick whichever matches the actual relationship for the next partner.
+
 ## 6. Do's and Don'ts
 
 ### Do:

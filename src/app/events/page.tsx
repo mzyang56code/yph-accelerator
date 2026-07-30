@@ -23,11 +23,7 @@ export default async function EventsPage() {
 
   return (
     <>
-      <PageHeader
-        eyebrow="What's happening"
-        title="Events"
-        intro="Everything the cohort is running this season. Most events are open to the public and free. Registration links are on each card."
-      />
+      <PageHeader title="Events" />
       <div className="shell space-y-16 py-16">
         <section>
           <h2 className="display text-2xl text-ink sm:text-3xl">Upcoming events</h2>

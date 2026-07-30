@@ -17,9 +17,8 @@ export default async function WorkshopsPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Workshop library"
-        title="The workshop library"
-        intro="The team adds new material most months. Filter by topic, then open anything in the shared Google Drive: slides, recordings, and workbooks."
+        title="Workshop Library"
+        intro="A growing library of talks and skill-building sessions, free for every student in the program."
       />
       <section className="shell py-16">
         <WorkshopBrowser workshops={workshops} categories={categories} />
