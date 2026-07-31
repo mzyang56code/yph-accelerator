@@ -1,5 +1,6 @@
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import SetupNotice from "@/components/admin/SetupNotice";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import ProgramForm from "@/components/admin/ProgramForm";
 import { getProgramContent } from "@/lib/data";
 
@@ -14,12 +15,16 @@ export default async function ProgramAdmin({
 
   return (
     <div>
-      <p className="eyebrow text-cardinal">Program</p>
-      <h1 className="display mt-1 text-3xl text-ink">Program page</h1>
-      <p className="mt-2 text-stone">
-        The hero and the cohort-application toggle on <code>/program</code>. The monthly cohort timeline is fixed in
-        code. Ask a dev to change it.
-      </p>
+      <AdminPageHeader
+        eyebrow="Program"
+        title="Program page"
+        description={
+          <>
+            The hero and the cohort-application toggle on <code>/program</code>. The monthly cohort timeline is
+            fixed in code. Ask a dev to change it.
+          </>
+        }
+      />
 
       {error && (
         <p className="mt-5 rounded-md border border-cardinal/20 bg-cardinal/5 px-3 py-2 text-sm text-cardinal">{error}</p>

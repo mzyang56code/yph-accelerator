@@ -290,6 +290,27 @@ export async function getTeam(): Promise<TeamMember[]> {
   return data.map(mapTeam);
 }
 
+// Count-only accessors for the dashboard's summary cards — avoids fetching
+// every row (and every column) just to display a length.
+async function countRows(table: "events" | "workshops" | "workshop_categories" | "team_members"): Promise<number> {
+  if (!isSupabaseConfigured()) {
+    const seedByTable = {
+      events: seedEvents, workshops: seedWorkshops,
+      workshop_categories: seedWorkshopCategories, team_members: seedTeam,
+    } as const;
+    return seedByTable[table].length;
+  }
+  const { count, error } = await createPublicClient()
+    .from(table).select("id", { count: "exact", head: true });
+  if (error || count === null) return 0;
+  return count;
+}
+
+export const countEvents = () => countRows("events");
+export const countWorkshops = () => countRows("workshops");
+export const countWorkshopCategories = () => countRows("workshop_categories");
+export const countTeam = () => countRows("team_members");
+
 export async function getTeamMemberById(id: string): Promise<TeamMember | null> {
   if (!isSupabaseConfigured()) return seedTeam.find((m) => m.id === id) ?? null;
   const { data, error } = await createPublicClient()

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import SetupNotice from "@/components/admin/SetupNotice";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import DeleteButton from "@/components/admin/DeleteButton";
 import { getTeam } from "@/lib/data";
 import { deleteTeamMember } from "../actions";
@@ -17,15 +18,15 @@ export default async function TeamAdmin({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="eyebrow text-cardinal">The people</p>
-          <h1 className="display mt-1 text-3xl text-ink">Team</h1>
-        </div>
-        <Link href="/admin/team/new" className="rounded-md bg-cardinal px-4 py-2.5 text-sm font-semibold text-white hover:bg-cardinal-bright">
-          + New member
-        </Link>
-      </div>
+      <AdminPageHeader
+        eyebrow="The people"
+        title="Team"
+        action={
+          <Link href="/admin/team/new" className="rounded-md bg-cardinal px-4 py-2.5 text-sm font-semibold text-white hover:bg-cardinal-bright">
+            + New member
+          </Link>
+        }
+      />
 
       {error && (
         <p className="mt-5 rounded-md border border-cardinal/20 bg-cardinal/5 px-3 py-2 text-sm text-cardinal">{error}</p>

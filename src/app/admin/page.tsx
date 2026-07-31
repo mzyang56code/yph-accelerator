@@ -1,23 +1,23 @@
 import Link from "next/link";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import SetupNotice from "@/components/admin/SetupNotice";
-import { getEvents, getWorkshops, getWorkshopCategories, getTeam } from "@/lib/data";
+import { countEvents, countWorkshops, countWorkshopCategories, countTeam } from "@/lib/data";
 
 export default async function AdminDashboard() {
   if (!isSupabaseConfigured()) return <SetupNotice />;
 
-  const [events, workshops, categories, team] = await Promise.all([
-    getEvents(),
-    getWorkshops(),
-    getWorkshopCategories(),
-    getTeam(),
+  const [eventCount, workshopCount, categoryCount, teamCount] = await Promise.all([
+    countEvents(),
+    countWorkshops(),
+    countWorkshopCategories(),
+    countTeam(),
   ]);
 
   const cards = [
-    { href: "/admin/events", label: "Events", count: events.length, blurb: "Symposia, field visits, workshops, community days." },
-    { href: "/admin/workshops", label: "Workshops", count: workshops.length, blurb: "Library items linked to your shared Google Drive. Reorder them here." },
-    { href: "/admin/categories", label: "Categories", count: categories.length, blurb: "The filter tabs on the workshop library." },
-    { href: "/admin/team", label: "Team", count: team.length, blurb: "Faculty, staff, mentors, and student fellows." },
+    { href: "/admin/events", label: "Events", count: eventCount, blurb: "Symposia, field visits, workshops, community days." },
+    { href: "/admin/workshops", label: "Workshops", count: workshopCount, blurb: "Library items linked to your shared Google Drive. Reorder them here." },
+    { href: "/admin/categories", label: "Categories", count: categoryCount, blurb: "The filter tabs on the workshop library." },
+    { href: "/admin/team", label: "Team", count: teamCount, blurb: "Faculty, staff, mentors, and student fellows." },
     { href: "/admin/home", label: "Homepage", count: null, blurb: "Headline, mission, and the stats row." },
     { href: "/admin/program", label: "Program", count: null, blurb: "The /program page: hero, pillars, founders, and the cohort-application toggle." },
   ];

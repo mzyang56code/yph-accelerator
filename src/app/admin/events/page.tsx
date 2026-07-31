@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import SetupNotice from "@/components/admin/SetupNotice";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import DeleteButton from "@/components/admin/DeleteButton";
 import ReorderButtons from "@/components/admin/ReorderButtons";
 import { getEvents } from "@/lib/data";
@@ -18,16 +19,16 @@ export default async function EventsAdmin({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="eyebrow text-cardinal">Events</p>
-          <h1 className="display mt-1 text-3xl text-ink">Events</h1>
-          <p className="mt-2 text-sm text-stone">Use the arrows to set the order shown on the public events page.</p>
-        </div>
-        <Link href="/admin/events/new" className="rounded-md bg-cardinal px-4 py-2.5 text-sm font-semibold text-white hover:bg-cardinal-bright">
-          + New event
-        </Link>
-      </div>
+      <AdminPageHeader
+        eyebrow="Events"
+        title="Events"
+        description="Use the arrows to set the order shown on the public events page."
+        action={
+          <Link href="/admin/events/new" className="rounded-md bg-cardinal px-4 py-2.5 text-sm font-semibold text-white hover:bg-cardinal-bright">
+            + New event
+          </Link>
+        }
+      />
 
       {error && (
         <p className="mt-5 rounded-md border border-cardinal/20 bg-cardinal/5 px-3 py-2 text-sm text-cardinal">{error}</p>

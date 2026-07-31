@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import SetupNotice from "@/components/admin/SetupNotice";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import DeleteButton from "@/components/admin/DeleteButton";
 import ReorderButtons from "@/components/admin/ReorderButtons";
 import { getWorkshops } from "@/lib/data";
@@ -18,21 +19,23 @@ export default async function WorkshopsAdmin({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="eyebrow text-cardinal">Library</p>
-          <h1 className="display mt-1 text-3xl text-ink">Workshops</h1>
-          <p className="mt-2 text-sm text-stone">
+      <AdminPageHeader
+        eyebrow="Library"
+        title="Workshops"
+        description={
+          <>
             Use the arrows to set the order shown on the public library and homepage.{" "}
             <Link href="/admin/categories" className="font-medium text-cardinal hover:underline">
               Manage categories →
             </Link>
-          </p>
-        </div>
-        <Link href="/admin/workshops/new" className="rounded-md bg-cardinal px-4 py-2.5 text-sm font-semibold text-white hover:bg-cardinal-bright">
-          + New workshop
-        </Link>
-      </div>
+          </>
+        }
+        action={
+          <Link href="/admin/workshops/new" className="rounded-md bg-cardinal px-4 py-2.5 text-sm font-semibold text-white hover:bg-cardinal-bright">
+            + New workshop
+          </Link>
+        }
+      />
 
       {error && (
         <p className="mt-5 rounded-md border border-cardinal/20 bg-cardinal/5 px-3 py-2 text-sm text-cardinal">{error}</p>

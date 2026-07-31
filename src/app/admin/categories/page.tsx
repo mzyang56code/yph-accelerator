@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import SetupNotice from "@/components/admin/SetupNotice";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import DeleteButton from "@/components/admin/DeleteButton";
 import ReorderButtons from "@/components/admin/ReorderButtons";
 import { getWorkshopCategories, getWorkshops } from "@/lib/data";
@@ -17,18 +18,16 @@ export default async function CategoriesAdmin({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="eyebrow text-cardinal">Workshop library</p>
-          <h1 className="display mt-1 text-3xl text-ink">Categories</h1>
-          <p className="mt-2 max-w-lg text-sm text-stone">
-            These are the filter tabs on the public workshop library. Reorder them to change the tab order.
-          </p>
-        </div>
-        <Link href="/admin/categories/new" className="rounded-md bg-cardinal px-4 py-2.5 text-sm font-semibold text-white hover:bg-cardinal-bright">
-          + New category
-        </Link>
-      </div>
+      <AdminPageHeader
+        eyebrow="Workshop library"
+        title="Categories"
+        description="These are the filter tabs on the public workshop library. Reorder them to change the tab order."
+        action={
+          <Link href="/admin/categories/new" className="rounded-md bg-cardinal px-4 py-2.5 text-sm font-semibold text-white hover:bg-cardinal-bright">
+            + New category
+          </Link>
+        }
+      />
 
       {error && (
         <p className="mt-5 rounded-md border border-cardinal/20 bg-cardinal/5 px-3 py-2 text-sm text-cardinal">{error}</p>
