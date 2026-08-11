@@ -51,13 +51,17 @@ export default function EventForm({ event }: { event?: Event }) {
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Start time" hint="Optional. Leave blank if the time isn't set yet.">
+        <Field label="Start time" hint="Pacific Time. Optional — leave blank if it isn't set yet.">
           <Text name="start_time" type="time" defaultValue={event?.startTime ?? ""} />
         </Field>
-        <Field label="End time" hint="Optional">
+        <Field label="End time" hint="Pacific Time. Optional.">
           <Text name="end_time" type="time" defaultValue={event?.endTime ?? ""} />
         </Field>
       </div>
+      <p className="-mt-2 text-xs text-stone">
+        Enter times as they are at the venue. Visitors outside California see them converted to
+        their own time zone automatically.
+      </p>
 
       <Field label="Location">
         <Text name="location" defaultValue={event?.location} required />

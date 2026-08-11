@@ -4,11 +4,46 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import type { Event } from "@/lib/data";
-import { dateParts, formatDateRange, formatTimeRange } from "@/lib/format";
+import {
+  SITE_TZ,
+  dateParts,
+  formatDateRange,
+  formatZonedTimeRange,
+  viewerTimeZone,
+  zonedWallTimeToInstant,
+  zonesDifferAt,
+} from "@/lib/format";
+
+/**
+ * Event times in the viewer's own zone, with the venue's time kept alongside
+ * whenever the two differ — an in-person attendee still needs to know what
+ * the clock says at the venue.
+ *
+ * The viewer's zone is only knowable in the browser, so the first client
+ * render deliberately matches the server's (venue time) and the local line
+ * appears after mount. Rendering it during SSR would be a hydration mismatch.
+ */
+function useEventTimes(event: Event) {
+  const [viewerTz, setViewerTz] = useState<string | null>(null);
+  useEffect(() => setViewerTz(viewerTimeZone()), []);
+
+  const anchorHhmm = event.startTime ?? event.endTime;
+  if (!anchorHhmm) return { primary: "", venue: "" };
+
+  const venue = formatZonedTimeRange(event.date, event.startTime, event.endTime, SITE_TZ);
+  const anchor = zonedWallTimeToInstant(event.date, anchorHhmm);
+  if (!viewerTz || !anchor || !zonesDifferAt(anchor, viewerTz)) {
+    return { primary: venue, venue: "" };
+  }
+  return {
+    primary: formatZonedTimeRange(event.date, event.startTime, event.endTime, viewerTz),
+    venue,
+  };
+}
 
 export default function EventCard({ event, past = false }: { event: Event; past?: boolean }) {
   const { weekday, day, month } = dateParts(event.date);
-  const timeRange = formatTimeRange(event.startTime, event.endTime);
+  const { primary: timeRange, venue: venueTime } = useEventTimes(event);
   const [open, setOpen] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -72,6 +107,9 @@ export default function EventCard({ event, past = false }: { event: Event; past?
               <dd className="font-medium text-ink">
                 {formatDateRange(event.date, event.endDate)}
                 {timeRange && <span className="block font-normal text-stone">{timeRange}</span>}
+                {venueTime && (
+                  <span className="block font-normal text-stone/80">{venueTime} at the venue</span>
+                )}
               </dd>
             </div>
             <div className="flex gap-2">
@@ -141,6 +179,9 @@ export default function EventCard({ event, past = false }: { event: Event; past?
                     <dd className="mt-1 font-medium text-ink">
                       {formatDateRange(event.date, event.endDate)}
                       {timeRange && <span className="block font-normal text-stone">{timeRange}</span>}
+                      {venueTime && (
+                        <span className="block font-normal text-stone/80">{venueTime} at the venue</span>
+                      )}
                     </dd>
                   </div>
                   <div>

@@ -194,6 +194,45 @@ fields, so until the migration landed every save failed with PostgREST's
   is rejected (almost always a slipped AM/PM). Multi-day events skip the check,
   since they legitimately end "earlier" in the day than they start.
 
+### Time zones
+
+**Admins always enter Pacific time** — the wall clock at the venue. The form
+says so, and `/admin/events` shows times back with a "PT" label.
+
+Visitors see those times **converted to their own zone**, with the venue time
+kept on a second line whenever the two differ:
+
+> **When** Aug 23, 2026
+> 1 PM – 6 PM ET
+> 10 AM – 3 PM PT at the venue
+
+A Bay Area visitor — most of them — sees only the single "10 AM – 3 PM PT"
+line, since there's nothing to convert.
+
+Three things worth knowing before changing any of this:
+
+- **Times are stored naive** (`time` columns, no zone), and the zone is a
+  separate fixed constant, `SITE_TZ` in `src/lib/format.ts`. This is
+  deliberate and matches how Google Calendar models events. Don't "fix" it by
+  switching to `timestamptz`: an event is a wall-clock promise about a place,
+  so if DST law changes, 10 AM must stay 10 AM rather than sliding an hour.
+  If YPHA ever runs an event outside Pacific, add a per-event `timezone`
+  column rather than converting the stored values.
+- **All zone math goes through `Intl`** (the IANA tzdb built into the browser
+  and Node) — no date library, and DST is handled for us. Labels use
+  `shortGeneric` ("PT", not "PST"/"PDT"), falling back to `short` ("GMT+2")
+  outside North America, where `shortGeneric` returns prose like "France
+  Time".
+- **The viewer's zone is browser-only**, so the local line renders *after*
+  mount (`useEventTimes` in `EventCard.tsx`). The server, and therefore the
+  first client render, always shows venue time — rendering the viewer's zone
+  during SSR would be a hydration mismatch. Keep that ordering if you touch
+  the component.
+
+Events far enough east land on a different calendar day for the viewer than
+the date printed beside them, so the range appends the local date in that case
+("3 AM – 8 AM GMT+10 (Aug 24)").
+
 ## Admin panel revamp (2026-07-30)
 
 Triggered by feedback that `/admin` felt slow/clunky and the nav was
