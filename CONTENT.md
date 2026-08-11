@@ -199,15 +199,19 @@ fields, so until the migration landed every save failed with PostgREST's
 **Admins always enter Pacific time** — the wall clock at the venue. The form
 says so, and `/admin/events` shows times back with a "PT" label.
 
-Visitors see those times **converted to their own zone**, with the venue time
-kept on a second line whenever the two differ:
+On the card, the venue time sits **on the same line as the date**, in the same
+face, size, weight, and colour — only the `·` between them is dimmed:
 
-> **When** Aug 23, 2026
-> 1 PM – 6 PM ET
-> 10 AM – 3 PM PT at the venue
+> **When** &nbsp;Aug 23, 2026 · 2 PM – 3 PM PT
+> **Where** Zoom
 
-A Bay Area visitor — most of them — sees only the single "10 AM – 3 PM PT"
-line, since there's nothing to convert.
+A visitor outside Pacific additionally gets **their own** time on a quiet line
+beneath ("5 – 6 PM ET your time"). A Bay Area visitor — most of them — never
+sees it. The venue time leads because it's what the admin typed and what's
+true for everyone; the viewer's zone is the annotation, not the headline.
+
+In the expanded popup the two stack instead of sharing a line: its three-column
+grid is too narrow to hold both.
 
 Three things worth knowing before changing any of this:
 

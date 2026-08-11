@@ -243,6 +243,26 @@ button ("Nominations Open Soon") vs. filled white button once a real
 Google-Form URL is set, same swap-not-duplicate convention as
 `ProgramCountdown`'s pre/post-open Apply button.
 
+### Event Card Meta List (`EventCard.tsx`, revised 2026-08-11)
+The When / Where / Led by list under an event's summary. Two roles only, held
+in the `metaLabel` / `metaValue` constants at the top of the file — edit those
+rather than the six call sites, which is how the card drifted out of sync
+before.
+
+- **Labels**: 12px mono, uppercase, `tracking-wide`, `ink/70`, fixed `w-16`
+  column. `pt-1` optically drops them onto the 16px value's baseline; without
+  it they float high.
+- **Values**: 16px display (Libre Franklin) medium, `ink`. One size for every
+  value — date, time, place, host. Resist promoting one above the others; two
+  value sizes in a list this short reads as an accident, not a hierarchy.
+- **Date and time share a line**, separated by a `·` at `stone/50`. Each half
+  is `whitespace-nowrap` so a narrow card breaks between them instead of
+  mid-date, and the separator travels with the time.
+- **Rows are conditional.** `Led by` renders only when a host is set, and the
+  summary only when there's summary text. An event with neither used to show a
+  labelled empty row above a blank band. The footer is `mt-auto` (not a
+  `flex-1` summary) so cards still bottom-align across a grid row.
+
 ## 6. Do's and Don'ts
 
 ### Do:

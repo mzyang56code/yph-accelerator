@@ -15,35 +15,44 @@ import {
 } from "@/lib/format";
 
 /**
- * Event times in the viewer's own zone, with the venue's time kept alongside
- * whenever the two differ — an in-person attendee still needs to know what
- * the clock says at the venue.
+ * One voice for the card's meta list: quiet mono labels against larger
+ * display-face values. `pt-1` optically drops the 12px label onto the same
+ * baseline as the 16px value beside it (24px line box vs 16px).
+ */
+const metaLabel = "w-16 shrink-0 pt-1 font-mono uppercase tracking-wide text-ink/70";
+const metaValue = "font-display text-base font-medium leading-6 text-ink";
+const modalLabel = "font-mono text-xs uppercase tracking-wide text-ink/70";
+const modalValue = "font-display text-base font-medium leading-snug text-ink";
+
+/**
+ * `venueRange` is the clock at the venue — what the admin typed, true for
+ * everyone, and therefore server-renderable.
  *
- * The viewer's zone is only knowable in the browser, so the first client
- * render deliberately matches the server's (venue time) and the local line
- * appears after mount. Rendering it during SSR would be a hydration mismatch.
+ * A viewer in another zone additionally gets their own time on a quiet third
+ * line. That one is browser-only (the zone isn't knowable during SSR), so it
+ * appears after mount; rendering it on the server would be a hydration
+ * mismatch.
  */
 function useEventTimes(event: Event) {
   const [viewerTz, setViewerTz] = useState<string | null>(null);
   useEffect(() => setViewerTz(viewerTimeZone()), []);
 
   const anchorHhmm = event.startTime ?? event.endTime;
-  if (!anchorHhmm) return { primary: "", venue: "" };
+  if (!anchorHhmm) return { venueRange: "", viewerRange: "" };
 
-  const venue = formatZonedTimeRange(event.date, event.startTime, event.endTime, SITE_TZ);
   const anchor = zonedWallTimeToInstant(event.date, anchorHhmm);
-  if (!viewerTz || !anchor || !zonesDifferAt(anchor, viewerTz)) {
-    return { primary: venue, venue: "" };
-  }
+  const differs = Boolean(viewerTz && anchor && zonesDifferAt(anchor, viewerTz));
   return {
-    primary: formatZonedTimeRange(event.date, event.startTime, event.endTime, viewerTz),
-    venue,
+    venueRange: formatZonedTimeRange(event.date, event.startTime, event.endTime, SITE_TZ),
+    viewerRange: differs
+      ? formatZonedTimeRange(event.date, event.startTime, event.endTime, viewerTz!)
+      : "",
   };
 }
 
 export default function EventCard({ event, past = false }: { event: Event; past?: boolean }) {
   const { weekday, day, month } = dateParts(event.date);
-  const { primary: timeRange, venue: venueTime } = useEventTimes(event);
+  const { venueRange, viewerRange } = useEventTimes(event);
   const [open, setOpen] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -99,30 +108,47 @@ export default function EventCard({ event, past = false }: { event: Event; past?
         </div>
 
         <div className="flex flex-1 flex-col p-5">
-          <p className="pretty flex-1 text-sm leading-relaxed text-stone">{event.summary}</p>
+          {event.summary && (
+            <p className="pretty text-sm leading-relaxed text-stone">{event.summary}</p>
+          )}
 
-          <dl className="mt-4 space-y-1.5 text-xs text-stone">
+          {/* Date and time read as one line in one format. Each half is
+              nowrap so a narrow card breaks between them rather than mid-date. */}
+          <dl className={`space-y-2.5 text-xs text-stone ${event.summary ? "mt-4" : ""}`}>
             <div className="flex gap-2">
-              <dt className="w-16 shrink-0 font-mono uppercase tracking-wide text-ink/70">When</dt>
-              <dd className="font-medium text-ink">
-                {formatDateRange(event.date, event.endDate)}
-                {timeRange && <span className="block font-normal text-stone">{timeRange}</span>}
-                {venueTime && (
-                  <span className="block font-normal text-stone/80">{venueTime} at the venue</span>
+              <dt className={metaLabel}>When</dt>
+              <dd className={`min-w-0 ${metaValue} tabular-nums`}>
+                <span className="whitespace-nowrap">
+                  {formatDateRange(event.date, event.endDate)}
+                </span>
+                {venueRange && (
+                  <span className="whitespace-nowrap">
+                    <span aria-hidden className="px-1.5 text-stone/50">·</span>
+                    {venueRange}
+                  </span>
+                )}
+                {viewerRange && (
+                  <span className="mt-1 block text-xs font-normal leading-5 text-stone">
+                    {viewerRange} your time
+                  </span>
                 )}
               </dd>
             </div>
             <div className="flex gap-2">
-              <dt className="w-16 shrink-0 font-mono uppercase tracking-wide text-ink/70">Where</dt>
-              <dd className="font-medium text-ink">{event.location}</dd>
+              <dt className={metaLabel}>Where</dt>
+              <dd className={`min-w-0 ${metaValue}`}>{event.location}</dd>
             </div>
-            <div className="flex gap-2">
-              <dt className="w-16 shrink-0 font-mono uppercase tracking-wide text-ink/70">Led by</dt>
-              <dd className="font-medium text-ink">{event.host}</dd>
-            </div>
+            {event.host && (
+              <div className="flex gap-2">
+                <dt className={metaLabel}>Led by</dt>
+                <dd className={`min-w-0 ${metaValue}`}>{event.host}</dd>
+              </div>
+            )}
           </dl>
 
-          <div className="mt-5 flex items-center justify-between gap-3">
+          {/* mt-auto, not a flex-1 summary: an event with no summary shouldn't
+              reserve a blank band, but the footer still aligns across cards. */}
+          <div className="mt-auto flex items-center justify-between gap-3 pt-5">
             {!past && event.registerUrl && (
               <a
                 href={event.registerUrl}
@@ -174,24 +200,33 @@ export default function EventCard({ event, past = false }: { event: Event; past?
 
               <div className="p-6">
                 <dl className="grid grid-cols-1 gap-4 border-b border-ink/8 pb-5 text-sm sm:grid-cols-3">
+                  {/* Same mono-label / display-value system as the card. Date
+                      and time stack here rather than sharing a line: the
+                      three-column grid is too narrow to hold both. */}
                   <div>
-                    <dt className="font-mono text-xs uppercase tracking-wide text-ink/70">When</dt>
-                    <dd className="mt-1 font-medium text-ink">
-                      {formatDateRange(event.date, event.endDate)}
-                      {timeRange && <span className="block font-normal text-stone">{timeRange}</span>}
-                      {venueTime && (
-                        <span className="block font-normal text-stone/80">{venueTime} at the venue</span>
+                    <dt className={modalLabel}>When</dt>
+                    <dd className={`mt-1 ${modalValue}`}>
+                      <span className="block">{formatDateRange(event.date, event.endDate)}</span>
+                      {venueRange && (
+                        <span className="block tabular-nums">{venueRange}</span>
+                      )}
+                      {viewerRange && (
+                        <span className="mt-1 block text-xs font-normal leading-5 text-stone tabular-nums">
+                          {viewerRange} your time
+                        </span>
                       )}
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-mono text-xs uppercase tracking-wide text-ink/70">Where</dt>
-                    <dd className="mt-1 font-medium text-ink">{event.location}</dd>
+                    <dt className={modalLabel}>Where</dt>
+                    <dd className={`mt-1 ${modalValue}`}>{event.location}</dd>
                   </div>
-                  <div>
-                    <dt className="font-mono text-xs uppercase tracking-wide text-ink/70">Led by</dt>
-                    <dd className="mt-1 font-medium text-ink">{event.host}</dd>
-                  </div>
+                  {event.host && (
+                    <div>
+                      <dt className={modalLabel}>Led by</dt>
+                      <dd className={`mt-1 ${modalValue}`}>{event.host}</dd>
+                    </div>
+                  )}
                 </dl>
 
                 <p className="pretty mt-5 whitespace-pre-line text-sm leading-relaxed text-stone">
