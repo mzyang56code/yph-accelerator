@@ -11,6 +11,14 @@ behind an admin toggle (below) — currently **off**, so Apply buttons read
 "2026 Cohort — Coming Soon". The `program_content` table migration has been run
 in Supabase; the Program admin box works.
 
+**Update (2026-07-30, later same day):** Added a nomination-first `/educators`
+page (linked from the footer, not the main nav — see "For Educators page"
+below); added a second homepage partner logo (Stanford CIGH, before ALAS);
+built the actual **cohort application Google Form** (see "Cohort application"
+below — not yet wired into `/admin → Program`'s Application form URL field);
+and revamped `/admin` for performance and navigation IA (see "Admin panel
+revamp" below).
+
 **Deploys are currently manual.** Vercel's GitHub auto-deploy-on-push was found
 not to be firing (last auto-deploy was 14 days stale) — `git push` alone does
 **not** update ypha.site. Ship with `npx vercel --prod` from a repo checkout
@@ -56,10 +64,12 @@ before assuming it's still accurate.
   word "Workshops" from the heading right above it.
 - **New "In partnership with" band** (2026-07-30): a white, shadow-lifted card
   sitting between the Team section and the "Know a high schooler…" contact
-  band (`src/app/page.tsx`, `PARTNERS` array). First (only) partner: **ALAS —
-  Ayudando Latinos a Soñar**, logo at `public/partners/alas.png` (committed to
-  the repo, not referenced from anyone's local Downloads folder). Add future
-  partners by appending to `PARTNERS`; no CMS field for this yet.
+  band (`src/app/page.tsx`, `PARTNERS` array). Two partners now: **Stanford
+  Center for Innovation in Global Health** (`public/partners/cigh.png`, added
+  2026-07-30 later the same day) first, then **ALAS — Ayudando Latinos a
+  Soñar** (`public/partners/alas.png`). Both committed to the repo, not
+  referenced from anyone's local Downloads folder. Add future partners by
+  appending to `PARTNERS`; no CMS field for this yet.
 - Sections top-to-bottom: hero → mission + stats → Events → Workshops (carousel)
   → Our Team (5 directors, click a card for the bio popup) → In partnership
   with (partner logos) → permanent, compact **Get in touch** contact band.
@@ -121,6 +131,35 @@ as the homepage section-heading trims above:
   deliberately worded differently from the homepage Workshops intro above so
   the two don't read as copy-pasted.
 
+## For Educators page (`/educators`, added 2026-07-30)
+
+A page for teachers/counselors to nominate a student, built code-fixed (like
+`/about`) rather than CMS-driven. **Not in the main nav** — deliberately
+dropped after the fact (see below); reachable only via the footer's Explore
+column and direct link-sharing (email, flyer), since the audience finds this
+page by being handed the link, not by browsing the site.
+
+- **Hero is the whole point:** unlike other interior pages, the hero itself
+  *is* the nomination CTA — headline "Nominate a student for the 2026
+  cohort," subhead, and the CTA button inline (ghost "Nominations Open Soon"
+  until a real Google Form URL is set on the `NOMINATION_FORM_URL` constant
+  in `src/app/educators/page.tsx`). Earlier drafts had a separate mid-page
+  "Nominate a Student" CTA band and a full "Other ways to help" section
+  (share the page / invite a workshop) — both removed so the page has one
+  job, per explicit feedback that a second full section diluted the ask.
+- **Sections:** Hero (nomination CTA) → "Why nominate them" (4 reasons,
+  editorial rows) → Key dates (condensed pull from `/program`'s `JOIN_STEPS`)
+  → "Have questions?" with a `MailtoLink` Get-in-touch button.
+- **Nav history:** briefly added to `SiteNav.tsx`'s main nav (first next to
+  "Join our 2026 Cohort"), then removed — the primary nav's job is walking
+  students/parents down the belief ladder toward applying, and a low-traffic
+  educator link competed with that. Now lives only in `SiteFooter.tsx`'s
+  Explore column.
+- **Nomination Google Form:** does not exist yet (separate from the cohort
+  application form below). Draft field list for whoever builds it: student
+  name/grade/school, student and/or parent email, nominator name/role/email,
+  relationship to student, why they'd be a good fit, optional notes.
+
 ## Admin ordering behavior (2026-07-30)
 
 New **workshops** and new **events** created in `/admin` now sort to the
@@ -130,12 +169,81 @@ New **workshops** and new **events** created in `/admin` now sort to the
 deliberate reversal from the original "new items join the end" behavior.
 Manual reordering via the ↑/↓ arrows in `/admin` still works the same way.
 
+## Event start/end times (2026-08-11)
+
+Events now carry an optional **start time** and **end time** alongside the
+existing start/end dates. Both are `time` columns on `public.events`
+(`start_time`, `end_time`); the migration **has been run** against the live
+Supabase project, so `/admin` event saves work. Note that adding the columns
+was required before *any* event could be saved — `saveEvent` always sends both
+fields, so until the migration landed every save failed with PostgREST's
+`PGRST204`.
+
+- **Both fields are optional.** Leave them blank and the card renders exactly
+  as it did before — date only, no empty "time" line. The five pre-existing
+  events were left with null times; set them in `/admin → Events` as they're
+  confirmed.
+- **Where it shows:** under the date in the "When" row, on both the event card
+  and the expanded popup (`src/components/EventCard.tsx`), and in the
+  `/admin/events` list line.
+- **Formatting** lives in `formatTime` / `formatTimeRange`
+  (`src/lib/format.ts`), matching the existing deterministic no-timezone-drift
+  approach: `"16:00"` → `4 PM`, `"09:30"` → `9:30 AM`, on-the-hour times drop
+  the `:00`. A start with no end renders as just the start time.
+- **One validation:** on a single-day event, an end time at or before the start
+  is rejected (almost always a slipped AM/PM). Multi-day events skip the check,
+  since they legitimately end "earlier" in the day than they start.
+
+## Admin panel revamp (2026-07-30)
+
+Triggered by feedback that `/admin` felt slow/clunky and the nav was
+unfocused. Root cause of the slowness: `src/middleware.ts` and
+`src/app/admin/layout.tsx` were **both** calling `supabase.auth.getUser()` —
+a live network round-trip to Supabase's Auth server — on every single admin
+navigation. Fixed by having middleware forward the already-verified email via
+an `x-user-email` request header, read in `layout.tsx` via `headers()`
+instead of a second `getUser()` call. Also: dashboard summary cards switched
+from fetching full row sets to `count`-only queries (`countEvents` etc. in
+`src/lib/data.ts`); added `loading.tsx` skeletons (root + all four list
+pages, via `src/components/admin/ListSkeleton.tsx`) so navigation shows
+instant feedback; extracted `AdminNav.tsx` (active-state highlighting,
+`usePathname`-based, grouped **Content** — Events/Workshops/Team — and
+**Pages** — Homepage/Program, with Dashboard standing alone) and
+`AdminPageHeader.tsx` (shared eyebrow/title/description/action layout,
+replacing duplicated markup across six pages). **Categories was briefly
+added to the nav, then explicitly pulled back out** — it's meant to stay
+reachable only via the "Manage categories →" link on the Workshops page and
+the dashboard card, not as its own top-level tab.
+
 ## Cohort application (admin-toggled)
 
 `/admin → Program`: an **Applications are open** toggle + a **Google Form URL**.
 Off → the Apply buttons read "2026 Cohort — Coming Soon"; on → "Apply to the 2026
 cohort" opens the form. Drives the CTAs on both the homepage hero and `/program`.
 Stored in `program_content` (`application_open`, `application_url`).
+
+**The application Google Form itself was built 2026-07-30:**
+https://docs.google.com/forms/d/e/1FAIpQLSf6EY8AspgVCwl_pJlU8qvkPa2Gom97Gt5pv12jatSgjuuocg/viewform
+— **not yet pasted into** `/admin → Program`'s Application form URL field
+(still `#` as of this writing; `application_open` still off). Structure,
+built deliberately non-intimidating despite being competitive (~20 spots):
+- **About You:** full name*, email*, phone (optional), high school*, grade in
+  Fall 2026* (9th–12th), how they heard about YPHA (optional).
+- **About You (short answer):** what draws them to public health*, a
+  firsthand health/community issue they've noticed*, what they're hoping to
+  get out of a year of mentorship*.
+- **Your Idea** (intro: *"You don't need a finished plan here — just your
+  best current thinking... We just want to see that you've thought about
+  it."*) — mirrors `/program`'s `APPLICATION_ASKS` copy, with soft word-count
+  guidance appended to each title rather than hard validation: community
+  problem (~150 words)*, who it helps and why (~150 words)*, potential
+  partners (~75 words, optional — explicitly fine to not know yet), what a
+  win looks like by next May (~100 words)*.
+- **Anything Else?** one optional open-ended question.
+- Built and published via Chrome browser automation (no Google Forms API
+  exists as a tool) — if it needs edits, either ask for them again the same
+  way or edit directly at the editor URL (ask Max for it; not saved here
+  since it requires his Google auth).
 
 ---
 

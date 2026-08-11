@@ -228,6 +228,20 @@ eyebrow size) since a single small caption over a large logo read as
 disproportionate. Rename the label per partner-relationship type — "Supported
 by" implies funding, "In partnership with" (current) implies collaboration;
 pick whichever matches the actual relationship for the next partner.
+**Two logos as of 2026-07-30 (later same day):** Stanford Center for
+Innovation in Global Health (`public/partners/cigh.png`) added as the first
+logo, ALAS second. Logos render at a shared height via `object-contain`, so
+mismatched source aspect ratios (CIGH is a wide ~2.6:1 lockup vs. ALAS's
+near-square seal) aren't an issue — don't pre-crop future logos to match.
+
+### Nomination-First Hero (custom, added 2026-07-30 — `/educators`)
+A second instance of the "one job per hero" pattern (see Status/Countdown
+Card above): the `/educators` hero skips the usual dot-map + headline pattern
+and puts the single ask — nominating a student — directly in the Cardinal
+hero with the CTA inline, rather than burying it in a mid-page band. Ghost
+button ("Nominations Open Soon") vs. filled white button once a real
+Google-Form URL is set, same swap-not-duplicate convention as
+`ProgramCountdown`'s pre/post-open Apply button.
 
 ## 6. Do's and Don'ts
 
