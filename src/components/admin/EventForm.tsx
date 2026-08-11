@@ -50,6 +50,15 @@ export default function EventForm({ event }: { event?: Event }) {
         </Field>
       </div>
 
+      <div className="grid gap-5 sm:grid-cols-2">
+        <Field label="Start time" hint="Optional. Leave blank if the time isn't set yet.">
+          <Text name="start_time" type="time" defaultValue={event?.startTime ?? ""} />
+        </Field>
+        <Field label="End time" hint="Optional">
+          <Text name="end_time" type="time" defaultValue={event?.endTime ?? ""} />
+        </Field>
+      </div>
+
       <Field label="Location">
         <Text name="location" defaultValue={event?.location} required />
       </Field>

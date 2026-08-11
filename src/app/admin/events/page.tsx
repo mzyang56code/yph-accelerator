@@ -5,7 +5,7 @@ import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import DeleteButton from "@/components/admin/DeleteButton";
 import ReorderButtons from "@/components/admin/ReorderButtons";
 import { getEvents } from "@/lib/data";
-import { formatDateRange } from "@/lib/format";
+import { formatDateRange, formatTimeRange } from "@/lib/format";
 import { deleteEvent, moveEvent } from "../actions";
 
 export default async function EventsAdmin({
@@ -53,7 +53,14 @@ export default async function EventsAdmin({
                   )}
                 </div>
                 <p className="mt-0.5 text-sm text-stone">
-                  {formatDateRange(e.date, e.endDate)} · {e.tag} · {e.location}
+                  {[
+                    formatDateRange(e.date, e.endDate),
+                    formatTimeRange(e.startTime, e.endTime),
+                    e.tag,
+                    e.location,
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
                 </p>
               </div>
             </div>

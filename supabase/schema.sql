@@ -12,6 +12,8 @@ create table if not exists public.events (
   title        text not null,
   date         date not null,
   end_date     date,
+  start_time   time,
+  end_time     time,
   location     text not null default '',
   summary      text not null default '',
   details      text,
@@ -28,6 +30,8 @@ create table if not exists public.events (
 alter table public.events add column if not exists details text;
 alter table public.events add column if not exists sort_order integer not null default 0;
 alter table public.events add column if not exists photo_url text;
+alter table public.events add column if not exists start_time time;
+alter table public.events add column if not exists end_time time;
 
 -- Backfill sort_order once, in the calendar's existing (soonest-first) order —
 -- but only if nothing has customized it yet, so re-running this file never
@@ -216,12 +220,12 @@ values (
 )
 on conflict (id) do nothing;
 
-insert into public.events (id, title, date, end_date, location, summary, host, tag, featured, register_url) values
-  ('immunization-mapping-2026','Mapping Immunization Gaps in Santa Clara County','2026-07-19',null,'Li Ka Shing Center, Stanford','Student teams present interactive maps of childhood vaccination coverage and propose outreach for the neighborhoods most left behind.','Epidemiology track students','Symposium',true,'#'),
-  ('air-quality-walk','Air Quality Field Walk & Sensor Build','2026-07-26',null,'East Palo Alto','Build a low-cost particulate sensor, then walk a transect through the neighborhood logging readings and talking with residents.','Aanya R. & the Environmental Health group','Field visit',true,'#'),
-  ('biostats-bootcamp','Weekend Biostatistics Bootcamp','2026-08-02','2026-08-03','Online','Two days from means to models — confidence intervals, p-values done honestly, and reading a study without being fooled.','Biostatistics mentors','Workshop',true,'#'),
-  ('fall-info-session','Fall Cohort — Information Session for Families','2026-08-14',null,'Online','What the program asks of students, what it offers, and how to apply. Bring questions; we''ll stay as long as there are any.','Program staff','Info session',false,'#'),
-  ('community-clinic-day','Community Health Screening Day','2026-08-23',null,'Fair Oaks Community Center, Redwood City','Students support a free blood-pressure and health-literacy clinic alongside partner physicians. Spanish-speaking volunteers especially needed.','Health Equity track students','Community',false,'#')
+insert into public.events (id, title, date, end_date, start_time, end_time, location, summary, host, tag, featured, register_url) values
+  ('immunization-mapping-2026','Mapping Immunization Gaps in Santa Clara County','2026-07-19',null,'16:00','18:30','Li Ka Shing Center, Stanford','Student teams present interactive maps of childhood vaccination coverage and propose outreach for the neighborhoods most left behind.','Epidemiology track students','Symposium',true,'#'),
+  ('air-quality-walk','Air Quality Field Walk & Sensor Build','2026-07-26',null,'09:30','13:00','East Palo Alto','Build a low-cost particulate sensor, then walk a transect through the neighborhood logging readings and talking with residents.','Aanya R. & the Environmental Health group','Field visit',true,'#'),
+  ('biostats-bootcamp','Weekend Biostatistics Bootcamp','2026-08-02','2026-08-03','10:00','15:00','Online','Two days from means to models — confidence intervals, p-values done honestly, and reading a study without being fooled.','Biostatistics mentors','Workshop',true,'#'),
+  ('fall-info-session','Fall Cohort — Information Session for Families','2026-08-14',null,'19:00',null,'Online','What the program asks of students, what it offers, and how to apply. Bring questions; we''ll stay as long as there are any.','Program staff','Info session',false,'#'),
+  ('community-clinic-day','Community Health Screening Day','2026-08-23',null,null,null,'Fair Oaks Community Center, Redwood City','Students support a free blood-pressure and health-literacy clinic alongside partner physicians. Spanish-speaking volunteers especially needed.','Health Equity track students','Community',false,'#')
 on conflict (id) do nothing;
 
 insert into public.workshop_categories (label, color, sort_order) values

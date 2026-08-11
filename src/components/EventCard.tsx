@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import type { Event } from "@/lib/data";
-import { dateParts, formatDateRange } from "@/lib/format";
+import { dateParts, formatDateRange, formatTimeRange } from "@/lib/format";
 
 export default function EventCard({ event, past = false }: { event: Event; past?: boolean }) {
   const { weekday, day, month } = dateParts(event.date);
+  const timeRange = formatTimeRange(event.startTime, event.endTime);
   const [open, setOpen] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -68,7 +69,10 @@ export default function EventCard({ event, past = false }: { event: Event; past?
           <dl className="mt-4 space-y-1.5 text-xs text-stone">
             <div className="flex gap-2">
               <dt className="w-16 shrink-0 font-mono uppercase tracking-wide text-ink/70">When</dt>
-              <dd className="font-medium text-ink">{formatDateRange(event.date, event.endDate)}</dd>
+              <dd className="font-medium text-ink">
+                {formatDateRange(event.date, event.endDate)}
+                {timeRange && <span className="block font-normal text-stone">{timeRange}</span>}
+              </dd>
             </div>
             <div className="flex gap-2">
               <dt className="w-16 shrink-0 font-mono uppercase tracking-wide text-ink/70">Where</dt>
@@ -134,7 +138,10 @@ export default function EventCard({ event, past = false }: { event: Event; past?
                 <dl className="grid grid-cols-1 gap-4 border-b border-ink/8 pb-5 text-sm sm:grid-cols-3">
                   <div>
                     <dt className="font-mono text-xs uppercase tracking-wide text-ink/70">When</dt>
-                    <dd className="mt-1 font-medium text-ink">{formatDateRange(event.date, event.endDate)}</dd>
+                    <dd className="mt-1 font-medium text-ink">
+                      {formatDateRange(event.date, event.endDate)}
+                      {timeRange && <span className="block font-normal text-stone">{timeRange}</span>}
+                    </dd>
                   </div>
                   <div>
                     <dt className="font-mono text-xs uppercase tracking-wide text-ink/70">Where</dt>

@@ -26,6 +26,8 @@ export type Event = {
   title: string;
   date: string; // ISO date
   endDate?: string;
+  startTime?: string; // "HH:MM", 24-hour, local to the event
+  endTime?: string; // "HH:MM"
   location: string;
   summary: string; // short teaser shown on the card
   details?: string; // longer description shown when the card is expanded
@@ -125,10 +127,10 @@ const seedProgramContent: ProgramContent = {
 };
 
 const seedEvents: Event[] = [
-  { id: "immunization-mapping-2026", title: "Mapping Immunization Gaps in Santa Clara County", date: "2026-07-19", location: "Li Ka Shing Center, Stanford", summary: "Student teams present interactive maps of childhood vaccination coverage and propose outreach for the neighborhoods most left behind.", details: "Six student teams spent the spring pulling county immunization records and overlaying them against school district boundaries and clinic locations. Each team will present a 10-minute walkthrough of their map, the gap they found, and a concrete outreach idea: flyering, a pop-up clinic day, or a partnership with a school nurse. Open to the public; light refreshments provided.", host: "Epidemiology track students", tag: "Symposium", featured: true, registerUrl: "#", sortOrder: 0 },
-  { id: "air-quality-walk", title: "Air Quality Field Walk & Sensor Build", date: "2026-07-26", location: "East Palo Alto", summary: "Build a low-cost particulate sensor, then walk a transect through the neighborhood logging readings and talking with residents.", details: "We'll start indoors soldering a low-cost PM2.5 sensor from a kit (no experience needed), then walk a fixed route through East Palo Alto logging readings every block. Bring comfortable shoes and a phone for the logging app. Residents along the route have agreed to short conversations about air quality near their homes. This is as much a listening exercise as a data one.", host: "Aanya R. & the Environmental Health group", tag: "Field visit", featured: true, registerUrl: "#", sortOrder: 1 },
-  { id: "biostats-bootcamp", title: "Weekend Biostatistics Bootcamp", date: "2026-08-02", endDate: "2026-08-03", location: "Online", summary: "Two days from means to models: confidence intervals, p-values done honestly, and reading a study without being fooled.", host: "Biostatistics mentors", tag: "Workshop", featured: true, registerUrl: "#", sortOrder: 2 },
-  { id: "fall-info-session", title: "Fall Cohort — Information Session for Families", date: "2026-08-14", location: "Online", summary: "What the program asks of students, what it offers, and how to apply. Bring questions; we'll stay as long as there are any.", host: "Program staff", tag: "Info session", featured: false, registerUrl: "#", sortOrder: 3 },
+  { id: "immunization-mapping-2026", title: "Mapping Immunization Gaps in Santa Clara County", date: "2026-07-19", startTime: "16:00", endTime: "18:30", location: "Li Ka Shing Center, Stanford", summary: "Student teams present interactive maps of childhood vaccination coverage and propose outreach for the neighborhoods most left behind.", details: "Six student teams spent the spring pulling county immunization records and overlaying them against school district boundaries and clinic locations. Each team will present a 10-minute walkthrough of their map, the gap they found, and a concrete outreach idea: flyering, a pop-up clinic day, or a partnership with a school nurse. Open to the public; light refreshments provided.", host: "Epidemiology track students", tag: "Symposium", featured: true, registerUrl: "#", sortOrder: 0 },
+  { id: "air-quality-walk", title: "Air Quality Field Walk & Sensor Build", date: "2026-07-26", startTime: "09:30", endTime: "13:00", location: "East Palo Alto", summary: "Build a low-cost particulate sensor, then walk a transect through the neighborhood logging readings and talking with residents.", details: "We'll start indoors soldering a low-cost PM2.5 sensor from a kit (no experience needed), then walk a fixed route through East Palo Alto logging readings every block. Bring comfortable shoes and a phone for the logging app. Residents along the route have agreed to short conversations about air quality near their homes. This is as much a listening exercise as a data one.", host: "Aanya R. & the Environmental Health group", tag: "Field visit", featured: true, registerUrl: "#", sortOrder: 1 },
+  { id: "biostats-bootcamp", title: "Weekend Biostatistics Bootcamp", date: "2026-08-02", endDate: "2026-08-03", startTime: "10:00", endTime: "15:00", location: "Online", summary: "Two days from means to models: confidence intervals, p-values done honestly, and reading a study without being fooled.", host: "Biostatistics mentors", tag: "Workshop", featured: true, registerUrl: "#", sortOrder: 2 },
+  { id: "fall-info-session", title: "Fall Cohort — Information Session for Families", date: "2026-08-14", startTime: "19:00", location: "Online", summary: "What the program asks of students, what it offers, and how to apply. Bring questions; we'll stay as long as there are any.", host: "Program staff", tag: "Info session", featured: false, registerUrl: "#", sortOrder: 3 },
   { id: "community-clinic-day", title: "Community Health Screening Day", date: "2026-08-23", location: "Fair Oaks Community Center, Redwood City", summary: "Students support a free blood-pressure and health-literacy clinic alongside partner physicians. Spanish-speaking volunteers especially needed.", host: "Health Equity track students", tag: "Community", featured: false, registerUrl: "#", sortOrder: 4 },
 ];
 
@@ -165,9 +167,17 @@ const seedTeam: TeamMember[] = [
 // Row → type mappers
 // ---------------------------------------------------------------------------
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// Postgres hands back `time` as "16:00:00"; the form and the display helpers
+// both want "16:00".
+function toHhMm(t: unknown): string | undefined {
+  if (typeof t !== "string" || t === "") return undefined;
+  return t.slice(0, 5);
+}
+
 function mapEvent(r: any): Event {
   return {
     id: r.id, title: r.title, date: r.date, endDate: r.end_date ?? undefined,
+    startTime: toHhMm(r.start_time), endTime: toHhMm(r.end_time),
     location: r.location ?? "", summary: r.summary ?? "", details: r.details ?? undefined,
     photoUrl: r.photo_url ?? undefined,
     host: r.host ?? "", tag: r.tag, featured: Boolean(r.featured),

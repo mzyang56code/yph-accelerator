@@ -94,6 +94,8 @@ export async function saveEvent(formData: FormData) {
     title: str(formData, "title"),
     date: str(formData, "date"),
     end_date: strOrNull(formData, "end_date"),
+    start_time: strOrNull(formData, "start_time"),
+    end_time: strOrNull(formData, "end_time"),
     location: str(formData, "location"),
     summary: str(formData, "summary"),
     details: strOrNull(formData, "details"),
@@ -103,6 +105,14 @@ export async function saveEvent(formData: FormData) {
     featured: formData.get("featured") === "on",
     register_url: strOrNull(formData, "register_url"),
   };
+
+  // On a single-day event an end time before the start is almost always a
+  // slipped AM/PM. Multi-day events legitimately end "earlier" in the day.
+  const singleDay = !row.end_date || row.end_date === row.date;
+  if (singleDay && row.start_time && row.end_time && row.end_time <= row.start_time) {
+    fail("events", "End time must be after the start time.");
+  }
+
   if (!id) {
     // New events jump to the top of the manually-ordered list.
     const { data: first } = await sb
