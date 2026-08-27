@@ -272,7 +272,7 @@ a one-line student-facing description.
   keeping the Sparing-Eyebrow Rule intact even at 17 rows.
 - **Still exactly one highlighted moment.** The May symposium keeps the bordered
   Cardinal-Bright box, Cardinal title, and the larger rail marker. January's
-  Project Exchange Forum is also a major hybrid event and carries the identical
+  Project Feedback Workshop is also a major hybrid event and carries the identical
   `Hybrid (Stanford/Zoom)` label, so the box is the only thing distinguishing the
   symposium. Resist adding a second emphasis treatment — the highlight works
   because it is the page's only one.

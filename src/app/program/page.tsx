@@ -135,10 +135,10 @@ const TIMELINE: Phase[] = [
         month: "January",
         events: [
           {
-            date: "Jan 17",
+            date: "Jan 21",
             format: "Hybrid (Stanford/Zoom)",
             kind: "live",
-            title: "YPHA Project Exchange Forum",
+            title: "YPHA Project Feedback Workshop",
             lede:
               "Share what happened when you started putting the plan into practice, and get unstuck. Nobody is grading you here, so bring the problems.",
           },
@@ -147,7 +147,7 @@ const TIMELINE: Phase[] = [
             format: "Checkpoint",
             kind: "async",
             title: "Putting Your Plan into Action",
-            lede: "Act on the feedback you got at the Forum.",
+            lede: "Act on the feedback you got at the Workshop.",
           },
         ],
       },
@@ -407,6 +407,7 @@ export default async function ProgramPage() {
                 <span aria-hidden className="h-2.5 w-2.5 rounded-full ring-[1.5px] ring-inset ring-ink" />
                 Checkpoint
               </span>
+              <span className="text-ink/65">Dates below are tentative.</span>
             </div>
           </Reveal>
 

@@ -142,7 +142,7 @@ or the subject-area tags (those are kept as background at the bottom).
   larger marker dot (Cardinal Bright accent) — the site's one deliberately
   highlighted moment (per `DESIGN.md`'s "single highlighted moment" rule).
   **Deliberately still the only highlighted event**, even though the January
-  Project Exchange Forum is also a "major in-person event" in the source
+  Project Feedback Workshop is also a "major in-person event" in the source
   timeline — since 2026-08-26 both carry the same `Hybrid (Stanford/Zoom)`
   format label, so the symposium's bordered box is now the *only* thing setting
   it apart. That is intentional; do not add a second emphasis treatment.
@@ -416,8 +416,8 @@ not be put back on the page without a decision to reverse this.
   next to the date, matching the legend.
 
 **Format labels** are the text after the `·` on each row: `Hybrid (Stanford/Zoom)`,
-`Zoom`, or `Checkpoint`. All three hybrid events (Oct 18, Jan 17, May 16) use the
-same `Hybrid (Stanford/Zoom)` label — Jan 17 and May 16 previously read
+`Zoom`, or `Checkpoint`. All three hybrid events (Oct 18, Jan 21, May 16) use the
+same `Hybrid (Stanford/Zoom)` label — Jan 21 and May 16 previously read
 "In person / hybrid", but the venue-explicit label says more and keeps the three
 consistent.
 
@@ -461,7 +461,7 @@ deliberately: it explains *why* that deadline sits where it does.)
 - **Dec 23 · Checkpoint** — **Fall Project Plan.** Lede now also carries the fall closing expectation, moved 2026-08-26 out of the phase-level `close` field (which was deleted) and into this event's description: by the end of fall, either a confirmed community partner or an active relationship with an organization plus a plan to keep it going. *Finish with:* finalized proposal and timeline, the three milestones, partner role, evaluation measures, January first steps, anything still blocked.
 
 ### Winter 2027 — Implement & Iterate
-- **Jan 17 · Hybrid (Stanford/Zoom) · live** — **YPHA Project Exchange Forum.** Short update (problem, what you tried, what happened, what you learned, biggest obstacle, help needed); faculty/mentors suggest fixes and make connections; scope narrowing; methods problems surfaced early; themed breakouts. *Finish with:* 1–3 next steps. **Framed as troubleshooting, not a review board** — the copy says "Nobody is grading you here, so bring the problems."
+- **Jan 21 · Hybrid (Stanford/Zoom) · live** — **YPHA Project Feedback Workshop.** Short update (problem, what you tried, what happened, what you learned, biggest obstacle, help needed); faculty/mentors suggest fixes and make connections; scope narrowing; methods problems surfaced early; themed breakouts. *Finish with:* 1–3 next steps. **Framed as troubleshooting, not a review board** — the copy says "Nobody is grading you here, so bring the problems."
 - **Jan 31 · Checkpoint** — **Putting Your Plan into Action.** (Renamed 2026-08-26 from "Implementation Checkpoint", which read as vague.) *Finish with:* feedback received and what changed, evidence of progress, February priorities, current blockers.
 - **Feb 7 · Zoom · live** — **Implementation Lab.** Troubleshooting; partner engagement, recruitment, logistics, data collection; mentor and peer support; plan adjustments; sometimes a fellow-led mini-health workshop. *(No outputs list.)*
 - **Feb 21 · Checkpoint** — **Pilot Checkpoint.** *Finish with:* what's implemented or tested, partner outreach status, people reached or data collected, early results, what's working and what isn't, proposed pivots.
