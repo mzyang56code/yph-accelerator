@@ -38,8 +38,9 @@ const REASONS: { title: string; text: string }[] = [
 
 const KEY_DATES: { when: string; text: string }[] = [
   { when: "September 7", text: "Applications for the 2026 cohort open." },
-  { when: "Mid-September", text: "General Info meeting (hybrid) — open Q&A on the application and the year ahead." },
-  { when: "Early October", text: "Application deadline." },
+  { when: "September 20", text: "Applicant Info Session on Zoom, optional. An open Q&A on the application and the year ahead." },
+  { when: "October 4", text: "Application deadline." },
+  { when: "October 18", text: "The cohort year begins at the YPHA Launch Lab (hybrid)." },
 ];
 
 export default function EducatorsPage() {
@@ -126,7 +127,7 @@ export default function EducatorsPage() {
           <Reveal delay={80}>
             <h2 className="display text-xl text-ink sm:text-2xl">Have questions?</h2>
             <p className="pretty mt-3 max-w-[48ch] text-base leading-relaxed text-ink/80">
-              Reach out any time — we&apos;re happy to talk through fit for a
+              Reach out any time. We&apos;re happy to talk through fit for a
               specific student, or coordinate a workshop for your class.
             </p>
             <MailtoLink className="mt-6 inline-block rounded-sm bg-cardinal px-7 py-3.5 font-semibold text-white transition-colors hover:bg-cardinal-bright">

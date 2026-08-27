@@ -243,6 +243,47 @@ button ("Nominations Open Soon") vs. filled white button once a real
 Google-Form URL is set, same swap-not-duplicate convention as
 `ProgramCountdown`'s pre/post-open Apply button.
 
+### Expandable Timeline Row (`/program`, added 2026-08-26)
+
+The cohort timeline's per-event row, in `EventRow` inside
+`src/app/program/page.tsx`. Built on native `<details>`/`<summary>` — no client
+component, no JS, keyboard-accessible for free, and the full text is in the
+server-rendered HTML so it is searchable and indexable while collapsed.
+
+- **Rows, not cards.** Each event is a `border-t border-ink/10` row on the
+  sand-light band, per the Flat-Border Rule. Do not turn these into white cards;
+  19 stacked cards on a warm band, inside a rail that is already a container,
+  would break both the Flat-Border Rule and "never nest a card inside a card."
+- **Collapsed state** shows three things: a mono date + format line
+  (`Oct 18 · Hybrid (Stanford/Zoom)`), the event name in 16px display semibold,
+  and a one-line student-facing lede. Enough to scan the whole year without
+  opening anything.
+- **Expanded state** adds an `ink/10` left-bordered block: unlabelled "what
+  happens" bullets in `ink/40` dots, then at most one labelled list — "You'll
+  finish with" — using Palo Alto Bright dots. The green marks the student's own
+  output, which is the one place on this page worth an accent.
+- **One label per expansion, maximum.** The "what happens" list is deliberately
+  unlabelled. Two mono eyebrows per row, times 19 rows, would violate the
+  Sparing-Eyebrow Rule; the always-visible date/format line is the established
+  eyebrow for this rail and stays the only one.
+- **No chevron.** A 12px `group-open:rotate-180` chevron sat at the right of
+  each row until 2026-08-26, when it was removed on request. What carries the
+  affordance now: the title shifts to Cardinal on hover (named group `group/row`
+  on the summary), the focus ring is `focus-visible:outline-cardinal-bright`, and
+  the section intro tells visitors in words that rows open. **That sentence is
+  now load-bearing** — it is the only cue a non-hovering, non-tabbing visitor
+  gets. Don't delete it without restoring a visual indicator.
+- **Two row kinds**, from the event's `kind`: `live` (filled dot) and `async`
+  (hollow ring, labelled "Checkpoint"). A third `pause` kind — no dot, no
+  expansion, no legend entry — existed for the AP-exam window and was removed
+  with it.
+- **Still exactly one highlighted moment.** The May symposium keeps the bordered
+  Cardinal-Bright box and the larger rail marker. January's Project Exchange
+  Forum is also a major hybrid event and now carries the identical
+  `Hybrid (Stanford/Zoom)` label, so the box is the only thing distinguishing the
+  symposium. Resist adding a second emphasis treatment — the highlight works
+  because it is the page's only one.
+
 ### Event Card Meta List (`EventCard.tsx`, revised 2026-08-11)
 The When / Where / Led by list under an event's summary. Two roles only, held
 in the `metaLabel` / `metaValue` constants at the top of the file — edit those
