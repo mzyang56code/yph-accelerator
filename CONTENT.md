@@ -23,7 +23,10 @@ revamp" below).
 `~/Downloads/YPHA_2026-2027_Program_Timeline.md` — real dates instead of
 "Week 1 / Week 3", named events, the three-phase arc, and per-event detail in
 expandable rows. Full detail in "Program timeline — Cohort 2026–2027" below.
-A second pass the same day, on request: **April was restructured** (Impact Lab
+A second pass the same day, on request: **the expandable rows were removed
+entirely** — per-event agendas and deliverables are program-side detail, not
+participant-facing, so the page is now date + format + name + one line per
+event (the detail survives in this doc only); **April was restructured** (Impact Lab
 removed, its evaluation content folded into the Mar 7 Midyear Progress Review,
 Communications & Pitch Lab moved Apr 24 → Apr 4 — see "April restructure"); `Async` labels spelled out then
 changed again to just **"Checkpoint"**; all hybrid events labelled
@@ -400,6 +403,13 @@ Two costs to keep an eye on:
   posters. The source timeline had a live session on Apr 24, three weeks out
   from the symposium. Consider optional mentor office hours in early May.
 
+**The page shows four things per event and nothing else:** the date, the format
+label, the event name, and a one-line description. **Removed 2026-08-26:** the
+expandable rows that held each event's agenda and deliverables. Per-event
+agendas and student deliverables are **program-side detail, not
+participant-facing** — they are preserved below as internal reference, and must
+not be put back on the page without a decision to reverse this.
+
 **Event kinds** — the `kind` field on each event drives the marker. Two kinds:
 - `live` — synchronous meeting. Filled dot. Legend: "Live meeting".
 - `async` — a checkpoint you submit. Hollow ring dot. Labelled **"Checkpoint"**
@@ -415,14 +425,20 @@ consistent.
 existed for (see below). If a marker-less, non-expandable row is ever wanted
 again, it was: no dot, no expansion, absent from the legend.
 
-**No expand/collapse chevron.** There was a 12px chevron at the right of each
-row (`group-open:rotate-180`); it was removed 2026-08-26 on request. The only
-remaining affordances are the Cardinal hover on the title and the sentence in
-the section intro, "Open any date to see what happens and what you'll walk away
-with." Keep that sentence — without the chevron it is the sole cue that rows
-open.
+**Nothing on the timeline is interactive.** The rows were built on native
+`<details>`/`<summary>` with a rotating chevron; the chevron was removed first,
+then the whole expand mechanism, both on 2026-08-26. `EventRow` is now a plain
+editorial row. The intro sentence "Open any date to see what happens and what
+you'll walk away with" was removed with it.
 
-**The 17 events.** `Format` is the label shown next to the date. (Was 19 —
+**The 17 events.** `Format` is the label shown next to the date.
+
+> **Reading this list:** the **bold event name** and the sentence after it are
+> what a visitor sees. Everything introduced by *Finish with:* — and the agenda
+> detail in the longer entries — is **internal program design, not on the
+> site.** It is kept here because it is the actual plan for each session and the
+> upstream source (`~/Downloads/YPHA_2026-2027_Program_Timeline.md`) is a loose
+> file outside the repo. (Was 19 —
 the **May 3–14 "AP exams — protected" row was removed 2026-08-26** on request.
 It said nothing new is assigned during AP exams and mentors stay available. The
 May 2 Showcase Readiness Check still refers to the exams in its lede, "Get the
@@ -461,9 +477,11 @@ symposium highlight.
 ### Copy voice for the timeline
 
 The source doc is written for program staff ("Student output", "Students should
-not receive new substantive deliverables"). Everything on the page is rewritten
-in the site's second-person voice ("You'll finish with…", "We don't assign
-anything new during AP exams"). Two constraints applied to this copy and worth
+not receive new substantive deliverables"). Everything that reached the page is
+rewritten in the site's second-person voice. Since the 2026-08-26 cut, that is
+just the 17 one-line event descriptions — but hold the same voice if any of the
+deeper detail is ever surfaced again (it was phrased "You'll finish with…",
+not "Student output"). Two constraints applied to this copy and worth
 keeping on any future edit:
 
 - **No em dashes in running prose** (short labels are fine). See "Copy conventions" at the end of this doc.

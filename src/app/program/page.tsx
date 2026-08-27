@@ -40,9 +40,6 @@ type CohortEvent = {
   kind: EventKind;
   title: string;
   lede: string;
-  happens?: string[];
-  outputs?: string[];
-  outputsLabel?: string;
   highlight?: boolean;
 };
 
@@ -74,18 +71,6 @@ const TIMELINE: Phase[] = [
             title: "YPHA Launch Lab",
             lede:
               "Meet your mentor and the rest of the cohort, and start turning the idea you applied with into a working project.",
-            happens: [
-              "Meet your mentor and the cohort.",
-              "Walk through every checkpoint from October to the May symposium.",
-              "Get personalized feedback on the proposal you applied with. It's a starting point, and it's supposed to change.",
-              "Sharpen the problem you're working on, who it affects, and who you'd need to talk to.",
-              "See the path the whole year follows: problem → evidence → community input → design → implementation → evaluation → communication.",
-            ],
-            outputs: [
-              "A sharper working problem statement.",
-              "The community you're focused on.",
-              "A first list of partners and stakeholders to contact.",
-            ],
           },
           {
             date: "Oct 28",
@@ -93,13 +78,6 @@ const TIMELINE: Phase[] = [
             kind: "async",
             title: "Background Research Checkpoint",
             lede: "Find out what's already known before you commit to a design.",
-            outputs: [
-              "A background review of the problem, with 5–10 sources or resources you found useful.",
-              "A summary of what's already known.",
-              "Examples of what others have already tried.",
-              "The questions reading alone can't answer.",
-              "2–3 possible community partners.",
-            ],
           },
         ],
       },
@@ -113,16 +91,6 @@ const TIMELINE: Phase[] = [
             title: "Community Discovery Lab + Faculty Spotlight",
             lede:
               "A Stanford faculty member or practitioner shares their work, then we get you ready to talk to your own community.",
-            happens: [
-              "A Stanford faculty member or practitioner presents on their public-health work.",
-              "How research methods connect to what a community needs.",
-              "How to approach a community partner and hold a conversation that's worth their time.",
-              "The difference between checking whether people agree with your idea and listening to what they need.",
-              "We workshop your outreach emails and interview questions together.",
-            ],
-            outputs: [
-              "Specific people and organizations you're going to contact, and the next three weeks to do it.",
-            ],
           },
           {
             date: "Nov 29",
@@ -130,13 +98,6 @@ const TIMELINE: Phase[] = [
             kind: "async",
             title: "Community Discovery Checkpoint",
             lede: "Put the reading and the conversations together, before you design anything.",
-            outputs: [
-              "A short synthesis of your background research.",
-              "Evidence that you reached partners or stakeholders. One or two substantive conversations is the goal, though partner timelines vary and we know it.",
-              "The needs and priorities the community named themselves.",
-              "What you assumed going in, and what changed.",
-              "Where the project is headed now, and what role your partner plays in it.",
-            ],
           },
         ],
       },
@@ -149,18 +110,6 @@ const TIMELINE: Phase[] = [
             kind: "live",
             title: "Project Design Lab",
             lede: "Turn your research and your conversations into a project you can finish by May.",
-            happens: [
-              "Defining what the project is for.",
-              "Picking activities you can realistically pull off.",
-              "Getting clear on what your community partner's role is.",
-              "Building a target population and an implementation plan.",
-              "Setting your December, February, and April milestones.",
-              "Deciding what counts as success, and how you'd know.",
-              "Naming the ethical, logistical, and feasibility problems before they find you.",
-            ],
-            outputs: [
-              "A near-final project design, ready for your mentor and your partner to react to.",
-            ],
           },
           {
             date: "Dec 23",
@@ -169,14 +118,6 @@ const TIMELINE: Phase[] = [
             title: "Fall Project Plan",
             lede:
               "Lock the plan before implementation starts. By the end of fall you should have either a confirmed community partner, or an active relationship with an organization and a plan to keep it going.",
-            outputs: [
-              "A finalized proposal and implementation timeline.",
-              "Your December, February, and April milestones.",
-              "Your community partner's role.",
-              "How you'll measure whether it worked.",
-              "Your first implementation steps for January.",
-              "Anything still blocked, so your mentor can help.",
-            ],
           },
         ],
       },
@@ -200,14 +141,6 @@ const TIMELINE: Phase[] = [
             title: "YPHA Project Exchange Forum",
             lede:
               "Share what happened when you started putting the plan into practice, and get unstuck. Nobody is grading you here, so bring the problems.",
-            happens: [
-              "You give a short update: the problem, what you've tried, what happened, what you learned, your biggest obstacle, and what kind of help would move you forward.",
-              "Faculty and mentors suggest fixes and connect you to people, tools, and resources.",
-              "We help you narrow the scope if it needs narrowing.",
-              "Methods and implementation problems come out early, while there's still time to fix them.",
-              "Breakouts by theme: community engagement, scope, data and evaluation, logistics, methods, outreach, partnerships and funding.",
-            ],
-            outputs: ["One to three next steps, chosen with your mentor."],
           },
           {
             date: "Jan 31",
@@ -215,12 +148,6 @@ const TIMELINE: Phase[] = [
             kind: "async",
             title: "Putting Your Plan into Action",
             lede: "Act on the feedback you got at the Forum.",
-            outputs: [
-              "The feedback you received, and what you changed because of it.",
-              "Evidence that the project is moving.",
-              "Your priorities for February.",
-              "Whatever's blocking you now.",
-            ],
           },
         ],
       },
@@ -233,13 +160,6 @@ const TIMELINE: Phase[] = [
             kind: "live",
             title: "Implementation Lab",
             lede: "A working session on the problems that come up once you're building.",
-            happens: [
-              "Troubleshooting whatever has gone sideways.",
-              "Partner engagement, recruitment, logistics, and collecting data.",
-              "Mentor and peer support on live problems.",
-              "Adjusting the plan to match what you're seeing in practice.",
-              "Sometimes a short mini-health workshop led by two or three fellows.",
-            ],
           },
           {
             date: "Feb 21",
@@ -247,13 +167,6 @@ const TIMELINE: Phase[] = [
             kind: "async",
             title: "Pilot Checkpoint",
             lede: "Shift from plans to evidence. What have you built so far?",
-            outputs: [
-              "What's been implemented or tested so far.",
-              "Where your partner outreach stands.",
-              "People reached or data collected, where that applies.",
-              "Early feedback or first results.",
-              "What's working, what isn't, and anything you want to pivot.",
-            ],
           },
         ],
       },
@@ -267,24 +180,6 @@ const TIMELINE: Phase[] = [
             title: "Midyear Progress Review",
             lede:
               "Check whether the project is on track, and learn how to tell what it is changing. You still have time to go collect whatever the evidence is missing.",
-            happens: [
-              "Where you stand against the milestones you set in December.",
-              "Early findings, and what your partner is telling you.",
-              "The barriers that are still barriers.",
-              "Whether the project should narrow, grow, or turn.",
-              "The difference between activities, outputs, and outcomes, and why it matters.",
-              "What counts as evidence of progress or impact.",
-              "Whether the project is reaching the community you meant to reach.",
-              "Reading qualitative and quantitative feedback.",
-              "Drawing conclusions your evidence can hold up, and saying where the limits are.",
-              "Sometimes a short mini-health workshop led by fellows.",
-            ],
-            outputs: [
-              "Clear priorities for March and April.",
-              "Any pivots agreed on.",
-              "A plan for the evidence you still need to collect, and the weeks to collect it in.",
-              "An updated path to a finished project.",
-            ],
           },
           {
             date: "Mar 21",
@@ -292,13 +187,6 @@ const TIMELINE: Phase[] = [
             kind: "async",
             title: "Evaluating Your Impact",
             lede: "Start the turn from running the project to evaluating it.",
-            outputs: [
-              "A draft outline of your final deliverable.",
-              "What you've completed so far, and what you've found.",
-              "The evidence you already have.",
-              "The evidence you still need.",
-              "Your final implementation tasks for April.",
-            ],
           },
         ],
       },
@@ -321,13 +209,6 @@ const TIMELINE: Phase[] = [
             kind: "live",
             title: "Communications & Pitch Lab",
             lede: "Turn the project into a story people can follow, then practice saying it out loud.",
-            happens: [
-              "Structuring the final presentation: problem, community need, approach, methods, findings, limitations, and what comes next.",
-              "Designing a poster and slides.",
-              "Explaining technical work to people who don't share your background.",
-              "Describing impact without overstating it.",
-              "Most of the session is practice: groups of three or four, a three-to-five-minute pitch each, structured feedback from peers and mentors, then a second run at it.",
-            ],
           },
           {
             date: "Apr 18",
@@ -335,13 +216,6 @@ const TIMELINE: Phase[] = [
             kind: "async",
             title: "Final Implementation Checkpoint",
             lede: "The building is done. Now you find out what it added up to.",
-            outputs: [
-              "Core implementation substantially complete.",
-              "Your results, data, and feedback as they stand.",
-              "Anything left to analyze.",
-              "Any last follow-up with your community partner.",
-              "Where your final deliverable is.",
-            ],
           },
         ],
       },
@@ -354,12 +228,6 @@ const TIMELINE: Phase[] = [
             kind: "async",
             title: "Showcase Readiness Check",
             lede: "Get the project presentation-ready before AP exams start.",
-            outputs: [
-              "A final or near-final poster and slides.",
-              "Your final results.",
-              "A draft of your pitch.",
-              "Any remaining questions, and symposium logistics confirmed.",
-            ],
           },
           {
             date: "May 16",
@@ -368,12 +236,6 @@ const TIMELINE: Phase[] = [
             title: "YPHA Annual Symposium & Showcase",
             lede:
               "You present the year's work as a poster and a short talk, in front of the people who helped you get there.",
-            happens: [
-              "Student poster presentations and short project talks.",
-              "Stanford faculty, staff, and mentors in the room.",
-              "Your community partners, your family, and your peers.",
-              "The focus is what you learned and what it meant for your community. There is no ranking and no prize.",
-            ],
             highlight: true,
           },
           {
@@ -382,14 +244,6 @@ const TIMELINE: Phase[] = [
             kind: "async",
             title: "Final Reflection",
             lede: "Close out the year, and decide what happens to the project next.",
-            outputsLabel: "What you'll think through",
-            outputs: [
-              "What changed because of your project, and what didn't work the way you expected.",
-              "What you learned from your community partner.",
-              "What you'd do differently.",
-              "What happens to the project now, and whether there's a handoff or a plan to keep it going.",
-              "Whether you want to stay with YPHA as an alum or a future mentor.",
-            ],
           },
         ],
       },
@@ -397,103 +251,47 @@ const TIMELINE: Phase[] = [
   },
 ];
 
-// A single event in the rail. Expands only when there's more to show.
+// A single event in the rail: date + format, name, one-line description.
+// Deliberately flat — the per-event agendas and deliverables are program-side
+// detail, not participant-facing, and live in CONTENT.md instead.
 function EventRow({ event }: { event: CohortEvent }) {
-  const meta = (
-    <p className="flex flex-wrap items-center gap-x-2 font-mono text-[0.66rem] uppercase tracking-[0.18em] text-ink/70">
-      <span className="inline-flex items-center whitespace-nowrap">
-        <span
-          aria-hidden
-          className="mr-2 inline-block h-2 w-2 shrink-0 rounded-full"
-          style={
-            event.kind === "live"
-              ? { background: "currentColor" }
-              : { boxShadow: "inset 0 0 0 1.5px currentColor" }
-          }
-        />
-        {event.date}
-      </span>
-      <span aria-hidden className="text-ink/30">
-        ·
-      </span>
-      <span>{event.format}</span>
-    </p>
+  const body = (
+    <>
+      <p className="flex flex-wrap items-center gap-x-2 font-mono text-[0.66rem] uppercase tracking-[0.18em] text-ink/70">
+        <span className="inline-flex items-center whitespace-nowrap">
+          <span
+            aria-hidden
+            className="mr-2 inline-block h-2 w-2 shrink-0 rounded-full"
+            style={
+              event.kind === "live"
+                ? { background: "currentColor" }
+                : { boxShadow: "inset 0 0 0 1.5px currentColor" }
+            }
+          />
+          {event.date}
+        </span>
+        <span aria-hidden className="text-ink/30">
+          ·
+        </span>
+        <span>{event.format}</span>
+      </p>
+      <h5
+        className={`font-display mt-1.5 text-base font-semibold leading-snug ${
+          event.highlight ? "text-cardinal" : "text-ink"
+        }`}
+      >
+        {event.title}
+      </h5>
+      <p className="pretty mt-1 max-w-[62ch] text-sm leading-relaxed text-ink/80">{event.lede}</p>
+    </>
   );
 
-  const title = (
-    <h5
-      className={`font-display mt-1.5 text-base font-semibold leading-snug ${
-        event.highlight ? "text-cardinal" : "text-ink"
-      }`}
-    >
-      {event.title}
-    </h5>
-  );
-
-  const lede = (
-    <p className="pretty mt-1 max-w-[62ch] text-sm leading-relaxed text-ink/80">{event.lede}</p>
-  );
-
-  const wrap = (children: React.ReactNode) =>
-    event.highlight ? (
-      <div className="my-3 rounded-md border border-cardinal-bright/30 bg-cardinal-bright/5 px-4 py-3">
-        {children}
-      </div>
-    ) : (
-      <div className="border-t border-ink/10 py-4">{children}</div>
-    );
-
-  // Nothing to expand into — a quiet, non-interactive row.
-  if (!event.happens && !event.outputs) {
-    return wrap(
-      <>
-        {meta}
-        {title}
-        {lede}
-      </>,
-    );
-  }
-
-  return wrap(
-    <details>
-      <summary className="group/row block cursor-pointer list-none rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cardinal-bright [&::-webkit-details-marker]:hidden">
-        {meta}
-        <span className="group-hover/row:text-cardinal block transition-colors">{title}</span>
-        {lede}
-      </summary>
-
-      <div className="mt-4 space-y-4 border-l border-ink/10 pl-4">
-        {event.happens && (
-          <ul className="space-y-2">
-            {event.happens.map((item) => (
-              <li key={item} className="flex gap-2.5">
-                <span aria-hidden className="mt-[0.55rem] h-1 w-1 shrink-0 rounded-full bg-ink/40" />
-                <span className="pretty max-w-[62ch] text-sm leading-relaxed text-ink/80">{item}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {event.outputs && (
-          <div>
-            <p className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-ink/60">
-              {event.outputsLabel ?? "You'll finish with"}
-            </p>
-            <ul className="mt-2.5 space-y-2">
-              {event.outputs.map((item) => (
-                <li key={item} className="flex gap-2.5">
-                  <span
-                    aria-hidden
-                    className="mt-[0.4rem] h-1.5 w-1.5 shrink-0 rounded-full bg-palo-alto-bright"
-                  />
-                  <span className="pretty max-w-[62ch] text-sm leading-relaxed text-ink/85">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-    </details>,
+  return event.highlight ? (
+    <div className="my-3 rounded-md border border-cardinal-bright/30 bg-cardinal-bright/5 px-4 py-3">
+      {body}
+    </div>
+  ) : (
+    <div className="border-t border-ink/10 py-4">{body}</div>
   );
 }
 
@@ -597,8 +395,7 @@ export default async function ProgramPage() {
             <p className="pretty mt-4 max-w-[62ch] text-lg leading-relaxed text-ink/80">
               Cohort 2026–2027, in three phases. Every month has one live meeting
               and one checkpoint between meetings. Your mentor and your community
-              partner are part of the work the whole way through. Open any date to
-              see what happens and what you&apos;ll walk away with.
+              partner are part of the work the whole way through.
             </p>
             {/* legend — fill vs. hollow, explained once */}
             <div className="mt-7 flex flex-wrap gap-x-7 gap-y-2 text-sm text-ink/80">
