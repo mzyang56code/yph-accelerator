@@ -434,11 +434,18 @@ you'll walk away with" was removed with it.
 **The 17 events.** `Format` is the label shown next to the date.
 
 > **Reading this list:** the **bold event name** and the sentence after it are
-> what a visitor sees. Everything introduced by *Finish with:* — and the agenda
-> detail in the longer entries — is **internal program design, not on the
-> site.** It is kept here because it is the actual plan for each session and the
-> upstream source (`~/Downloads/YPHA_2026-2027_Program_Timeline.md`) is a loose
-> file outside the repo. (Was 19 —
+> what a visitor sees. Everything introduced by *Finish with:*, and the agenda
+> detail in the longer entries, is **internal program design, not on the site.**
+> It is kept here because it is the actual plan for each session.
+>
+> **Upstream source:** `~/Downloads/YPHA_2026-2027_Program_Timeline.md`, a loose
+> file outside the repo. It was **updated 2026-08-26 to match what shipped** (the
+> April restructure, both renames, the October 4 deadline, and the removal of the
+> AP-exam period), and it carries a revision note at the top recording what
+> changed and why. The two documents agree as of that date; the timeline file
+> holds the full per-session detail (Purpose / Workshop topics / Student output),
+> this file holds what the site does with it. Worth copying that file into the
+> repo so it stops living in a Downloads folder. (Was 19 —
 the **May 3–14 "AP exams — protected" row was removed 2026-08-26** on request.
 It said nothing new is assigned during AP exams and mentors stay available. The
 May 2 Showcase Readiness Check still refers to the exams in its lede, "Get the
