@@ -4,6 +4,51 @@ import { NextResponse, type NextRequest } from "next/server";
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+// Verifying a session is a network round-trip to Supabase Auth, and signed-in
+// traffic pays for it on *every* admin request (auth-js short-circuits when
+// there's no access token, so a logged-out visitor never makes the call — which
+// is why this only ever bites the team). Middleware has no timeout of its own,
+// so one stalled Auth call runs all the way to Vercel's invocation limit and
+// the response is a 504 MIDDLEWARE_INVOCATION_TIMEOUT instead of a page.
+//
+// So: bound the call, and treat "couldn't check" as "not signed in". That
+// fails closed — a flaky Auth server can't hand out access — and the visitor
+// gets the login page instead of a gateway error.
+const AUTH_TIMEOUT_MS = 5_000;
+
+/** fetch, but it gives up rather than hanging the whole invocation. */
+function abortableFetch(input: RequestInfo | URL, init?: RequestInit) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), AUTH_TIMEOUT_MS);
+  return fetch(input, { ...init, signal: controller.signal }).finally(() =>
+    clearTimeout(timer),
+  );
+}
+
+/**
+ * The signed-in user, or null if Supabase didn't answer in time. The race
+ * covers the stalls that aren't network-bound either (auth-js takes an
+ * internal lock before it reads the session).
+ */
+async function resolveUser(
+  supabase: ReturnType<typeof createServerClient>,
+): Promise<{ email?: string } | null> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    const result = await Promise.race([
+      supabase.auth.getUser(),
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error("supabase-auth-timeout")), AUTH_TIMEOUT_MS);
+      }),
+    ]);
+    return result.data.user;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 /**
  * Refreshes the Supabase session on admin routes and guards them: an
  * unauthenticated visitor to /admin/* (other than the login page) is sent to
@@ -16,6 +61,7 @@ export async function middleware(request: NextRequest) {
   if (!URL || !ANON) return response;
 
   const supabase = createServerClient(URL, ANON, {
+    global: { fetch: abortableFetch },
     cookies: {
       getAll() {
         return request.cookies.getAll();
@@ -30,9 +76,7 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await resolveUser(supabase);
 
   const { pathname } = request.nextUrl;
   const isLogin = pathname === "/admin/login";
