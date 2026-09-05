@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 const JOIN_STEPS: { when: string; text: string }[] = [
   { when: "September 7", text: "Applications for the 2026 cohort open." },
-  { when: "September 20", text: "Applicant Info Session on Zoom, optional. An open Q&A on the application and the year ahead." },
+  { when: "September 27", text: "Applicant Info Session on Zoom at 10 AM Pacific, optional. An open Q&A on the application and the year ahead." },
   { when: "October 4", text: "Application deadline." },
   { when: "October 18", text: "The cohort year begins at the YPHA Launch Lab (hybrid)." },
 ];
@@ -371,7 +371,7 @@ export default async function ProgramPage() {
               <h3 className="display text-xl text-ink sm:text-2xl">Have questions?</h3>
               <p className="pretty mt-3 max-w-[48ch] text-base leading-relaxed text-ink/80">
                 Join our Applicant Info Session on{" "}
-                <span className="font-semibold text-ink">September 20</span>{" "}
+                <span className="font-semibold text-ink">September 27 at 10 AM Pacific</span>{" "}
                 for an open Q&amp;A on the application and what the year looks like.
                 Or reach out any time.
               </p>

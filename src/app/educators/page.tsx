@@ -38,7 +38,7 @@ const REASONS: { title: string; text: string }[] = [
 
 const KEY_DATES: { when: string; text: string }[] = [
   { when: "September 7", text: "Applications for the 2026 cohort open." },
-  { when: "September 20", text: "Applicant Info Session on Zoom, optional. An open Q&A on the application and the year ahead." },
+  { when: "September 27", text: "Applicant Info Session on Zoom at 10 AM Pacific, optional. An open Q&A on the application and the year ahead." },
   { when: "October 4", text: "Application deadline." },
   { when: "October 18", text: "The cohort year begins at the YPHA Launch Lab (hybrid)." },
 ];

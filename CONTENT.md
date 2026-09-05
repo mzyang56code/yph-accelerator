@@ -19,6 +19,18 @@ below — not yet wired into `/admin → Program`'s Application form URL field);
 and revamped `/admin` for performance and navigation IA (see "Admin panel
 revamp" below).
 
+**Update (2026-08-31):** The **Applicant Info Session moved September 20 →
+September 27, 10 AM Pacific**. Changed in all four hardcoded places —
+`JOIN_STEPS` and the "Have questions?" paragraph in `src/app/program/page.tsx`,
+`KEY_DATES` in `src/app/educators/page.tsx`, and `DATES` in
+`src/app/educators/flyer/page.tsx` — plus this doc. The time is written into the
+description line, not the date eyebrow, because the eyebrow is a short mono
+label and the flyer's date column is a fixed `w-[4.5rem]`. The matching
+`events` row in Supabase ("General Info Session") is separate; it **has since
+been moved to `2026-09-27` in `/admin → Events`** (verified 2026-09-01). Its
+`start_time` is **still empty**, so the event card carries no time — set it to
+10:00 AM Pacific in `/admin → Events` to match the copy everywhere else.
+
 **Update (2026-08-26):** The `/program` page timeline was rebuilt from
 `~/Downloads/YPHA_2026-2027_Program_Timeline.md` — real dates instead of
 "Week 1 / Week 3", named events, the three-phase arc, and per-event detail in
@@ -42,12 +54,12 @@ before it goes out), and `/educators` keeps its **own duplicated copy** of the
 key dates (`KEY_DATES` in `src/app/educators/page.tsx`), so any date change has
 to be made in two files.
 
-**Deploys are currently manual.** Vercel's GitHub auto-deploy-on-push was found
-not to be firing (last auto-deploy was 14 days stale) — `git push` alone does
-**not** update ypha.site. Ship with `npx vercel --prod` from a repo checkout
-with matching `.vercel/project.json` after pushing to `main`. Worth checking
-the Vercel dashboard's Project → Settings → Git connection to fix the
-underlying integration.
+**Deploys are automatic again.** Vercel's GitHub auto-deploy-on-push was broken
+as of 2026-07-28 (last auto-deploy was 14 days stale), which is why older notes
+here said to ship by hand. It was **verified working again on 2026-08-27** — a
+push to `main` triggers a production deploy within seconds. `npx vercel --prod`
+from a checkout with matching `.vercel/project.json` remains a valid fallback if
+a push ever fails to trigger a build.
 
 **Note on this doc's relationship to the CMS:** homepage/program hero fields
 are genuinely admin-editable (Supabase), so a teammate can change the live
@@ -123,8 +135,8 @@ or the subject-area tags (those are kept as background at the bottom).
   maintain.
 - **How to Join** (in code, `JOIN_STEPS` in `src/app/program/page.tsx`): four
   pre-cohort steps, on real dates as of 2026-08-26 — **September 7**:
-  applications open; **September 20**: Applicant Info Session (optional, Zoom),
-  open Q&A on the application and the year ahead; **October 4**: application
+  applications open; **September 27**: Applicant Info Session (optional, Zoom,
+  10 AM Pacific), open Q&A on the application and the year ahead; **October 4**: application
   deadline (assumed, see the status note above); **October 18**: the cohort
   year begins at the YPHA Launch Lab (hybrid).
 - **"What we'll ask for" + "Have questions?" added below the timeline steps**
@@ -183,7 +195,7 @@ page by being handed the link, not by browsing the site.
 - **Key dates are duplicated, not imported.** `KEY_DATES` in
   `src/app/educators/page.tsx` is its own array, hand-kept in sync with
   `/program`'s `JOIN_STEPS`. Updated 2026-08-26 to the four real dates
-  (September 7 / September 20 / October 4 / October 18) — it previously had
+  (September 7 / September 27 / October 4 / October 18) — it previously had
   three and still said "Mid-September" and "Early October". **Any date change
   has to be made in both files.** Worth extracting to a shared constant next
   time either one is touched.
@@ -335,7 +347,7 @@ No eyebrow; heading is just "How to Join". Four steps, real dates as of
 2026-08-26:
 
 - **September 7** — Applications for the 2026 cohort open.
-- **September 20** — Applicant Info Session on Zoom, optional. An open Q&A on the application and the year ahead.
+- **September 27** — Applicant Info Session on Zoom at 10 AM Pacific, optional. An open Q&A on the application and the year ahead.
 - **October 4** — Application deadline.
 - **October 18** — The cohort year begins at the YPHA Launch Lab (hybrid).
 
@@ -347,7 +359,7 @@ applications and match mentors. Confirm it before it goes on a flyer.
 **Welcome meeting naming: resolved.** The old placeholder "Welcome meeting" is
 now the **YPHA Launch Lab**, per the source timeline's naming convention. The
 "Have questions?" block on `/program` also moved from "mid-September" to
-"September 20".
+the info-session date.
 
 **These dates exist in two places.** `/educators` has its own `KEY_DATES` array
 (`src/app/educators/page.tsx`) with the same four steps — it is *not* imported
