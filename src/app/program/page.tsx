@@ -8,7 +8,7 @@ import { getProgramContent } from "@/lib/data";
 export const metadata: Metadata = {
   title: "The Program",
   description:
-    "How the Youth Public Health Accelerator works: how to join, and the year-long cohort timeline that runs from the October Launch Lab through the May symposium.",
+    "How the Youth Public Health Accelerator works: how to join, and the year-long cohort timeline that runs from the October YPHA Kickoff through the May symposium.",
 };
 
 // ---------------------------------------------------------------------------
@@ -20,7 +20,7 @@ const JOIN_STEPS: { when: string; text: string }[] = [
   { when: "September 7", text: "Applications for the 2026 cohort open." },
   { when: "September 27", text: "Applicant Info Session on Zoom from 11 AM to 12 PM Pacific, optional. An open Q&A on the application and the year ahead." },
   { when: "October 4", text: "Application deadline." },
-  { when: "October 18", text: "The cohort year begins at the YPHA Launch Lab (hybrid)." },
+  { when: "October 17", text: "The cohort year begins at the YPHA Kickoff (hybrid) from 2 to 5 PM Pacific." },
 ];
 
 const APPLICATION_ASKS: string[] = [
@@ -65,10 +65,10 @@ const TIMELINE: Phase[] = [
         month: "October",
         events: [
           {
-            date: "Oct 18",
-            format: "Hybrid (Stanford/Zoom)",
+            date: "Oct 17",
+            format: "Hybrid (Stanford/Zoom) · 2–5 PM Pacific",
             kind: "live",
-            title: "YPHA Launch Lab",
+            title: "YPHA Kickoff",
             lede:
               "Meet your mentor and the rest of the cohort, and start turning the idea you applied with into a working project.",
           },

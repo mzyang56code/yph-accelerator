@@ -137,8 +137,8 @@ or the subject-area tags (those are kept as background at the bottom).
   pre-cohort steps, on real dates as of 2026-08-26 — **September 7**:
   applications open; **September 27**: Applicant Info Session (optional, Zoom,
   10 AM Pacific), open Q&A on the application and the year ahead; **October 4**: application
-  deadline (assumed, see the status note above); **October 18**: the cohort
-  year begins at the YPHA Launch Lab (hybrid).
+  deadline (assumed, see the status note above); **October 17**: the cohort
+  year begins at the YPHA Kickoff (hybrid) from 2 to 5 PM Pacific.
 - **"What we'll ask for" + "Have questions?" added below the timeline steps**
   (2026-07-30, `APPLICATION_ASKS` in the same file): a two-column band listing
   what the application asks for — a general proposal centered on a real
@@ -146,8 +146,8 @@ or the subject-area tags (those are kept as background at the bottom).
   hoping to get out of a year of mentorship — paired with a "Have questions?"
   block pointing to the mid-September info meeting and a **Get in touch**
   mailto button (same `MailtoLink` component/style as the homepage contact band).
-- **Timeline** (in code): the cohort year below, **October 18, 2026** (Launch
-  Lab) through **May 23–26, 2027** (Final Reflection). Rebuilt 2026-08-26 —
+- **Timeline** (in code): the cohort year below, **October 17, 2026** (YPHA
+  Kickoff) through **May 23–26, 2027** (Final Reflection). Rebuilt 2026-08-26 —
   see "Program timeline" below for the structure and the copy rules.
 - **Symposium highlight** (in code): May's Annual Symposium & Showcase stays in
   the monthly rail but is set apart with a bordered/tinted box and a slightly
@@ -195,7 +195,7 @@ page by being handed the link, not by browsing the site.
 - **Key dates are duplicated, not imported.** `KEY_DATES` in
   `src/app/educators/page.tsx` is its own array, hand-kept in sync with
   `/program`'s `JOIN_STEPS`. Updated 2026-08-26 to the four real dates
-  (September 7 / September 27 / October 4 / October 18) — it previously had
+  (September 7 / September 27 / October 4 / October 17) — it previously had
   three and still said "Mid-September" and "Early October". **Any date change
   has to be made in both files.** Worth extracting to a shared constant next
   time either one is touched.
@@ -349,15 +349,15 @@ No eyebrow; heading is just "How to Join". Four steps, real dates as of
 - **September 7** — Applications for the 2026 cohort open.
 - **September 27** — Applicant Info Session on Zoom at 10 AM Pacific, optional. An open Q&A on the application and the year ahead.
 - **October 4** — Application deadline.
-- **October 18** — The cohort year begins at the YPHA Launch Lab (hybrid).
+- **October 17** — The cohort year begins at the YPHA Kickoff (hybrid) from 2 to 5 PM Pacific.
 
 **October 4 is an assumption, not a given date.** The source timeline states
 only "the October application deadline." October 4 was chosen to sit two weeks
-after the info session and two weeks before the Launch Lab, leaving time to read
+after the info session and two weeks before the YPHA Kickoff, leaving time to read
 applications and match mentors. Confirm it before it goes on a flyer.
 
 **Welcome meeting naming: resolved.** The old placeholder "Welcome meeting" is
-now the **YPHA Launch Lab**, per the source timeline's naming convention. The
+now the **YPHA Kickoff** (renamed from "YPHA Launch Lab" on 2026-10-01; October 17, 2 to 5 PM Pacific). The
 "Have questions?" block on `/program` also moved from "mid-September" to
 the info-session date.
 
@@ -428,7 +428,7 @@ not be put back on the page without a decision to reverse this.
   next to the date, matching the legend.
 
 **Format labels** are the text after the `·` on each row: `Hybrid (Stanford/Zoom)`,
-`Zoom`, or `Checkpoint`. All three hybrid events (Oct 18, Jan 21, May 16) use the
+`Zoom`, or `Checkpoint`. All three hybrid events (Oct 17, Jan 21, May 16) use the
 same `Hybrid (Stanford/Zoom)` label — Jan 21 and May 16 previously read
 "In person / hybrid", but the venue-explicit label says more and keeps the three
 consistent.
@@ -465,7 +465,7 @@ project presentation-ready before AP exams start," which was left in place
 deliberately: it explains *why* that deadline sits where it does.)
 
 ### Fall 2026 — Discover & Co-Design
-- **Oct 18 · Hybrid (Stanford/Zoom) · live** — **YPHA Launch Lab.** Meet your mentor and the cohort; walk the year's checkpoints; feedback on your application proposal (a starting point, meant to change); sharpen problem/community/who-to-talk-to; see the year's path (problem → evidence → community input → design → implementation → evaluation → communication). *Finish with:* sharper problem statement, target community, first list of partners to contact.
+- **Oct 17 · Hybrid (Stanford/Zoom) · 2–5 PM Pacific · live** — **YPHA Kickoff.** Meet your mentor and the cohort; walk the year's checkpoints; feedback on your application proposal (a starting point, meant to change); sharpen problem/community/who-to-talk-to; see the year's path (problem → evidence → community input → design → implementation → evaluation → communication). *Finish with:* sharper problem statement, target community, first list of partners to contact.
 - **Oct 28 · Checkpoint** — **Background Research Checkpoint.** *Finish with:* background review with 5–10 sources, what's already known, what others have tried, the questions reading can't answer, 2–3 possible partners.
 - **Nov 9 · Zoom · live** — **Community Discovery Lab + Faculty Spotlight.** Faculty/practitioner presents; methods vs. community needs; how to approach a partner; agreeing-with-your-idea vs. listening; workshop outreach emails and interview questions. *Finish with:* specific people to contact, and three weeks to do it.
 - **Nov 29 · Checkpoint** — **Community Discovery Checkpoint.** *Finish with:* research synthesis, evidence you reached partners (1–2 substantive conversations is the goal, partner timelines vary), community-named priorities, what you assumed vs. what changed, revised direction and partner role.

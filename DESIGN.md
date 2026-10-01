@@ -247,7 +247,7 @@ Google-Form URL is set, same swap-not-duplicate convention as
 
 The cohort timeline's per-event row, `EventRow` in
 `src/app/program/page.tsx`. Four things, nothing more: a mono date + format line
-(`Oct 18 · Hybrid (Stanford/Zoom)`), the event name in 16px display semibold, and
+(`Oct 17 · Hybrid (Stanford/Zoom)`), the event name in 16px display semibold, and
 a one-line student-facing description.
 
 - **Rows, not cards.** Each event is a `border-t border-ink/10` row on the

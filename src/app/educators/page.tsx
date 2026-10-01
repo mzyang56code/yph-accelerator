@@ -40,7 +40,7 @@ const KEY_DATES: { when: string; text: string }[] = [
   { when: "September 7", text: "Applications for the 2026 cohort open." },
   { when: "September 27", text: "Applicant Info Session on Zoom from 11 AM to 12 PM Pacific, optional. An open Q&A on the application and the year ahead." },
   { when: "October 4", text: "Application deadline." },
-  { when: "October 18", text: "The cohort year begins at the YPHA Launch Lab (hybrid)." },
+  { when: "October 17", text: "The cohort year begins at the YPHA Kickoff (hybrid) from 2 to 5 PM Pacific." },
 ];
 
 export default function EducatorsPage() {
