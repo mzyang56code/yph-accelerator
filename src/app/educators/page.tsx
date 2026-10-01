@@ -36,11 +36,11 @@ const REASONS: { title: string; text: string }[] = [
   },
 ];
 
-const KEY_DATES: { when: string; text: string }[] = [
+const KEY_DATES: { when: string; text: string; flag?: string }[] = [
   { when: "September 7", text: "Applications for the 2026 cohort open." },
   { when: "September 27", text: "Applicant Info Session on Zoom from 11 AM to 12 PM Pacific, optional. An open Q&A on the application and the year ahead." },
   { when: "October 4", text: "Application deadline." },
-  { when: "October 17", text: "The cohort year begins at the YPHA Kickoff (hybrid) from 2 to 5 PM Pacific." },
+  { when: "October 17", text: "The cohort year begins at the YPHA Kickoff (hybrid) from 2 to 5 PM Pacific.", flag: "Date change" },
 ];
 
 export default function EducatorsPage() {
@@ -117,7 +117,7 @@ export default function EducatorsPage() {
             <ul className="mt-6 space-y-5 border-t border-ink/10 pt-6">
               {KEY_DATES.map((d) => (
                 <li key={d.when}>
-                  <p className="font-mono text-[0.66rem] uppercase tracking-[0.18em] text-cardinal">{d.when}</p>
+                  <p className="font-mono text-[0.66rem] uppercase tracking-[0.18em] text-cardinal">{d.when}{d.flag && <span className="ml-2 rounded-sm bg-cardinal-bright/10 px-1.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-cardinal-bright">{d.flag}</span>}</p>
                   <p className="pretty mt-1 max-w-[48ch] text-base leading-relaxed text-ink/85">{d.text}</p>
                 </li>
               ))}

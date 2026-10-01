@@ -16,11 +16,11 @@ export const metadata: Metadata = {
 // below stays in code — source of truth is CONTENT.md.
 // ---------------------------------------------------------------------------
 
-const JOIN_STEPS: { when: string; text: string }[] = [
+const JOIN_STEPS: { when: string; text: string; flag?: string }[] = [
   { when: "September 7", text: "Applications for the 2026 cohort open." },
   { when: "September 27", text: "Applicant Info Session on Zoom from 11 AM to 12 PM Pacific, optional. An open Q&A on the application and the year ahead." },
   { when: "October 4", text: "Application deadline." },
-  { when: "October 17", text: "The cohort year begins at the YPHA Kickoff (hybrid) from 2 to 5 PM Pacific." },
+  { when: "October 17", text: "The cohort year begins at the YPHA Kickoff (hybrid) from 2 to 5 PM Pacific.", flag: "Date change" },
 ];
 
 const APPLICATION_ASKS: string[] = [
@@ -41,6 +41,7 @@ type CohortEvent = {
   title: string;
   lede: string;
   highlight?: boolean;
+  flag?: string;
 };
 
 type Phase = {
@@ -69,6 +70,7 @@ const TIMELINE: Phase[] = [
             format: "Hybrid (Stanford/Zoom) · 2–5 PM Pacific",
             kind: "live",
             title: "YPHA Kickoff",
+            flag: "Date change",
             lede:
               "Meet your mentor and the rest of the cohort, and start turning the idea you applied with into a working project.",
           },
@@ -274,6 +276,7 @@ function EventRow({ event }: { event: CohortEvent }) {
           ·
         </span>
         <span>{event.format}</span>
+        {event.flag && <span className="rounded-sm bg-cardinal-bright/10 px-1.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-cardinal-bright">{event.flag}</span>}
       </p>
       <h5
         className={`font-display mt-1.5 text-base font-semibold leading-snug ${
@@ -341,6 +344,7 @@ export default async function ProgramPage() {
                 <li>
                   <p className="font-mono text-[0.66rem] uppercase tracking-[0.18em] text-cardinal">
                     {step.when}
+                    {step.flag && <span className="ml-2 rounded-sm bg-cardinal-bright/10 px-1.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-cardinal-bright">{step.flag}</span>}
                   </p>
                   <p className="pretty mt-2 max-w-[32ch] text-base leading-relaxed text-ink/85">
                     {step.text}
