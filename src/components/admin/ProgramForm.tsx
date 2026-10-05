@@ -9,11 +9,13 @@ export default function ProgramForm({ content }: { content: ProgramContent }) {
       <section className="rounded-lg border border-ink/15 bg-paper/50 p-5">
         <p className="text-sm font-semibold text-ink">Cohort application</p>
         <p className="mt-0.5 text-xs text-stone">
-          When off, the Apply buttons (home + program) read “2026 Cohort — Coming Soon”. Turn it on to make them live.
+          Drives the CTAs on the homepage and /program. On → “Apply to the 2026 cohort”, opening
+          the URL below. Off with a URL → applications have closed: “Join our email list”, opening
+          the URL below. Off with an empty URL → the inert “2026 Cohort — Coming Soon”.
         </p>
         <div className="mt-4 space-y-4">
           <Toggle name="application_open" defaultChecked={content.applicationOpen} label="Applications are open" />
-          <Field label="Application form URL" hint="The Google Form (or similar) the Apply button opens.">
+          <Field label="Application form URL" hint="The Google Form the button opens — the application form while open, the email-list form once closed.">
             <Text name="application_url" defaultValue={content.applicationUrl} placeholder="https://forms.gle/…" />
           </Field>
         </div>

@@ -42,6 +42,9 @@ export default async function HomePage() {
   const applyOpen = program.applicationOpen;
   const applyUrl =
     program.applicationUrl && program.applicationUrl !== "#" ? program.applicationUrl : null;
+  // Toggle off but a URL still set = applications have closed and the URL is
+  // the email-list form; off with no URL = the cycle hasn't opened yet.
+  const applyClosed = !applyOpen && applyUrl !== null;
 
   return (
     <div className="relative">
@@ -70,16 +73,16 @@ export default async function HomePage() {
             <p className="pretty mt-6 max-w-lg text-lg leading-relaxed text-white/85">
               {content.heroLede}
             </p>
-            {/* Apply button is admin-toggled (site_content.application_open). */}
+            {/* Apply button is admin-toggled (program_content.application_open). */}
             <div className="mt-9 flex flex-wrap gap-3">
-              {applyOpen ? (
+              {applyOpen || applyClosed ? (
                 <Link
                   href={applyUrl ?? "/program"}
                   target={applyUrl ? "_blank" : undefined}
                   rel={applyUrl ? "noopener noreferrer" : undefined}
                   className="rounded-sm bg-white px-6 py-3 font-semibold text-cardinal shadow-sm transition-colors hover:bg-sandstone"
                 >
-                  Apply to the 2026 cohort
+                  {applyOpen ? "Apply to the 2026 cohort" : "Join our email list"}
                 </Link>
               ) : (
                 <span className="rounded-sm bg-white/15 px-6 py-3 font-semibold text-white/80 ring-1 ring-inset ring-white/30">

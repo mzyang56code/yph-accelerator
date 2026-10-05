@@ -12,7 +12,7 @@ function getDaysRemaining(target: Date): number | null {
   return Math.max(1, Math.ceil(diff / (1000 * 60 * 60 * 24)));
 }
 
-/** Hero status card: a translucent panel on the cardinal field. Counts down in days to the application-open date, then its button becomes the real Apply CTA once the admin toggle flips. */
+/** Hero status card: a translucent panel on the cardinal field. Three states, driven by the two admin fields — open (Apply CTA), closed (a cycle has ended: the email-list CTA, no countdown), and upcoming (counts down in days to the application-open date). */
 export default function ProgramCountdown({
   applyOpen,
   applyUrl,
@@ -20,19 +20,33 @@ export default function ProgramCountdown({
   applyOpen: boolean;
   applyUrl: string | null;
 }) {
+  // Toggle off but a URL still set = applications have closed, and the URL is
+  // the email-list form. Toggle off with no URL = the cycle hasn't opened yet.
+  const closed = !applyOpen && applyUrl !== null;
   const [days, setDays] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!applyOpen) setDays(getDaysRemaining(APPLICATION_OPEN_DATE));
-  }, [applyOpen]);
+    if (!applyOpen && !closed) setDays(getDaysRemaining(APPLICATION_OPEN_DATE));
+  }, [applyOpen, closed]);
 
   return (
     <div className="mx-auto max-w-md rounded-lg bg-black/20 p-10 text-center text-white ring-1 ring-inset ring-white/10">
       <p className="display whitespace-nowrap text-xl leading-snug">
-        2026 Cohort {applyOpen ? "Applications Are Open." : "Applications Open in"}
+        2026 Cohort{" "}
+        {applyOpen
+          ? "Applications Are Open."
+          : closed
+            ? "Applications Are Closed."
+            : "Applications Open in"}
       </p>
 
-      {!applyOpen && (
+      {closed && (
+        <p className="pretty mt-4 text-sm leading-relaxed text-white/80">
+          Join our email list and we&rsquo;ll let you know when the next cohort opens.
+        </p>
+      )}
+
+      {!applyOpen && !closed && (
         <p className="mt-5 flex items-baseline justify-center gap-2">
           <span className="font-display text-7xl font-semibold tabular-nums text-sandstone">
             {days !== null ? days : "--"}
@@ -43,14 +57,14 @@ export default function ProgramCountdown({
         </p>
       )}
 
-      {applyOpen ? (
+      {applyOpen || closed ? (
         <Link
           href={applyUrl ?? "#"}
           target={applyUrl ? "_blank" : undefined}
           rel={applyUrl ? "noopener noreferrer" : undefined}
           className="mt-8 inline-block rounded-sm bg-white px-7 py-3.5 font-semibold text-cardinal transition-colors hover:bg-sandstone"
         >
-          Apply to the 2026 cohort
+          {applyOpen ? "Apply to the 2026 cohort" : "Join our email list"}
         </Link>
       ) : (
         <span className="mt-8 inline-block rounded-sm px-7 py-3.5 font-semibold text-white ring-1 ring-inset ring-white/40">

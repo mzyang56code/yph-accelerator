@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import ScatterField from "@/components/ScatterField";
 import Reveal from "@/components/Reveal";
 import MailtoLink from "@/components/MailtoLink";
@@ -9,13 +8,6 @@ export const metadata: Metadata = {
   description:
     "Know a student who belongs in YPHA? Nominate them for the 2026 cohort — a free, year-long, Stanford-mentored public-health accelerator.",
 };
-
-// ---------------------------------------------------------------------------
-// Set this once the nomination Google Form exists — the CTA below switches
-// from a "coming soon" ghost state to a real link automatically. Same pattern
-// as ProgramCountdown's pre-open Apply button.
-// ---------------------------------------------------------------------------
-const NOMINATION_FORM_URL: string | null = null;
 
 const REASONS: { title: string; text: string }[] = [
   {
@@ -66,24 +58,13 @@ export default function EducatorsPage() {
           </h1>
           <p className="pretty mx-auto mt-5 max-w-xl text-lg leading-relaxed text-white/85">
             Know someone who&apos;s curious about public health or cares about
-            their community? It takes two minutes to nominate them, and
-            we&apos;ll follow up directly.
+            their community? Email us their name and year, and we&apos;ll follow
+            up with them directly. They don&apos;t need a project idea yet.
           </p>
           <div className="mt-9">
-            {NOMINATION_FORM_URL ? (
-              <Link
-                href={NOMINATION_FORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block rounded-sm bg-white px-8 py-4 font-semibold text-cardinal transition-colors hover:bg-sandstone"
-              >
-                Nominate a Student
-              </Link>
-            ) : (
-              <span className="inline-block rounded-sm px-8 py-4 font-semibold text-white ring-1 ring-inset ring-white/40">
-                Nominations Open Soon
-              </span>
-            )}
+            <MailtoLink className="inline-block rounded-sm bg-white px-8 py-4 font-semibold text-cardinal transition-colors hover:bg-sandstone">
+              Email us a nomination
+            </MailtoLink>
           </div>
         </div>
       </section>

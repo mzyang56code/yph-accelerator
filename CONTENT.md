@@ -19,17 +19,52 @@ below — not yet wired into `/admin → Program`'s Application form URL field);
 and revamped `/admin` for performance and navigation IA (see "Admin panel
 revamp" below).
 
-**Update (2026-08-31):** The **Applicant Info Session moved September 20 →
-September 27, 10 AM Pacific**. Changed in all four hardcoded places —
+**Update (2026-09-06): the in-house nomination feature was cut.** A database-backed
+nomination form on `/educators` plus a `/admin → Nominations` inbox had been built
+but never committed; **on request it was dropped rather than shipped**, and the
+`nominations` table was never created in Supabase. Deleted: `NominationForm.tsx`,
+`src/app/educators/actions.ts`, `src/app/admin/nominations/`, the `nominations`
+schema block, and the nomination helpers in `src/lib/data.ts` and
+`src/app/admin/actions.ts`. **The site therefore still has no public write path**
+— every table stays read-public, write-authenticated.
+
+In its place, `/educators`'s hero CTA is now a **`MailtoLink` — "Email us a
+nomination"** — replacing the ghost "Nominations Open Soon" button and the
+`NOMINATION_FORM_URL` constant, which is gone. Nominations arrive as email. The
+hero copy now asks for name and year and says a project idea isn't needed.
+
+**The print one-pager was cut in the same pass.** `/educators/flyer` and
+`PrintButton.tsx` were built but never shipped (404 in production throughout);
+both are deleted, along with the `@media print` block they needed in
+`globals.css`. There is no flyer — don't cite one in outreach copy.
+
+A backup of everything removed sits outside the repo, in this session's
+scratchpad (`ypha-nominations-backup/`), if any of it is ever wanted back.
+
+**Update (2026-09-26):** The Applicant Info Session time changed from 10 AM to
+**11 AM–12 PM Pacific** (same date, September 27). Commit `4865597` updates the
+same three hardcoded spots (`JOIN_STEPS` and "Have questions?" in
+`src/app/program/page.tsx`, `KEY_DATES` in `src/app/educators/page.tsx`); live and
+verified on both pages 2026-09-26. The 2026-09-05 note below is kept for history.
+
+**Update (2026-09-05):** The **Applicant Info Session moved September 20 →
+September 27, 10 AM Pacific**, and the copy change is **live** (commit
+`cc07691`, deployed 2026-09-05; verified on `/program` and `/educators`).
+
+The date was hardcoded in three places, not read from anywhere shared:
 `JOIN_STEPS` and the "Have questions?" paragraph in `src/app/program/page.tsx`,
-`KEY_DATES` in `src/app/educators/page.tsx`, and `DATES` in
-`src/app/educators/flyer/page.tsx` — plus this doc. The time is written into the
-description line, not the date eyebrow, because the eyebrow is a short mono
-label and the flyer's date column is a fixed `w-[4.5rem]`. The matching
-`events` row in Supabase ("General Info Session") is separate; it **has since
-been moved to `2026-09-27` in `/admin → Events`** (verified 2026-09-01). Its
-`start_time` is **still empty**, so the event card carries no time — set it to
-10:00 AM Pacific in `/admin → Events` to match the copy everywhere else.
+and `KEY_DATES` in `src/app/educators/page.tsx`. The time sits in the
+description line rather than the date label, because the label renders as a
+short uppercase mono eyebrow.
+
+**One loose end: the event card still shows no time.** The `events` row in
+Supabase ("General Info Session") is separate from the hardcoded copy above. Its
+`date` was moved to `2026-09-27` in `/admin → Events` on 2026-09-01, but its
+`start_time` is **still empty**, so `/events` and the homepage show the right
+date with no time while `/program` and `/educators` say 11 AM–12 PM Pacific. Set start
+time to `11:00` (end `12:00`) in `/admin → Events` and they agree. Enter plain `11:00` — the
+site stores wall-clock time, reads it as `America/Los_Angeles`, and converts per
+viewer (see "Time zones" below).
 
 **Update (2026-08-26):** The `/program` page timeline was rebuilt from
 `~/Downloads/YPHA_2026-2027_Program_Timeline.md` — real dates instead of
@@ -136,7 +171,7 @@ or the subject-area tags (those are kept as background at the bottom).
 - **How to Join** (in code, `JOIN_STEPS` in `src/app/program/page.tsx`): four
   pre-cohort steps, on real dates as of 2026-08-26 — **September 7**:
   applications open; **September 27**: Applicant Info Session (optional, Zoom,
-  10 AM Pacific), open Q&A on the application and the year ahead; **October 4**: application
+  11 AM–12 PM Pacific), open Q&A on the application and the year ahead; **October 4**: application
   deadline (assumed, see the status note above); **October 17**: the cohort
   year begins at the YPHA Kickoff (hybrid) from 2 to 5 PM Pacific.
 - **"What we'll ask for" + "Have questions?" added below the timeline steps**
@@ -178,14 +213,16 @@ as the homepage section-heading trims above:
 A page for teachers/counselors to nominate a student, built code-fixed (like
 `/about`) rather than CMS-driven. **Not in the main nav** — deliberately
 dropped after the fact (see below); reachable only via the footer's Explore
-column and direct link-sharing (email, flyer), since the audience finds this
-page by being handed the link, not by browsing the site.
+column and direct link-sharing by email, since the audience finds this page by
+being handed the link, not by browsing the site.
 
 - **Hero is the whole point:** unlike other interior pages, the hero itself
   *is* the nomination CTA — headline "Nominate a student for the 2026
-  cohort," subhead, and the CTA button inline (ghost "Nominations Open Soon"
-  until a real Google Form URL is set on the `NOMINATION_FORM_URL` constant
-  in `src/app/educators/page.tsx`). Earlier drafts had a separate mid-page
+  cohort," subhead, and the CTA button inline. Since 2026-09-06 that button is
+  a **`MailtoLink`, "Email us a nomination"** (see the status note above): the
+  earlier ghost "Nominations Open Soon" state and its `NOMINATION_FORM_URL`
+  constant are gone, as is the database-backed form that briefly replaced
+  them. Earlier drafts had a separate mid-page
   "Nominate a Student" CTA band and a full "Other ways to help" section
   (share the page / invite a workshop) — both removed so the page has one
   job, per explicit feedback that a second full section diluted the ask.
@@ -204,10 +241,14 @@ page by being handed the link, not by browsing the site.
   students/parents down the belief ladder toward applying, and a low-traffic
   educator link competed with that. Now lives only in `SiteFooter.tsx`'s
   Explore column.
-- **Nomination Google Form:** does not exist yet (separate from the cohort
-  application form below). Draft field list for whoever builds it: student
-  name/grade/school, student and/or parent email, nominator name/role/email,
-  relationship to student, why they'd be a good fit, optional notes.
+- **Nomination intake is email, by decision.** There is no nomination Google
+  Form and no in-house form; one of each was explored and both were dropped
+  (2026-09-06). If intake ever outgrows the inbox, the draft field list is:
+  student name/grade/school, student and/or parent email, nominator
+  name/role/email, relationship to student, why they'd be a good fit, optional
+  notes. A Google Form is the cheaper of the two revivals — the in-house route
+  needs a `nominations` table with inverted RLS, since a nomination names a
+  minor.
 
 ## Admin ordering behavior (2026-07-30)
 
@@ -307,17 +348,62 @@ added to the nav, then explicitly pulled back out** — it's meant to stay
 reachable only via the "Manage categories →" link on the Workshops page and
 the dashboard card, not as its own top-level tab.
 
+## Workshop categories
+
+Categories are **admin-editable data**, not code — they live in the
+`workshop_categories` table and are edited at `/admin → Workshops → Manage
+categories`. The seed list in `src/lib/data.ts` (Epidemiology, Biostatistics,
+Health equity, Global health, Research skills, Policy) is **fallback content
+only**; it appears when Supabase isn't configured and does not describe the
+live site.
+
+Live categories as of 2026-09-05:
+
+- **Content Workshops** — Food Safety, Mental Health, Intro to Epidemiology,
+  Intro to Health Journalism, Intro to mapathons
+- **Lessons** — Cold Emailing, How to Write a Letter to the Editor, How to spend
+  your Public Health Summer, SCOPE (how to get started in public health)
+
+**Pending: rename "Lessons" → "Skills Workshop".** Requested 2026-08-31, not yet
+done — it needs a signed-in admin, since RLS makes the anon key read-only.
+Rename it in `/admin → Workshops → Manage categories`; `saveWorkshopCategory`
+re-labels every workshop carrying the old name in the same action
+(`src/app/admin/actions.ts`), so nothing falls out of its filter. Note the
+sibling category is plural, so **Skills Workshops** may read better in the
+filter row; confirm the wording before making the change.
+
+A category label is the join key: `workshops.category` stores the label as text
+rather than a foreign key. That is why renaming has to cascade, and why the
+rename must be done in the admin rather than by editing one row by hand.
+
 ## Cohort application (admin-toggled)
 
 `/admin → Program`: an **Applications are open** toggle + a **Google Form URL**.
-Off → the Apply buttons read "2026 Cohort — Coming Soon"; on → "Apply to the 2026
-cohort" opens the form. Drives the CTAs on both the homepage hero and `/program`.
-Stored in `program_content` (`application_open`, `application_url`).
+Those two fields together pick one of three CTA states, on both the homepage hero
+and `/program`'s countdown card. Stored in `program_content` (`application_open`,
+`application_url`).
+
+| Toggle | URL | Heading | Button |
+|---|---|---|---|
+| on | set | "Applications Are Open." | "Apply to the 2026 cohort" → URL |
+| off | set | "Applications Are Closed." | "Join our email list" → URL |
+| off | `#` / empty | "Applications Open in _n_ days" | inert "2026 Cohort — Coming Soon" |
+
+The closed row is why the URL field is not strictly an *application* URL: once a
+cycle ends, the same field holds the **email-list** form, so the closed state has
+somewhere to send people instead of a dead "Coming Soon". Clearing the URL is what
+resets the card to the pre-cycle countdown, whose `APPLICATION_OPEN_DATE` lives in
+`src/components/ProgramCountdown.tsx` and is **still 2026-09-07** — a dev has to
+bump it to the 2027 open date before that third state is used again.
+
+**The email-list form** (shown while applications are closed):
+https://docs.google.com/forms/d/e/1FAIpQLScdXNuS_y4bwfKmGhmV270gO8FbdjcPmNRTiyp0kBlt1MlpuQ/viewform
 
 **The application Google Form itself was built 2026-07-30:**
 https://docs.google.com/forms/d/e/1FAIpQLSf6EY8AspgVCwl_pJlU8qvkPa2Gom97Gt5pv12jatSgjuuocg/viewform
-— **not yet pasted into** `/admin → Program`'s Application form URL field
-(still `#` as of this writing; `application_open` still off). Structure,
+— it ran for the 2026 cycle and **closed to responses by 2026-10-05**, so it must
+not be left in the URL field: a visitor following it lands on "no longer accepting
+responses". Structure,
 built deliberately non-intimidating despite being competitive (~20 spots):
 - **About You:** full name*, email*, phone (optional), high school*, grade in
   Fall 2026* (9th–12th), how they heard about YPHA (optional).
@@ -347,14 +433,14 @@ No eyebrow; heading is just "How to Join". Four steps, real dates as of
 2026-08-26:
 
 - **September 7** — Applications for the 2026 cohort open.
-- **September 27** — Applicant Info Session on Zoom at 10 AM Pacific, optional. An open Q&A on the application and the year ahead.
+- **September 27** — Applicant Info Session on Zoom from 11 AM to 12 PM Pacific, optional. An open Q&A on the application and the year ahead.
 - **October 4** — Application deadline.
 - **October 17** — The cohort year begins at the YPHA Kickoff (hybrid) from 2 to 5 PM Pacific.
 
 **October 4 is an assumption, not a given date.** The source timeline states
 only "the October application deadline." October 4 was chosen to sit two weeks
 after the info session and two weeks before the YPHA Kickoff, leaving time to read
-applications and match mentors. Confirm it before it goes on a flyer.
+applications and match mentors. Confirm it before it goes out to educators.
 
 **Welcome meeting naming: resolved.** The old placeholder "Welcome meeting" is
 now the **YPHA Kickoff** (renamed from "YPHA Launch Lab" on 2026-10-01; October 17, 2 to 5 PM Pacific). The
