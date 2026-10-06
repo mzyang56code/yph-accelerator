@@ -30,8 +30,10 @@ export default function ProgramCountdown({
   }, [applyOpen, closed]);
 
   return (
-    <div className="mx-auto max-w-md rounded-lg bg-black/20 p-10 text-center text-white ring-1 ring-inset ring-white/10">
-      <p className="display whitespace-nowrap text-xl leading-snug">
+    <div className="mx-auto rounded-lg bg-black/20 p-8 text-center text-white ring-1 ring-inset ring-white/10">
+      {/* No nowrap: the card is capped at max-w-sm by its parent, so a long
+          heading has to wrap rather than push past the padding. */}
+      <p className="display text-balance text-xl leading-snug">
         2026 Cohort{" "}
         {applyOpen
           ? "Applications Are Open."
@@ -41,8 +43,8 @@ export default function ProgramCountdown({
       </p>
 
       {closed && (
-        <p className="pretty mt-4 text-sm leading-relaxed text-white/80">
-          Join our email list and we&rsquo;ll let you know when the next cohort opens.
+        <p className="pretty mt-3 text-sm leading-relaxed text-white/75">
+          We&rsquo;ll email you when the next cohort opens.
         </p>
       )}
 
@@ -62,7 +64,7 @@ export default function ProgramCountdown({
           href={applyUrl ?? "#"}
           target={applyUrl ? "_blank" : undefined}
           rel={applyUrl ? "noopener noreferrer" : undefined}
-          className="mt-8 inline-block rounded-sm bg-white px-7 py-3.5 font-semibold text-cardinal transition-colors hover:bg-sandstone"
+          className={`${closed ? "mt-6" : "mt-8"} inline-block rounded-sm bg-white px-7 py-3.5 font-semibold text-cardinal transition-colors hover:bg-sandstone`}
         >
           {applyOpen ? "Apply to the 2026 cohort" : "Join our email list"}
         </Link>
