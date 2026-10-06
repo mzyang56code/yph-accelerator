@@ -30,23 +30,21 @@ export default function ProgramCountdown({
   }, [applyOpen, closed]);
 
   return (
-    <div className="mx-auto rounded-lg bg-black/20 p-8 text-center text-white ring-1 ring-inset ring-white/10">
-      {/* No nowrap: the card is capped at max-w-sm by its parent, so a long
-          heading has to wrap rather than push past the padding. */}
-      <p className="display text-balance text-xl leading-snug">
+    <div className="mx-auto rounded-lg bg-black/20 px-6 py-8 text-center text-white ring-1 ring-inset ring-white/10 sm:p-8">
+      {/* The heading stays on one line, so the card has to be wide enough for
+          it: "2026 Cohort Applications Are Closed" measures 343px at text-xl
+          (Libre Franklin 700, -0.025em), i.e. a 407px card -- which is why the
+          parent is capped at max-w-md (448px) rather than max-w-sm (384px).
+          Below sm the viewport is narrower than that, so the heading steps
+          down to text-base (275px of text, a 323px card) to stay unwrapped. */}
+      <p className="display whitespace-nowrap text-base leading-snug sm:text-xl">
         2026 Cohort{" "}
         {applyOpen
           ? "Applications Are Open."
           : closed
-            ? "Applications Are Closed."
+            ? "Applications Are Closed"
             : "Applications Open in"}
       </p>
-
-      {closed && (
-        <p className="pretty mt-3 text-sm leading-relaxed text-white/75">
-          We&rsquo;ll email you when the next cohort opens.
-        </p>
-      )}
 
       {!applyOpen && !closed && (
         <p className="mt-5 flex items-baseline justify-center gap-2">

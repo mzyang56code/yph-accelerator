@@ -324,7 +324,7 @@ export default async function ProgramPage() {
             <p className="pretty mt-6 max-w-lg text-lg leading-relaxed text-white/85">{content.heroIntro}</p>
           </div>
 
-          <div className="mx-auto w-full max-w-sm">
+          <div className="mx-auto w-full max-w-md">
             <ProgramCountdown applyOpen={applyOpen} applyUrl={applyUrl} />
           </div>
         </div>
