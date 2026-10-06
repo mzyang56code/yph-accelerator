@@ -211,8 +211,25 @@ single large sandstone/white numeral (days-until, not hrs/min — deliberately
 simplified from an earlier three-unit d/h/m version that read as "too much"),
 and one button that changes meaning rather than markup: a ghost outline
 ("ring-1 ring-inset ring-white/40") state before the admin toggle flips, a
-solid white-fill state after. Centered content, `max-w-md` card width so the
-title fits one line.
+solid white-fill state after. Centered content.
+
+**Three states since 2026-10-05**, not two — pre-cycle (numeral + ghost button),
+open (Apply), and closed (no numeral, "Join our email list"). The closed state
+drops the countdown entirely rather than showing a stale one, and tightens its
+spacing to suit: `px-6 py-8 sm:p-8` on the card, `mt-6` on the button instead of
+the `mt-8` the numeral states use.
+
+**Width is measured against the longest heading, not eyeballed.** The heading is
+`whitespace-nowrap`, so the card must fit it: "2026 Cohort Applications Are
+Closed" is 343px at `text-xl` (Libre Franklin 700, `-0.025em`), a 407px card with
+`p-8`, hence a `max-w-md` (448px) **wrapper**. The card itself carries no
+max-width. This corrects a long-standing note here that claimed `max-w-md` on the
+card made the title fit one line: the card's `max-w-md` was dead code, wider than
+the `max-w-sm` (384px) wrapper that actually bound it, so the title overflowed its
+padding instead. Below `sm` the heading steps down to `text-base` to stay on one
+line on a phone. The same rule now governs the `/program` timeline heading.
+**Any nowrap heading on this site gets measured before it ships** — font metrics
+at the real weight and tracking, against the real container, not a guess.
 
 ### Partner Logo Strip — "In partnership with" (custom, added 2026-07-30)
 Homepage-only, sitting between the Team section and the contact band. This is
@@ -238,10 +255,13 @@ near-square seal) aren't an issue — don't pre-crop future logos to match.
 A second instance of the "one job per hero" pattern (see Status/Countdown
 Card above): the `/educators` hero skips the usual dot-map + headline pattern
 and puts the single ask — nominating a student — directly in the Cardinal
-hero with the CTA inline, rather than burying it in a mid-page band. Ghost
-button ("Nominations Open Soon") vs. filled white button once a real
-Google-Form URL is set, same swap-not-duplicate convention as
-`ProgramCountdown`'s pre/post-open Apply button.
+hero with the CTA inline, rather than burying it in a mid-page band. The CTA is
+a **filled white `MailtoLink`, "Email us a nomination"** — nominations arrive as
+mail, since the site has no public write path. This replaced a ghost
+"Nominations Open Soon" button and its `NOMINATION_FORM_URL` constant, which
+never got a form; the swap-not-duplicate convention it borrowed from
+`ProgramCountdown` no longer applies here, because there is no second state to
+swap to.
 
 ### Timeline Event Row (`/program`, added 2026-08-26)
 

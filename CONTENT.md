@@ -167,7 +167,8 @@ or the subject-area tags (those are kept as background at the bottom).
   reading "Available Sep. 7th, 2026". Once the admin **Applications are open**
   toggle flips on, the same card swaps to "Applications Are Open." plus a real
   filled Apply button to the Google Form — no separate on/off markup to
-  maintain.
+  maintain. **A third state was added 2026-10-05** for when a cycle ends; see
+  "Cohort application" below for all three and for the card's width rule.
 - **How to Join** (in code, `JOIN_STEPS` in `src/app/program/page.tsx`): four
   pre-cohort steps, on real dates as of 2026-08-26 — **September 7**:
   applications open; **September 27**: Applicant Info Session (optional, Zoom,
@@ -386,8 +387,23 @@ and `/program`'s countdown card. Stored in `program_content` (`application_open`
 | Toggle | URL | Heading | Button |
 |---|---|---|---|
 | on | set | "Applications Are Open." | "Apply to the 2026 cohort" → URL |
-| off | set | "Applications Are Closed." | "Join our email list" → URL |
+| off | set | "Applications Are Closed" (no period) | "Join our email list" → URL |
 | off | `#` / empty | "Applications Open in _n_ days" | inert "2026 Cohort — Coming Soon" |
+
+**The closed state has been live since 2026-10-05**, when the toggle was switched
+off and the email-list URL pasted in. The stored URL carries Google's `?usp=dialog`
+suffix, which is harmless — it is the responder link, not an edit link.
+
+**Card width is measured, not guessed.** The heading is `whitespace-nowrap`, so the
+card has to be wide enough for the longest state: "2026 Cohort Applications Are
+Closed" is 343px at `text-xl` (Libre Franklin 700, `-0.025em` tracking), i.e. a
+407px card with `p-8`. Its wrapper is `max-w-md` (448px) for that reason — it was
+`max-w-sm` (384px) until 2026-10-06, which is what made the heading run past the
+padding. Below the `sm` breakpoint no phone fits 407px, so the heading steps down
+to `text-base` (275px of text, a 323px card with `px-6`) to stay on one line.
+**Before lengthening any of the three headings, re-measure.** The subcopy under the
+closed heading ("We'll email you when the next cohort opens.") was removed the same
+day — it restated the button.
 
 The closed row is why the URL field is not strictly an *application* URL: once a
 cycle ends, the same field holds the **email-list** form, so the closed state has
@@ -463,6 +479,21 @@ in `src/app/program/page.tsx`), not CMS-editable.
 the legend's "first week / third week" labels are **gone** — every entry now
 carries a real date and a real event name. The hidden Summer 2027 rows are gone
 too; the source timeline ends in May.
+
+**Section heading + intro** (in code, above the phases). Reworded 2026-10-06:
+
+> ## What a year in the cohort looks like
+>
+> Cohort 2026–2027 will take place in three phases. Every month has one live
+> meeting and one checkpoint between meetings. Your mentor and your community
+> partner are part of the work the whole way through.
+
+The heading takes **no trailing period** and sits on **one line from the `sm`
+breakpoint up**. It had been capped at `max-w-[16ch]`, which broke 36 characters
+over three lines; that cap is gone. It measures 573px at `text-4xl` against 592px
+of usable width at `sm`, so the fit is real but has only ~19px of slack —
+re-measure before rewording it longer. A 375px phone has ~327px usable, which no
+readable size fits, so below `sm` it wraps to two lines by design.
 
 **Structure.** Three phases, one per season, each with a name and a blurb in the
 sticky left rail:

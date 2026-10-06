@@ -44,8 +44,12 @@ builds and deploys.
 Sign in at `/admin/login`, then edit **Events**, **Workshops**, **Team**, the
 **Homepage**, and the **Program** page. Changes publish immediately (on-demand
 revalidation). The **Program** box holds the hero copy plus the **cohort
-application toggle** ("Applications are open" + a Google Form URL) that flips the
-Apply buttons between live and "Coming Soon" across the site.
+application toggle** ("Applications are open" + a Google Form URL). Those two
+fields pick one of **three** CTA states across the site — open (Apply), closed
+(Join our email list), or pre-cycle (inert "Coming Soon") — so the URL field holds
+the email-list form once a cycle ends, not just the application. See "Cohort
+application" in [CONTENT.md](./CONTENT.md) for the state table and the card's
+measured width rule.
 
 ### Session checks are bounded (`src/middleware.ts`)
 
