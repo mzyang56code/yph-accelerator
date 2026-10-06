@@ -393,13 +393,18 @@ export default async function ProgramPage() {
       <section className="border-y border-ink/8 bg-sand-light py-20 md:py-28">
         <div className="shell">
           <Reveal>
-            <h2 className="display max-w-[16ch] text-3xl text-ink sm:text-4xl">
-              What a year in the cohort looks like.
+            {/* One line from sm up: the heading measures 573px at text-4xl
+                (Libre Franklin 700, -0.025em) against 592px of usable width at
+                the sm breakpoint. A phone has ~327px, which no readable size
+                fits, so below sm it wraps -- at the container, not at 16ch. */}
+            <h2 className="display text-3xl text-ink sm:whitespace-nowrap sm:text-4xl">
+              What a year in the cohort looks like
             </h2>
             <p className="pretty mt-4 max-w-[62ch] text-lg leading-relaxed text-ink/80">
-              Cohort 2026–2027, in three phases. Every month has one live meeting
-              and one checkpoint between meetings. Your mentor and your community
-              partner are part of the work the whole way through.
+              Cohort 2026–2027 will take place in three phases. Every month has
+              one live meeting and one checkpoint between meetings. Your mentor
+              and your community partner are part of the work the whole way
+              through.
             </p>
             {/* legend — fill vs. hollow, explained once */}
             <div className="mt-7 flex flex-wrap gap-x-7 gap-y-2 text-sm text-ink/80">
