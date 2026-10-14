@@ -91,7 +91,6 @@ const TIMELINE: Phase[] = [
             format: "Zoom · 3:30–4:30 PM Pacific",
             kind: "live",
             title: "Community Discovery Lab + Faculty Spotlight",
-            flag: "Date change",
             lede:
               "A Stanford faculty member or practitioner shares their work, then we get you ready to talk to your own community.",
           },
