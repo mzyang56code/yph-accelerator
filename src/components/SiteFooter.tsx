@@ -26,7 +26,6 @@ export default async function SiteFooter() {
             <li><Link href="/events" className="hover:text-white">Events</Link></li>
             <li><Link href="/workshops" className="hover:text-white">Workshop library</Link></li>
             <li><Link href="/about" className="hover:text-white">About Us</Link></li>
-            <li><Link href="/educators" className="hover:text-white">For Educators</Link></li>
           </ul>
         </div>
 

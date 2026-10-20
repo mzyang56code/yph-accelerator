@@ -41,6 +41,19 @@ both are deleted, along with the `@media print` block they needed in
 A backup of everything removed sits outside the repo, in this session's
 scratchpad (`ypha-nominations-backup/`), if any of it is ever wanted back.
 
+**Update (2026-10-20, later still): `/educators` is retired, and the homepage
+carries its first press link.**
+
+- **`/educators` is unlinked, not deleted.** The footer's "For Educators" link is
+  gone and the route is out of `src/app/sitemap.ts`, so nothing on the site points
+  at it. The page itself still responds, deliberately: its whole distribution
+  model was teachers and counsellors being handed the URL by email, and those
+  links are live in inboxes. A 404 would break them. See "For Educators page"
+  below for what this leaves open.
+- **Homepage "In the news" line.** One line above the partner logo strip, linking
+  the Stanford Global Health piece on the first cohort's kickoff. See "Homepage"
+  below.
+
 **Update (2026-10-20, same day, later): the two fall checkpoints swapped dates and
 "Discovery" became "Connection".** Nov 29 is now the **Fall Project Plan** and
 Dec 23 the **Community Connection Checkpoint**; the Nov 13 lab is renamed
@@ -125,6 +138,26 @@ here said to ship by hand. It was **verified working again on 2026-08-27** — a
 push to `main` triggers a production deploy within seconds. `npx vercel --prod`
 from a checkout with matching `.vercel/project.json` remains a valid fallback if
 a push ever fails to trigger a build.
+
+**The homepage carries one press link (added 2026-10-20).** A single line above
+the partner logo strip, in the same `bg-paper` section: the eyebrow "In the news"
+then a link reading "Stanford Global Health on our first cohort's kickoff ↗".
+`PRESS` in `src/app/page.tsx`, dev-edited, the same fixed-in-code pattern as
+`PARTNERS` below it. Two notes for whoever touches it:
+
+- **The CIGH logo stays unlinked** on purpose. A partner logo should point at the
+  partner, not at a news story, so the article gets its own line instead.
+- **Keep the trailing slash** on the URL
+  (`…/accelerating-youth-engagement-in-public-health.html/`). The bare `.html`
+  form 301-redirects to it, so dropping the slash costs a hop.
+
+The article is bylined by Catherine Wu and quotes Max Yang. **It also disagrees
+with the site**, which now matters because the homepage points at it: the piece
+describes the cohort as **20 Bay Area teams plus 5 from elsewhere in the US**,
+while the homepage stat says "48 Students mentored this cohort" and the nav,
+hero, and mission all frame the program as Bay Area. Reconcile those before the
+link gets much traffic. If more press arrives, `PRESS` becomes an array and the
+line becomes a list.
 
 **Note on this doc's relationship to the CMS:** homepage/program hero fields
 are genuinely admin-editable (Supabase), so a teammate can change the live
@@ -239,7 +272,29 @@ as the homepage section-heading trims above:
   deliberately worded differently from the homepage Workshops intro above so
   the two don't read as copy-pasted.
 
-## For Educators page (`/educators`, added 2026-07-30)
+## For Educators page (`/educators`, added 2026-07-30, retired 2026-10-20)
+
+**Retired 2026-10-20: unlinked, not deleted.** On request. The footer link and
+the sitemap entry are gone; `src/app/educators/page.tsx` stays in the repo and the
+URL still serves the page, because the audience was mailed that URL directly and a
+404 would break links already sent. Everything below describes the page as it
+still exists at that URL.
+
+Three things this leaves open:
+
+- **The page is unlinked, not unindexed.** Dropping it from the sitemap stops it
+  being *submitted*; it does not remove what search engines already have. If it
+  should also stop appearing in results, add `robots: { index: false }` to its
+  `metadata` export. That was not done, since "unlink" was the instruction.
+- **Nothing explains the nomination channel now.** Nominations arrive as email and
+  this page was the only place that said so, so a teacher who did not keep the
+  link has no public route in. The footer "Email us" `MailtoLink` is the fallback,
+  and it says nothing about nominations.
+- **`KEY_DATES` is still duplicated here** and still carries the stale October 17
+  "Date change" flag (see "Three smaller drifts"). An unlinked page is easy to
+  forget on the next date change, and it is still reachable by anyone holding the
+  link, so it can go stale in public.
+
 
 A page for teachers/counselors to nominate a student, built code-fixed (like
 `/about`) rather than CMS-driven. **Not in the main nav** — deliberately

@@ -29,6 +29,14 @@ const PARTNERS: { name: string; logo: string }[] = [
   { name: "ALAS — Ayudando Latinos a Soñar", logo: "/partners/alas.png" },
 ];
 
+// One press item, as a single line above the partner strip. The CIGH logo
+// below stays unlinked: it stands for the partner, not for a news story.
+// Keep the trailing slash — the bare .html form 301s to this one.
+const PRESS = {
+  label: "Stanford Global Health on our first cohort's kickoff",
+  url: "https://globalhealth.stanford.edu/news/accelerating-youth-engagement-in-public-health.html/",
+};
+
 export default async function HomePage() {
   const [content, program, events, workshops, categories, team] = await Promise.all([
     getSiteContent(),
@@ -184,6 +192,17 @@ export default async function HomePage() {
       {/* ---------------------------------------------------------------- */}
       <section className="bg-paper py-14">
         <div className="shell">
+          <p className="mx-auto mb-7 flex max-w-3xl flex-col items-center justify-center gap-1.5 text-center sm:flex-row sm:gap-3">
+            <span className="eyebrow text-stone">In the news</span>
+            <a
+              href={PRESS.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-semibold text-cardinal underline-offset-4 hover:underline"
+            >
+              {PRESS.label} ↗
+            </a>
+          </p>
           <div className="mx-auto flex max-w-3xl flex-col items-center gap-8 rounded-lg bg-white p-8 text-center shadow-[0_20px_48px_-28px_rgba(46,45,41,0.35)] sm:p-10">
             <p className="font-mono text-base uppercase tracking-[0.2em] text-stone sm:text-lg">
               In partnership with
