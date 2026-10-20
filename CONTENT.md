@@ -41,6 +41,15 @@ both are deleted, along with the `@media print` block they needed in
 A backup of everything removed sits outside the repo, in this session's
 scratchpad (`ypha-nominations-backup/`), if any of it is ever wanted back.
 
+**Update (2026-10-20, same day, later): the two fall checkpoints swapped dates and
+"Discovery" became "Connection".** Nov 29 is now the **Fall Project Plan** and
+Dec 23 the **Community Connection Checkpoint**; the Nov 13 lab is renamed
+**Community Connection Lab + Faculty Spotlight** to keep the pair matching. Two
+ledes had to be reworded because a straight swap made them false, and the fall arc
+now runs plan-then-synthesis rather than synthesis-then-plan. Full write-up in
+"The checkpoint swap" below. **The Nov 13 `/events` card still says "Discovery"**
+and has to be fixed in `/admin → Events`, since event titles are Supabase rows.
+
 **Update (2026-10-20): the Project Design Lab became Science Communication Lab 1
 and moved to December 11.** A new `events` row went up in `/admin → Events`:
 **Science Communication Lab 1 + Faculty Spotlight, Friday December 11, 2026,
@@ -367,6 +376,12 @@ and both put the guest's name in `summary` ("Hear from …") and the profile lin
 in `details` ("Learn more about Dr. X's work here: …"). That is the house pattern
 for a Faculty Spotlight row; follow it for the next one.
 
+**The Nov 13 card title is stale as of 2026-10-20.** `/program` now says
+**Community *Connection* Lab + Faculty Spotlight**; the card above still says
+*Discovery*. Event titles are Supabase rows, so this one has to be fixed in
+`/admin → Events` and cannot be shipped from the repo. Until it is, the two pages
+disagree on that title.
+
 **Past** (newest first): YPHA Cohort Kickoff (Oct 17, 2–5 PM, Stanford Medical
 School) · YPHA Program Info Session (Sep 27, 11 AM–12 PM, Zoom) · August
 Mentorship Lab (Aug 23, 2–3 PM, Zoom, has a `register_url` Google Form) · July
@@ -393,7 +408,7 @@ makes the rows confusing to match up in Supabase.
   Cohort 2026–2027" in this doc.
 
 This is not a date slip alone. Dec 13, 2026 is a **Sunday** and Dec 11 is a
-**Friday**, which is the same weekday correction the Community Discovery Lab got
+**Friday**, which is the same weekday correction the Community Connection Lab got
 when it moved Nov 9 → Nov 13. But the titles also describe different sessions:
 project design versus science communication, and the latter is the theme the
 timeline assigns to **Apr 4, Communications & Pitch Lab**. "Lab **1**" implies a
@@ -404,8 +419,8 @@ added beside a surviving Project Design Lab, or a cancellation with the design
 work folded into a checkpoint. **Confirmed as the first**, 2026-10-20. December
 keeps one live meeting and one checkpoint, the way every other month does, and
 the fall arc now has no meeting dedicated to project design. If that turns out to
-be a problem, the Nov 29 Community Discovery Checkpoint and the Dec 23 Fall
-Project Plan are where the design work has to land.
+be a problem, the two fall checkpoints (Nov 29 and Dec 23) are where the design
+work has to land.
 
 The fix went into **three files**: the `timeline` array in
 `src/app/program/page.tsx`, the 17-event list in this doc, and the upstream
@@ -415,6 +430,43 @@ affected. The new `/program` lede reads "A researcher shares their work, then we
 start on how to explain your own project to the people it is for," built to
 parallel the November Faculty Spotlight row. **It was written here, not supplied
 by the program**, so replace it if the session's actual framing differs.
+
+### The checkpoint swap (2026-10-20)
+
+On request, the two fall checkpoints traded dates and the "Discovery" naming
+became "Connection" across the lab and its checkpoint:
+
+| Date | Was | Now |
+|---|---|---|
+| Nov 13 (live) | Community Discovery Lab + Faculty Spotlight | Community **Connection** Lab + Faculty Spotlight |
+| Nov 29 (checkpoint) | Community Discovery Checkpoint | **Fall Project Plan** |
+| Dec 23 (checkpoint) | Fall Project Plan | **Community Connection Checkpoint** |
+
+The *Finish with:* lists travelled with their events, not with their dates, so
+Nov 29 now asks for the finalized proposal and Dec 23 for the research synthesis.
+
+**Two ledes had to change, because a straight swap made them false.** Flagging
+this because it was not part of the request:
+
+- The Fall Project Plan read "Lock the plan before implementation starts. By the
+  end of fall you should have either a confirmed community partner, or an active
+  relationship with an organization and a plan to keep it going." Nov 29 is no
+  longer the last fall item, so the second sentence moved to Dec 23, where "the
+  end of fall" is still true. Nov 29 keeps the first sentence alone.
+- The community checkpoint read "Put the reading and the conversations together,
+  before you design anything." On Dec 23 that clause is false twice over: the
+  Science Communication Lab already happened on Dec 11 and the plan was already
+  locked on Nov 29. The clause is gone and the partner expectation took its place.
+
+**The arc now runs plan-then-synthesis.** Students lock a project plan on Nov 29
+and hand in the community research that was meant to inform it on Dec 23. The old
+order was discovery, then synthesis, then design, then plan. Whether that reads
+as intended is a program question, so it is recorded rather than argued with, but
+it is the reason the two ledes could not simply be swapped.
+
+Also worth knowing: the Nov 13 lab's outreach window used to run two and a half
+weeks, to the Nov 29 checkpoint. It now runs about five and a half weeks, to
+Dec 23.
 
 ### Three smaller drifts
 
@@ -437,7 +489,7 @@ by the program**, so replace it if the session's actual framing differs.
   still carry `flag: "Date change"` on October 17 (added in commit `06feece`).
   The event happened on 2026-10-17, so the badge no longer warns anyone about
   anything. Drop it from both arrays on the next pass. For contrast, the
-  Community Discovery Lab's Nov 9 → Nov 13 move was deliberately shipped without
+  Community Connection Lab's Nov 9 → Nov 13 move was deliberately shipped without
   a flag (commit `2a6a8c0`), so the badge is not a standing convention.
 
 ## Admin panel revamp (2026-07-30)
@@ -698,10 +750,10 @@ deliberately: it explains *why* that deadline sits where it does.)
 ### Fall 2026 — Discover & Co-Design
 - **Oct 17 · Hybrid (Stanford/Zoom) · 2–5 PM Pacific · live** — **YPHA Kickoff.** Meet your mentor and the cohort; walk the year's checkpoints; feedback on your application proposal (a starting point, meant to change); sharpen problem/community/who-to-talk-to; see the year's path (problem → evidence → community input → design → implementation → evaluation → communication). *Finish with:* sharper problem statement, target community, first list of partners to contact.
 - **Oct 28 · Checkpoint** — **Background Research Checkpoint.** *Finish with:* background review with 5–10 sources, what's already known, what others have tried, the questions reading can't answer, 2–3 possible partners.
-- **Nov 13 · Zoom · 3:30–4:30 PM Pacific · live** — **Community Discovery Lab + Faculty Spotlight.** (Moved 2026-10-14 from Nov 9, no time set; deliberately no "Date change" flag, unlike the Kickoff. Nov 13 is a Friday. The `/events` card names the guest: **Joseph Becker, Associate Professor of Emergency Medicine at Stanford**.) Faculty/practitioner presents; methods vs. community needs; how to approach a partner; agreeing-with-your-idea vs. listening; workshop outreach emails and interview questions. *Finish with:* specific people to contact, and about two and a half weeks (to the Nov 29 checkpoint) to do it.
-- **Nov 29 · Checkpoint** — **Community Discovery Checkpoint.** *Finish with:* research synthesis, evidence you reached partners (1–2 substantive conversations is the goal, partner timelines vary), community-named priorities, what you assumed vs. what changed, revised direction and partner role.
-- **Dec 11 · Zoom · 4–5 PM Pacific · live** — **Science Communication Lab 1 + Faculty Spotlight.** (Renamed and moved 2026-10-20 from "Project Design Lab", Dec 13. Dec 13 is a Sunday and Dec 11 is a Friday, the same weekday correction the Community Discovery Lab got; deliberately no "Date change" flag, matching that move. The `/events` card names the guest: **Everlyn Kamau**, with the affiliation caveat under "Three smaller drifts" above. "Lab **1**" implies a numbered series that the rest of this timeline does not contain, so ask where Lab 2 goes before publishing a second one. See "The December rename" above.) Faculty/practitioner presents; then explaining your own project to the people it is for. *— Superseded agenda, kept for reference:* the Project Design Lab taught objective; feasible activities; partner role; target population and implementation plan; December/February/April milestones; what counts as success; ethical, logistical, feasibility problems, finishing with a near-final design ready for mentor and partner feedback. **That teaching no longer has a session of its own**; the workshop topics for the science-communication version have not been written down yet.
-- **Dec 23 · Checkpoint** — **Fall Project Plan.** Lede now also carries the fall closing expectation, moved 2026-08-26 out of the phase-level `close` field (which was deleted) and into this event's description: by the end of fall, either a confirmed community partner or an active relationship with an organization plus a plan to keep it going. *Finish with:* finalized proposal and timeline, the three milestones, partner role, evaluation measures, January first steps, anything still blocked.
+- **Nov 13 · Zoom · 3:30–4:30 PM Pacific · live** — **Community Connection Lab + Faculty Spotlight.** (Moved 2026-10-14 from Nov 9, no time set; deliberately no "Date change" flag, unlike the Kickoff. Nov 13 is a Friday. Renamed 2026-10-20 from "Community Discovery Lab + Faculty Spotlight", so the lab keeps matching its checkpoint. **The `/events` card still reads "Discovery"** — that title is a Supabase row, not code, so fix it in `/admin → Events`. The card also names the guest: **Joseph Becker, Associate Professor of Emergency Medicine at Stanford**.) Faculty/practitioner presents; methods vs. community needs; how to approach a partner; agreeing-with-your-idea vs. listening; workshop outreach emails and interview questions. *Finish with:* specific people to contact, and the time to do it. **That window changed 2026-10-20**: the community synthesis moved to Dec 23, so the run is now about five and a half weeks rather than the two and a half it had to the old Nov 29 checkpoint.
+- **Nov 29 · Checkpoint** — **Fall Project Plan.** (Swapped with the Dec 23 checkpoint on 2026-10-20, see "The checkpoint swap" below.) Its lede dropped the fall closing expectation in the swap, since Nov 29 is no longer the last fall item; that expectation moved to Dec 23 with the community checkpoint. *Finish with:* finalized proposal and timeline, the three milestones, partner role, evaluation measures, January first steps, anything still blocked.
+- **Dec 11 · Zoom · 4–5 PM Pacific · live** — **Science Communication Lab 1 + Faculty Spotlight.** (Renamed and moved 2026-10-20 from "Project Design Lab", Dec 13. Dec 13 is a Sunday and Dec 11 is a Friday, the same weekday correction the Community Connection Lab got; deliberately no "Date change" flag, matching that move. The `/events` card names the guest: **Everlyn Kamau**, with the affiliation caveat under "Three smaller drifts" above. "Lab **1**" implies a numbered series that the rest of this timeline does not contain, so ask where Lab 2 goes before publishing a second one. See "The December rename" above.) Faculty/practitioner presents; then explaining your own project to the people it is for. *— Superseded agenda, kept for reference:* the Project Design Lab taught objective; feasible activities; partner role; target population and implementation plan; December/February/April milestones; what counts as success; ethical, logistical, feasibility problems, finishing with a near-final design ready for mentor and partner feedback. **That teaching no longer has a session of its own**; the workshop topics for the science-communication version have not been written down yet.
+- **Dec 23 · Checkpoint** — **Community Connection Checkpoint.** (Swapped with the Nov 29 checkpoint and renamed from "Community Discovery Checkpoint" on 2026-10-20, see "The checkpoint swap" below.) Its lede lost "before you design anything", which the swap made false, and gained the fall closing expectation the Fall Project Plan used to carry (moved 2026-08-26 out of the phase-level `close` field, which was deleted): by the end of fall, either a confirmed community partner or an active relationship with an organization plus a plan to keep it going. Dec 23 is still the end of fall, so that clause stayed true where "before you design anything" did not. *Finish with:* research synthesis, evidence you reached partners (1–2 substantive conversations is the goal, partner timelines vary), community-named priorities, what you assumed vs. what changed, revised direction and partner role.
 
 ### Winter 2027 — Implement & Iterate
 - **Jan 21 · Hybrid (Stanford/Zoom) · live** — **YPHA Project Feedback Workshop.** Short update (problem, what you tried, what happened, what you learned, biggest obstacle, help needed); faculty/mentors suggest fixes and make connections; scope narrowing; methods problems surfaced early; themed breakouts. *Finish with:* 1–3 next steps. **Framed as troubleshooting, not a review board** — the copy says "Nobody is grading you here, so bring the problems."
