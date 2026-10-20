@@ -107,11 +107,12 @@ const TIMELINE: Phase[] = [
         month: "December",
         events: [
           {
-            date: "Dec 13",
-            format: "Zoom",
+            date: "Dec 11",
+            format: "Zoom · 4–5 PM Pacific",
             kind: "live",
-            title: "Project Design Lab",
-            lede: "Turn your research and your conversations into a project you can finish by May.",
+            title: "Science Communication Lab 1 + Faculty Spotlight",
+            lede:
+              "A researcher shares their work, then we start on how to explain your own project to the people it is for.",
           },
           {
             date: "Dec 23",

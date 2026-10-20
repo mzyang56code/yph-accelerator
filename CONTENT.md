@@ -41,6 +41,25 @@ both are deleted, along with the `@media print` block they needed in
 A backup of everything removed sits outside the repo, in this session's
 scratchpad (`ypha-nominations-backup/`), if any of it is ever wanted back.
 
+**Update (2026-10-20): the Project Design Lab became Science Communication Lab 1
+and moved to December 11.** A new `events` row went up in `/admin → Events`:
+**Science Communication Lab 1 + Faculty Spotlight, Friday December 11, 2026,
+4–5 PM Pacific, Zoom**, with "Hear from Everlyn Kamau, Postdoctoral Researcher at
+UC Davis and Affiliate at UCSF" as the summary. `/program` had kept showing
+**Dec 13 · Zoom · Project Design Lab**, since that timeline is hardcoded in
+`src/app/program/page.tsx` and nothing in `/admin` reaches it, so the two pages
+advertised different December sessions on different dates. Confirmed 2026-10-20
+as a **rename and move of the same slot**, not an added session: the fall arc has
+no separate project-design meeting now, and the event count stays at 17.
+`/program` and the event list below are updated to match; the old Project Design
+Lab agenda is kept under the new entry, marked superseded.
+
+Three smaller drifts turned up on the same check and were **left alone on
+request**: the Kickoff title (`YPHA Cohort Kickoff` on the card versus
+`YPHA Kickoff` in code), Everlyn Kamau's affiliation, and the stale "Date change"
+badge on the past October 17 row. All three are written up under "Events roster
+and the Faculty Spotlight series" below.
+
 **Update (2026-09-26):** The Applicant Info Session time changed from 10 AM to
 **11 AM–12 PM Pacific** (same date, September 27). Commit `4865597` updates the
 same three hardcoded spots (`JOIN_STEPS` and "Have questions?" in
@@ -57,14 +76,16 @@ and `KEY_DATES` in `src/app/educators/page.tsx`. The time sits in the
 description line rather than the date label, because the label renders as a
 short uppercase mono eyebrow.
 
-**One loose end: the event card still shows no time.** The `events` row in
-Supabase ("General Info Session") is separate from the hardcoded copy above. Its
-`date` was moved to `2026-09-27` in `/admin → Events` on 2026-09-01, but its
-`start_time` is **still empty**, so `/events` and the homepage show the right
-date with no time while `/program` and `/educators` say 11 AM–12 PM Pacific. Set start
-time to `11:00` (end `12:00`) in `/admin → Events` and they agree. Enter plain `11:00` — the
-site stores wall-clock time, reads it as `America/Los_Angeles`, and converts per
-viewer (see "Time zones" below).
+**That loose end is closed (verified 2026-10-20).** The `events` row was separate
+from the hardcoded copy above: its `date` moved to `2026-09-27` in
+`/admin → Events` on 2026-09-01 but its `start_time` stayed empty, so `/events`
+and the homepage showed the right date with no time while `/program` and
+`/educators` said 11 AM–12 PM Pacific. Someone has since set `11:00`–`12:00` and
+renamed the row "General Info Session" → **"YPHA Program Info Session"**; the card
+now reads "Sep 27, 2026 · 11 AM – 12 PM PT" and agrees with both pages. Keep the
+entry rule in mind for the next event: enter plain `11:00`, since the site stores
+wall-clock time, reads it as `America/Los_Angeles`, and converts per viewer (see
+"Time zones" below).
 
 **Update (2026-08-26):** The `/program` page timeline was rebuilt from
 `~/Downloads/YPHA_2026-2027_Program_Timeline.md` — real dates instead of
@@ -328,6 +349,97 @@ Events far enough east land on a different calendar day for the viewer than
 the date printed beside them, so the range appends the local date in that case
 ("3 AM – 8 AM GMT+10 (Aug 24)").
 
+## Events roster and the Faculty Spotlight series (checked 2026-10-20)
+
+`/events` is CMS content. The rows live in `public.events` and are edited in
+`/admin → Events`, so treat this as "last known good" and re-check the live page
+before quoting it. Read off `ypha.site/events` on 2026-10-20.
+
+**Upcoming**
+
+| Date | Time (PT) | Title | Spotlight guest |
+|---|---|---|---|
+| Fri Nov 13, 2026 | 3:30–4:30 PM | Community Discovery Lab + Faculty Spotlight | Joseph Becker, Associate Professor of Emergency Medicine at Stanford (`med.stanford.edu/profiles/joseph-becker`) |
+| Fri Dec 11, 2026 | 4–5 PM | Science Communication Lab 1 + Faculty Spotlight | Everlyn Kamau (`profiles.ucsf.edu/everlyn.kamau`) |
+
+Both are Zoom, tag `Workshop`, `featured: true`, blank `host`, no `register_url`,
+and both put the guest's name in `summary` ("Hear from …") and the profile link
+in `details` ("Learn more about Dr. X's work here: …"). That is the house pattern
+for a Faculty Spotlight row; follow it for the next one.
+
+**Past** (newest first): YPHA Cohort Kickoff (Oct 17, 2–5 PM, Stanford Medical
+School) · YPHA Program Info Session (Sep 27, 11 AM–12 PM, Zoom) · August
+Mentorship Lab (Aug 23, 2–3 PM, Zoom, has a `register_url` Google Form) · July
+Mentorship Lab (Jul 26, Zoom, no time) · June Mentorship Lab (Jun 27, Zoom, no
+time, host "Mentors", tag `Community`) · Stanford Youth Public Health Summit
+(Apr 19, Alway – Stanford Medical School, tag `Symposium`, hosts listed as
+"Mentors: Max Yang, Catherine Wu, Taisho Shiono, Anya Vedantambe, Kate Quach").
+
+Two of the past rows still carry **seed `id`s that no longer match their titles**
+(`community-clinic-day` is the June Mentorship Lab, `fall-info-session` is the
+April Summit), because they were edited in place over the demo content in
+`seedEvents`. The `id` is not shown anywhere public, so this is cosmetic, but it
+makes the rows confusing to match up in Supabase.
+
+### The December rename (resolved 2026-10-20)
+
+`/events` and `/program` disagreed about December for about a week, and
+`/program` was the stale one:
+
+- `/events` (CMS): **Dec 11, Science Communication Lab 1 + Faculty Spotlight**.
+- `/program` (hardcoded, `src/app/program/page.tsx`): **Dec 13, Project Design
+  Lab**, "Turn your research and your conversations into a project you can
+  finish by May." Same entry in the 17-event list under "Program timeline —
+  Cohort 2026–2027" in this doc.
+
+This is not a date slip alone. Dec 13, 2026 is a **Sunday** and Dec 11 is a
+**Friday**, which is the same weekday correction the Community Discovery Lab got
+when it moved Nov 9 → Nov 13. But the titles also describe different sessions:
+project design versus science communication, and the latter is the theme the
+timeline assigns to **Apr 4, Communications & Pitch Lab**. "Lab **1**" implies a
+numbered series that the documented timeline does not contain.
+
+Three readings were possible: a rename and move of the same slot, a new session
+added beside a surviving Project Design Lab, or a cancellation with the design
+work folded into a checkpoint. **Confirmed as the first**, 2026-10-20. December
+keeps one live meeting and one checkpoint, the way every other month does, and
+the fall arc now has no meeting dedicated to project design. If that turns out to
+be a problem, the Nov 29 Community Discovery Checkpoint and the Dec 23 Fall
+Project Plan are where the design work has to land.
+
+The fix went into **three files**: the `timeline` array in
+`src/app/program/page.tsx`, the 17-event list in this doc, and the upstream
+source `~/Downloads/YPHA_2026-2027_Program_Timeline.md` (which carries its own
+revision note). `/educators`'s `KEY_DATES` stops at October 17, so it was not
+affected. The new `/program` lede reads "A researcher shares their work, then we
+start on how to explain your own project to the people it is for," built to
+parallel the November Faculty Spotlight row. **It was written here, not supplied
+by the program**, so replace it if the session's actual framing differs.
+
+### Three smaller drifts
+
+- **Kickoff title.** The event row is **"YPHA Cohort Kickoff"**; `/program` and
+  `/educators` both say **"YPHA Kickoff"** (commit `1257dc2` renamed it from
+  "Launch Lab"). Pick one and use it in all three places.
+- **Everlyn Kamau's affiliation looks wrong.** The card says "Postdoctoral
+  Researcher at **UC Davis** and Affiliate at **UCSF**." Her UCSF Profiles page,
+  the one the row's own `details` link points at, says **"Everlyn Kamau, PhD —
+  Postdoctoral Scholar, Office of the CEO,"** school Chancellor/EVC/FAS, with a
+  San Francisco address; her Google Scholar profile lists UCSF with a verified
+  `ucsf.edu` address. A search turned up no UC Davis appointment. A likely
+  origin of the error: UCSF Profiles is a UC Health-wide search, so every page
+  carries a nav list reading "UC Davis / UCI / UCLA / UCSD / UCSF" and
+  "UC Davis People". **Confirm with her before the next mailing**, since this is
+  a public claim about a named person, then fix `summary` in `/admin → Events`.
+  Checked 2026-10-20; nothing was changed.
+- **The Kickoff's "Date change" badge is now on a past event.** `JOIN_STEPS` in
+  `src/app/program/page.tsx` and `KEY_DATES` in `src/app/educators/page.tsx` both
+  still carry `flag: "Date change"` on October 17 (added in commit `06feece`).
+  The event happened on 2026-10-17, so the badge no longer warns anyone about
+  anything. Drop it from both arrays on the next pass. For contrast, the
+  Community Discovery Lab's Nov 9 → Nov 13 move was deliberately shipped without
+  a flag (commit `2a6a8c0`), so the badge is not a standing convention.
+
 ## Admin panel revamp (2026-07-30)
 
 Triggered by feedback that `/admin` felt slow/clunky and the nav was
@@ -571,9 +683,11 @@ you'll walk away with" was removed with it.
 > file outside the repo. It was **updated 2026-08-26 to match what shipped** (the
 > April restructure, both renames, the October 4 deadline, and the removal of the
 > AP-exam period), and it carries a revision note at the top recording what
-> changed and why. The two documents agree as of that date; the timeline file
-> holds the full per-session detail (Purpose / Workshop topics / Student output),
-> this file holds what the site does with it. Worth copying that file into the
+> changed and why. It was **revised again 2026-10-20** for the December rename,
+> with a second note recording that change and the three things it leaves open.
+> The two documents agree as of that date; the timeline file holds the full
+> per-session detail (Purpose / Workshop topics / Student output), this file
+> holds what the site does with it. Worth copying that file into the
 > repo so it stops living in a Downloads folder. (Was 19 —
 the **May 3–14 "AP exams — protected" row was removed 2026-08-26** on request.
 It said nothing new is assigned during AP exams and mentors stay available. The
@@ -584,9 +698,9 @@ deliberately: it explains *why* that deadline sits where it does.)
 ### Fall 2026 — Discover & Co-Design
 - **Oct 17 · Hybrid (Stanford/Zoom) · 2–5 PM Pacific · live** — **YPHA Kickoff.** Meet your mentor and the cohort; walk the year's checkpoints; feedback on your application proposal (a starting point, meant to change); sharpen problem/community/who-to-talk-to; see the year's path (problem → evidence → community input → design → implementation → evaluation → communication). *Finish with:* sharper problem statement, target community, first list of partners to contact.
 - **Oct 28 · Checkpoint** — **Background Research Checkpoint.** *Finish with:* background review with 5–10 sources, what's already known, what others have tried, the questions reading can't answer, 2–3 possible partners.
-- **Nov 13 · Zoom · 3:30–4:30 PM Pacific · live** — **Community Discovery Lab + Faculty Spotlight.** (Moved 2026-10-14 from Nov 9, no time set; deliberately no "Date change" flag, unlike the Kickoff. Nov 13 is a Friday.) Faculty/practitioner presents; methods vs. community needs; how to approach a partner; agreeing-with-your-idea vs. listening; workshop outreach emails and interview questions. *Finish with:* specific people to contact, and about two and a half weeks (to the Nov 29 checkpoint) to do it.
+- **Nov 13 · Zoom · 3:30–4:30 PM Pacific · live** — **Community Discovery Lab + Faculty Spotlight.** (Moved 2026-10-14 from Nov 9, no time set; deliberately no "Date change" flag, unlike the Kickoff. Nov 13 is a Friday. The `/events` card names the guest: **Joseph Becker, Associate Professor of Emergency Medicine at Stanford**.) Faculty/practitioner presents; methods vs. community needs; how to approach a partner; agreeing-with-your-idea vs. listening; workshop outreach emails and interview questions. *Finish with:* specific people to contact, and about two and a half weeks (to the Nov 29 checkpoint) to do it.
 - **Nov 29 · Checkpoint** — **Community Discovery Checkpoint.** *Finish with:* research synthesis, evidence you reached partners (1–2 substantive conversations is the goal, partner timelines vary), community-named priorities, what you assumed vs. what changed, revised direction and partner role.
-- **Dec 13 · Zoom · live** — **Project Design Lab.** Objective; feasible activities; partner role; target population and implementation plan; December/February/April milestones; what counts as success; ethical, logistical, feasibility problems. *Finish with:* near-final design ready for mentor and partner feedback.
+- **Dec 11 · Zoom · 4–5 PM Pacific · live** — **Science Communication Lab 1 + Faculty Spotlight.** (Renamed and moved 2026-10-20 from "Project Design Lab", Dec 13. Dec 13 is a Sunday and Dec 11 is a Friday, the same weekday correction the Community Discovery Lab got; deliberately no "Date change" flag, matching that move. The `/events` card names the guest: **Everlyn Kamau**, with the affiliation caveat under "Three smaller drifts" above. "Lab **1**" implies a numbered series that the rest of this timeline does not contain, so ask where Lab 2 goes before publishing a second one. See "The December rename" above.) Faculty/practitioner presents; then explaining your own project to the people it is for. *— Superseded agenda, kept for reference:* the Project Design Lab taught objective; feasible activities; partner role; target population and implementation plan; December/February/April milestones; what counts as success; ethical, logistical, feasibility problems, finishing with a near-final design ready for mentor and partner feedback. **That teaching no longer has a session of its own**; the workshop topics for the science-communication version have not been written down yet.
 - **Dec 23 · Checkpoint** — **Fall Project Plan.** Lede now also carries the fall closing expectation, moved 2026-08-26 out of the phase-level `close` field (which was deleted) and into this event's description: by the end of fall, either a confirmed community partner or an active relationship with an organization plus a plan to keep it going. *Finish with:* finalized proposal and timeline, the three milestones, partner role, evaluation measures, January first steps, anything still blocked.
 
 ### Winter 2027 — Implement & Iterate
