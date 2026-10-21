@@ -139,25 +139,39 @@ push to `main` triggers a production deploy within seconds. `npx vercel --prod`
 from a checkout with matching `.vercel/project.json` remains a valid fallback if
 a push ever fails to trigger a build.
 
-**The homepage carries one press link (added 2026-10-20).** A single line above
-the partner logo strip, in the same `bg-paper` section: the eyebrow "In the news"
-then a link reading "Stanford Global Health on our first cohort's kickoff ↗".
-`PRESS` in `src/app/page.tsx`, dev-edited, the same fixed-in-code pattern as
-`PARTNERS` below it. Two notes for whoever touches it:
+**The homepage carries one press link (added 2026-10-20).** The eyebrow "In the
+news" then a link reading "Stanford Global Health on our first cohort's kickoff
+↗". `PRESS` in `src/app/page.tsx`, dev-edited, the same fixed-in-code pattern as
+`PARTNERS`. Three notes for whoever touches it:
 
+- **It sits directly above the Events heading**, inside that section's `border-y`
+  band and left-aligned to the heading beneath it. It was first shipped centred
+  above the partner logo strip at the foot of the page, then **moved up on request
+  the same day**. If it moves again, the alignment has to move with it: the
+  partner-strip version was centred because that whole card is.
 - **The CIGH logo stays unlinked** on purpose. A partner logo should point at the
   partner, not at a news story, so the article gets its own line instead.
 - **Keep the trailing slash** on the URL
   (`…/accelerating-youth-engagement-in-public-health.html/`). The bare `.html`
   form 301-redirects to it, so dropping the slash costs a hop.
 
-The article is bylined by Catherine Wu and quotes Max Yang. **It also disagrees
-with the site**, which now matters because the homepage points at it: the piece
-describes the cohort as **20 Bay Area teams plus 5 from elsewhere in the US**,
-while the homepage stat says "48 Students mentored this cohort" and the nav,
-hero, and mission all frame the program as Bay Area. Reconcile those before the
-link gets much traffic. If more press arrives, `PRESS` becomes an array and the
-line becomes a list.
+The article is bylined by Catherine Wu and quotes Max Yang. **One claim in it sits
+awkwardly beside the site**, which matters more now that the homepage links to it:
+the piece says the cohort is **20 Bay Area teams plus 5 from elsewhere in the
+US**, while the nav, hero, and mission all frame YPHA as a Bay Area program. The
+stat tiles themselves are fine: live values on 2026-10-20 are **70 / Youth public
+health leaders mentored, 3 / Mentorship Labs this summer, 20 / Schools across the
+Bay Area, 1 / Youth Public Health Symposium**, and that "20" lines up with the
+article's 20 Bay Area teams. So the thing to reconcile is the **Bay Area framing**,
+not a number.
+
+**A caution this episode earned:** the stats in `seedSiteContent`
+(`src/lib/data.ts`) read "48 / Students mentored this cohort", and that seed was
+briefly mistaken for the live value when the discrepancy above was first written
+up. The seed is only the no-Supabase fallback. Check `/admin/home` or the live
+page before quoting any homepage stat, exactly as the CMS note below says.
+
+If more press arrives, `PRESS` becomes an array and the line becomes a list.
 
 **Note on this doc's relationship to the CMS:** homepage/program hero fields
 are genuinely admin-editable (Supabase), so a teammate can change the live
