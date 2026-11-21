@@ -42,6 +42,8 @@ type CohortEvent = {
   lede: string;
   highlight?: boolean;
   flag?: string;
+  /** Already happened: folded into the "Earlier in the year" toggle. */
+  earlier?: boolean;
 };
 
 type Phase = {
@@ -71,6 +73,7 @@ const TIMELINE: Phase[] = [
             kind: "live",
             title: "YPHA Kickoff",
             flag: "Date change",
+            earlier: true,
             lede:
               "Meet your mentor and the rest of the cohort, and start turning the idea you applied with into a working project.",
           },
@@ -79,6 +82,7 @@ const TIMELINE: Phase[] = [
             format: "Checkpoint",
             kind: "async",
             title: "Background Research Checkpoint",
+            earlier: true,
             lede: "Find out what's already known before you commit to a design.",
           },
         ],
@@ -91,21 +95,23 @@ const TIMELINE: Phase[] = [
             format: "Zoom · 3:30–4:30 PM Pacific",
             kind: "live",
             title: "Community Connection Lab + Faculty Spotlight",
+            earlier: true,
             lede:
               "A Stanford faculty member or practitioner shares their work, then we get you ready to talk to your own community.",
-          },
-          {
-            date: "Nov 29",
-            format: "Checkpoint",
-            kind: "async",
-            title: "Fall Project Plan",
-            lede: "Lock the plan before implementation starts.",
           },
         ],
       },
       {
         month: "December",
         events: [
+          {
+            date: "Dec 7",
+            format: "Checkpoint",
+            kind: "async",
+            title: "Fall Project Plan",
+            flag: "Date change",
+            lede: "Lock the plan before implementation starts.",
+          },
           {
             date: "Dec 11",
             format: "Zoom · 4–5 PM Pacific",
@@ -138,14 +144,6 @@ const TIMELINE: Phase[] = [
         month: "January",
         events: [
           {
-            date: "Jan 21",
-            format: "Hybrid (Stanford/Zoom)",
-            kind: "live",
-            title: "YPHA Project Feedback Workshop",
-            lede:
-              "Share what happened when you started putting the plan into practice, and get unstuck. Nobody is grading you here, so bring the problems.",
-          },
-          {
             date: "Jan 31",
             format: "Checkpoint",
             kind: "async",
@@ -157,6 +155,15 @@ const TIMELINE: Phase[] = [
       {
         month: "February",
         events: [
+          {
+            date: "Feb 1",
+            format: "Hybrid (Stanford/Zoom) · 4–5:30 PM Pacific",
+            kind: "live",
+            title: "YPHA Project Feedback Workshop",
+            flag: "Date change",
+            lede:
+              "Share what happened when you started putting the plan into practice, and get unstuck. Nobody is grading you here, so bring the problems.",
+          },
           {
             date: "Feb 7",
             format: "Zoom",
@@ -296,6 +303,30 @@ function EventRow({ event }: { event: CohortEvent }) {
     </div>
   ) : (
     <div className="border-t border-ink/10 py-4">{body}</div>
+  );
+}
+
+function MonthItem({ month: m, accent }: { month: Phase["months"][number]; accent: string }) {
+  const isHighlight = m.events.some((e) => e.highlight);
+  return (
+    <li className="relative">
+      <span
+        aria-hidden
+        className={`absolute -left-[calc(2rem+6px)] top-1.5 rounded-full ring-4 ring-sand-light ${
+          isHighlight ? "h-4 w-4" : "h-3 w-3"
+        }`}
+        style={{
+          background: accent,
+          boxShadow: isHighlight ? `0 0 0 4px color-mix(in srgb, ${accent} 22%, transparent)` : undefined,
+        }}
+      />
+      <h4 className="font-display text-lg font-semibold text-ink">{m.month}</h4>
+      <div className="mt-2">
+        {m.events.map((e) => (
+          <EventRow key={e.title} event={e} />
+        ))}
+      </div>
+    </li>
   );
 }
 
@@ -443,31 +474,41 @@ export default async function ProgramPage() {
                       className="relative space-y-10 border-l pl-8"
                       style={{ borderColor: `color-mix(in srgb, ${phase.accent} 45%, transparent)` }}
                     >
-                      {phase.months.map((m) => {
-                        const isHighlight = m.events.some((e) => e.highlight);
+                      {(() => {
+                        const earlier = phase.months.filter((m) => m.events.every((e) => e.earlier));
+                        const upcoming = phase.months.filter((m) => !m.events.every((e) => e.earlier));
+                        const count = earlier.reduce((n, m) => n + m.events.length, 0);
                         return (
-                          <li key={m.month} className="relative">
-                            <span
-                              aria-hidden
-                              className={`absolute -left-[calc(2rem+6px)] top-1.5 rounded-full ring-4 ring-sand-light ${
-                                isHighlight ? "h-4 w-4" : "h-3 w-3"
-                              }`}
-                              style={{
-                                background: phase.accent,
-                                boxShadow: isHighlight
-                                  ? `0 0 0 4px color-mix(in srgb, ${phase.accent} 22%, transparent)`
-                                  : undefined,
-                              }}
-                            />
-                            <h4 className="font-display text-lg font-semibold text-ink">{m.month}</h4>
-                            <div className="mt-2">
-                              {m.events.map((e) => (
-                                <EventRow key={e.title} event={e} />
-                              ))}
-                            </div>
-                          </li>
+                          <>
+                            {earlier.length > 0 && (
+                              <li className="relative">
+                                <details className="group">
+                                  <summary className="flex cursor-pointer list-none items-center gap-2 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-ink/70 transition-colors hover:text-cardinal [&::-webkit-details-marker]:hidden">
+                                    <span
+                                      aria-hidden
+                                      className="inline-block transition-transform group-open:rotate-90"
+                                    >
+                                      ▸
+                                    </span>
+                                    <span className="group-open:hidden">
+                                      Show {count} earlier {count === 1 ? "event" : "events"} ({earlier[0].month}–{earlier[earlier.length - 1].month})
+                                    </span>
+                                    <span className="hidden group-open:inline">Hide earlier events</span>
+                                  </summary>
+                                  <ol className="mt-6 space-y-10">
+                                    {earlier.map((m) => (
+                                      <MonthItem key={m.month} month={m} accent={phase.accent} />
+                                    ))}
+                                  </ol>
+                                </details>
+                              </li>
+                            )}
+                            {upcoming.map((m) => (
+                              <MonthItem key={m.month} month={m} accent={phase.accent} />
+                            ))}
+                          </>
                         );
-                      })}
+                      })()}
                     </ol>
                   </div>
                 </div>
